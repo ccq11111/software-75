@@ -14,15 +14,7 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 
 public class SummaryViewController {
-    @FXML private Label usernameLabel;
-    @FXML private TextField searchField;
-
-    // Navigation buttons
-    @FXML private Button billingButton;
-    @FXML private Button summaryButton;
-    @FXML private Button savingButton;
-    @FXML private Button footprintButton;
-    @FXML private Button setButton;
+    @FXML private Label usernameLabel; // Only needed for displaying username
 
     // Expenditure section
     @FXML private Button expendWeekButton;
@@ -47,54 +39,70 @@ public class SummaryViewController {
 
     @FXML
     public void initialize() {
-        // Set up username (will be set by the calling controller)
-        usernameLabel.setText("Username");
+        try {
+            // Set up username (will be set by the calling controller)
+            if (usernameLabel != null) {
+                usernameLabel.setText("Username");
+            }
 
-        // Initialize chart data
-        initializeChartData();
+            // Initialize chart data
+            initializeChartData();
 
-        // Set up initial charts
-        updateExpendChart("Week");
-        updateIncomeChart("Week");
+            // Set up initial charts
+            if (expendPieChart != null && incomePieChart != null) {
+                updateExpendChart("Week");
+                updateIncomeChart("Week");
+            }
 
-        // Set up button handlers for navigation
-        billingButton.setOnAction(event -> navigateToBilling());
-        summaryButton.setOnAction(event -> System.out.println("Already on Summary"));
-        savingButton.setOnAction(event -> System.out.println("Saving clicked"));
-        footprintButton.setOnAction(event -> System.out.println("Footprint clicked"));
-        setButton.setOnAction(event -> System.out.println("Set clicked"));
+            // We no longer need menu button handlers as they are handled by BaseViewController
 
-        // Set up button handlers for expenditure tabs
-        expendWeekButton.setOnAction(event -> {
-            setActiveExpendTab("Week");
-            updateExpendChart("Week");
-        });
+            // Set up button handlers for expenditure tabs
+            if (expendWeekButton != null) {
+                expendWeekButton.setOnAction(event -> {
+                    setActiveExpendTab("Week");
+                    updateExpendChart("Week");
+                });
+            }
 
-        expendMonthButton.setOnAction(event -> {
-            setActiveExpendTab("Month");
-            updateExpendChart("Month");
-        });
+            if (expendMonthButton != null) {
+                expendMonthButton.setOnAction(event -> {
+                    setActiveExpendTab("Month");
+                    updateExpendChart("Month");
+                });
+            }
 
-        expendYearButton.setOnAction(event -> {
-            setActiveExpendTab("Year");
-            updateExpendChart("Year");
-        });
+            if (expendYearButton != null) {
+                expendYearButton.setOnAction(event -> {
+                    setActiveExpendTab("Year");
+                    updateExpendChart("Year");
+                });
+            }
 
-        // Set up button handlers for income tabs
-        incomeWeekButton.setOnAction(event -> {
-            setActiveIncomeTab("Week");
-            updateIncomeChart("Week");
-        });
+            // Set up button handlers for income tabs
+            if (incomeWeekButton != null) {
+                incomeWeekButton.setOnAction(event -> {
+                    setActiveIncomeTab("Week");
+                    updateIncomeChart("Week");
+                });
+            }
 
-        incomeMonthButton.setOnAction(event -> {
-            setActiveIncomeTab("Month");
-            updateIncomeChart("Month");
-        });
+            if (incomeMonthButton != null) {
+                incomeMonthButton.setOnAction(event -> {
+                    setActiveIncomeTab("Month");
+                    updateIncomeChart("Month");
+                });
+            }
 
-        incomeYearButton.setOnAction(event -> {
-            setActiveIncomeTab("Year");
-            updateIncomeChart("Year");
-        });
+            if (incomeYearButton != null) {
+                incomeYearButton.setOnAction(event -> {
+                    setActiveIncomeTab("Year");
+                    updateIncomeChart("Year");
+                });
+            }
+        } catch (Exception e) {
+            System.err.println("Error initializing SummaryViewController: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -261,32 +269,23 @@ public class SummaryViewController {
         }
     }
 
-    /**
-     * Navigate to the Billing view
-     */
-    private void navigateToBilling() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BillingView.fxml"));
-            Parent billingView = loader.load();
+    // Navigation methods removed as they are now handled by BaseViewController
 
-            // Get the controller and set the username
-            BillingViewController controller = loader.getController();
-            controller.setUsername(usernameLabel.getText());
-
-            // Switch to the billing view
-            Scene scene = new Scene(billingView, 1000, 600); // Use consistent dimensions
-            Stage stage = (Stage) billingButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // Store username as a field since we don't have the label in the content view
+    private String username;
 
     /**
      * Set the username in the view
      */
     public void setUsername(String username) {
-        usernameLabel.setText(username);
+        this.username = username;
+        // Only set the label text if the label exists
+        if (usernameLabel != null) {
+            usernameLabel.setText(username);
+        }
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
