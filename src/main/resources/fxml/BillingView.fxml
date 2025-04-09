@@ -4,59 +4,128 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.loginapp.BillingViewController">
+      fx:controller="com.example.loginapp.BillingViewController"
+      styleClass="main-container">
 
-    <!-- Left Side Panel (20%) -->
-    <VBox prefWidth="200" style="-fx-background-color: #f0f0f0;" spacing="10">
+    <!-- Left Side Panel -->
+    <VBox styleClass="sidebar" prefWidth="200">
         <padding>
             <Insets top="20" right="10" bottom="20" left="10"/>
         </padding>
 
         <!-- Username Display -->
-        <Label fx:id="usernameLabel" style="-fx-font-size: 18px;"/>
+        <HBox styleClass="user-section" alignment="CENTER_LEFT" spacing="10">
+            <ImageView fitHeight="30" fitWidth="30" styleClass="user-avatar">
+                <Image url="@../images/user_avatar.png"/>
+            </ImageView>
+            <Label fx:id="usernameLabel" styleClass="username-label" text="Username"/>
+        </HBox>
 
         <!-- Search Box -->
-        <TextField fx:id="searchField" promptText="Search" style="-fx-background-color: #e0e0e0;"/>
+        <HBox styleClass="search-container" alignment="CENTER_LEFT">
+            <ImageView fitHeight="15" fitWidth="15">
+                <Image url="@../images/search_icon.png"/>
+            </ImageView>
+            <TextField fx:id="searchField" promptText="search" styleClass="search-field"/>
+        </HBox>
 
         <!-- Menu Items -->
-        <VBox spacing="5">
-            <Button text="Billing Details" styleClass="menu-button" fx:id="billingButton"/>
-            <Button text="Summary" styleClass="menu-button" fx:id="summaryButton"/>
-            <Button text="Saving" styleClass="menu-button" fx:id="savingButton"/>
-            <Button text="Set" styleClass="menu-button" fx:id="setButton"/>
+        <VBox styleClass="menu-container" spacing="10">
+            <HBox styleClass="menu-item-active" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/billing_icon.png"/>
+                </ImageView>
+                <Button text="Billing Details" styleClass="menu-button-active" fx:id="billingButton"/>
+            </HBox>
+
+            <HBox styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/summary_icon.png"/>
+                </ImageView>
+                <Button text="Summary" styleClass="menu-button" fx:id="summaryButton"/>
+            </HBox>
+
+            <HBox styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/saving_icon.png"/>
+                </ImageView>
+                <Button text="Saving" styleClass="menu-button" fx:id="savingButton"/>
+            </HBox>
+
+            <HBox styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/footprint_icon.png"/>
+                </ImageView>
+                <Button text="Footprint" styleClass="menu-button" fx:id="footprintButton"/>
+            </HBox>
+
+            <HBox styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/set_icon.png"/>
+                </ImageView>
+                <Button text="Set" styleClass="menu-button" fx:id="setButton"/>
+            </HBox>
         </VBox>
     </VBox>
 
-    <!-- Right Side Content (80%) -->
-    <VBox HBox.hgrow="ALWAYS" spacing="20">
+    <!-- Right Side Content -->
+    <VBox HBox.hgrow="ALWAYS" styleClass="content-area" spacing="20">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
 
         <!-- Header Section -->
-        <HBox alignment="CENTER_LEFT">
-            <Label text="Billing Details" style="-fx-font-size: 24px;"/>
+        <HBox alignment="CENTER_LEFT" styleClass="header-section">
+            <Label text="Billing Details" styleClass="header-title"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Add CSV" fx:id="addCsvButton"/>
+            <Button text="Add CSV" fx:id="addCsvButton" styleClass="add-csv-button"/>
         </HBox>
 
         <!-- Input Form Section -->
-        <GridPane vgap="10" hgap="10">
-            <TextField fx:id="productField" promptText="Product" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="priceField" promptText="Price" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <ComboBox fx:id="categoryComboBox" promptText="Category" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-            <DatePicker fx:id="timePicker" promptText="Time" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+        <GridPane styleClass="input-form" vgap="15" hgap="20">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
+            </columnConstraints>
+
+            <!-- Row 1: Labels -->
+            <Label text="Product" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="Price" styleClass="form-label" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Category" styleClass="form-label" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <Label text="Time" styleClass="form-label" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+            <!-- Row 2: Input Fields -->
+            <TextField fx:id="productField" promptText="Input" styleClass="form-field"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="priceField" promptText="Input" styleClass="form-field"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <ComboBox fx:id="categoryComboBox" promptText="Select" styleClass="form-field"
+                      GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <DatePicker fx:id="timePicker" promptText="Select Time" styleClass="form-field"
+                        GridPane.columnIndex="3" GridPane.rowIndex="1"/>
         </GridPane>
 
+        <!-- Action Buttons -->
+        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="action-buttons">
+            <Button text="Reset" fx:id="resetButton" styleClass="reset-button"/>
+            <Button text="Build" fx:id="buildButton" styleClass="build-button"/>
+            <Button text="Inquire" fx:id="inquireButton" styleClass="inquire-button"/>
+        </HBox>
+
         <!-- Table Section -->
-        <TableView fx:id="billingTable" VBox.vgrow="ALWAYS">
+        <TableView fx:id="billingTable" VBox.vgrow="ALWAYS" styleClass="billing-table">
             <columns>
-                <TableColumn fx:id="productColumn" text="Product"/>
-                <TableColumn fx:id="priceColumn" text="Price"/>
-                <TableColumn fx:id="categoryColumn" text="Category"/>
-                <TableColumn fx:id="timeColumn" text="Time"/>
+                <TableColumn fx:id="categoryColumn" text="Category" prefWidth="120"/>
+                <TableColumn fx:id="productColumn" text="Product" prefWidth="150"/>
+                <TableColumn fx:id="timeColumn" text="Time" prefWidth="150"/>
+                <TableColumn fx:id="priceColumn" text="金額" prefWidth="120"/>
+                <TableColumn fx:id="remarkColumn" text="Remark" prefWidth="150"/>
             </columns>
         </TableView>
     </VBox>
