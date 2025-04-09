@@ -1,5 +1,6 @@
 package com.example.loginapp;
 
+import com.example.loginapp.model.SavingPlanModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -170,10 +171,12 @@ public class SavingViewController {
             String currency = currencyComboBox.getValue();
 
             // Create a new saving plan
-            SavingPlan savingPlan = new SavingPlan(planName, startDate, cycle, cycleTimes, amount, currency);
+            SavingPlanModel.SavingPlan savingPlan = new SavingPlanModel.SavingPlan(planName, startDate, cycle, cycleTimes, amount, currency);
 
-            // In a real app, this would be saved to a database
-            // For now, just show a success message with calculated values
+            // Add the plan to our model (shared between controllers)
+            SavingPlanModel.getInstance().addPlan(savingPlan);
+
+            // Show a success message with calculated values
             String message = String.format(
                     "Plan '%s' created successfully!\n\n" +
                     "Start Date: %s\n" +
