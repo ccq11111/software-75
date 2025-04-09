@@ -1,0 +1,30 @@
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-min-width: 180px;
+}
+
+.menu-button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+#billingButton {
+    -fx-background-color: #e0e0e0;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f5f5f5;
+}
+
+#addCsvButton {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+}

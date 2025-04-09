@@ -23,35 +23,19 @@ public class LoginRegisterController {
 
     // 注册界面组件
     @FXML
-    private TextField registerUsername;
-    
-    @FXML
-    private PasswordField registerPassword;
-    
-    @FXML
-    private PasswordField registerConfirmPassword;
-    
-    @FXML
-    private TextField registerEmail;
-    
-    @FXML
-    private Button registerButton;
-    
-    @FXML
-    private Label registerMessage;
+    private TextField emailPhone;
 
-    // 登录界面组件
     @FXML
-    private TextField loginUsername;
-    
+    private PasswordField password;
+
     @FXML
-    private PasswordField loginPassword;
-    
+    private PasswordField confirmPassword;
+
     @FXML
-    private Button loginButton;
-    
+    private Label messageLabel;
+
     @FXML
-    private Label loginMessage;
+    private Hyperlink verificationLink;
 
     /**
      * 初始化控制器
@@ -61,15 +45,12 @@ public class LoginRegisterController {
     public void initialize() {
         // 添加一个测试账户（如果还没有添加）
         if (userAccounts.isEmpty()) {
-            userAccounts.put("admin", new UserAccount("admin", "admin123", "admin@example.com"));
+            userAccounts.put("123", new UserAccount("123", "123", "test@example.com"));
         }
-        
-        // 初始化消息标签（仅当标签存在时）
-        if (registerMessage != null) {
-            registerMessage.setText("");
-        }
-        if (loginMessage != null) {
-            loginMessage.setText("");
+
+        // Add event handler for verification link if it exists (it's only in the login view)
+        if (verificationLink != null) {
+            verificationLink.setOnAction(this::handleVerificationCode);
         }
     }
 
@@ -78,36 +59,33 @@ public class LoginRegisterController {
      */
     @FXML
     private void handleRegister(ActionEvent event) {
-        String username = registerUsername.getText().trim();
-        String password = registerPassword.getText().trim();
-        String confirmPassword = registerConfirmPassword.getText().trim();
-        String email = registerEmail.getText().trim();
-        
+        String phone = emailPhone.getText().trim();
+        String pwd = password.getText().trim();
+        String confirmPwd = confirmPassword.getText().trim();
+
         // 验证输入
-        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty()) {
-            showRegisterMessage("所有字段都必须填写", true);
+        if (phone.isEmpty() || pwd.isEmpty() || confirmPwd.isEmpty()) {
+            showMessage("All fields must be filled", true);
             return;
         }
-        
-        if (!password.equals(confirmPassword)) {
-            showRegisterMessage("两次输入的密码不一致", true);
+
+        if (!pwd.equals(confirmPwd)) {
+            showMessage("Passwords do not match", true);
             return;
         }
-        
-        if (userAccounts.containsKey(username)) {
-            showRegisterMessage("用户名已被占用", true);
+
+        if (userAccounts.containsKey(phone)) {
+            showMessage("Account already exists", true);
             return;
         }
-        
+
         // 创建新账户
-        userAccounts.put(username, new UserAccount(username, password, email));
-        showRegisterMessage("注册成功！您现在可以登录", false);
-        clearRegisterFields();
-        
-        // 延迟切换到登录界面
-        javafx.application.Platform.runLater(() -> {
-            navigateToLogin(event);
-        });
+        userAccounts.put(phone, new UserAccount(phone, pwd, ""));
+        showMessage("Registration successful!", false);
+        clearFields();
+
+        // 切换到登录界面
+        navigateToLogin(event);
     }
 
     /**
@@ -115,31 +93,58 @@ public class LoginRegisterController {
      */
     @FXML
     private void handleLogin(ActionEvent event) {
-        String username = loginUsername.getText().trim();
-        String password = loginPassword.getText().trim();
-        
+        String phone = emailPhone.getText().trim();
+        String pwd = password.getText().trim();
+
         // 验证输入
-        if (username.isEmpty() || password.isEmpty()) {
-            showLoginMessage("用户名和密码不能为空", true);
+        if (phone.isEmpty() || pwd.isEmpty()) {
+            showMessage("Please enter phone and password", true);
             return;
         }
-        
-        UserAccount account = userAccounts.get(username);
-        
-        if (account == null) {
-            showLoginMessage("用户不存在", true);
+
+        UserAccount account = userAccounts.get(phone);
+
+        if (account == null || !account.getPassword().equals(pwd)) {
+            showMessage("Invalid phone or password", true);
             return;
         }
-        
-        if (!account.getPassword().equals(password)) {
-            showLoginMessage("密码错误", true);
-            return;
+
+        // 切换到账单界面
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BillingView.fxml"));
+            Parent billingView = loader.load();
+
+            // 获取控制器并设置用户名
+            BillingViewController billingController = loader.getController();
+            billingController.setUsername(phone);
+
+            // 切换到账单界面
+            Scene scene = new Scene(billingView);
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showMessage("Error loading billing view", true);
         }
-        
-        showLoginMessage("登录成功！欢迎回来，" + username, false);
-        clearLoginFields();
     }
-    
+
+    /**
+     * 切换到注册界面
+     */
+    @FXML
+    private void switchToRegister(ActionEvent event) {
+        try {
+            Parent registerView = FXMLLoader.load(getClass().getResource("/fxml/RegisterView.fxml"));
+            Scene scene = new Scene(registerView);
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 切换到登录界面
      */
@@ -157,71 +162,48 @@ public class LoginRegisterController {
     }
 
     /**
-     * 切换到注册界面
+     * Handle verification code link click
      */
     @FXML
-    private void navigateToRegister(ActionEvent event) {
-        try {
-            Parent registerView = FXMLLoader.load(getClass().getResource("/fxml/RegisterView.fxml"));
-            Scene scene = new Scene(registerView);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void handleVerificationCode(ActionEvent event) {
+        // Show a dialog to enter verification code
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Verification Code");
+        dialog.setHeaderText("Enter the verification code sent to your email/phone");
+        dialog.setContentText("Code:");
+
+        dialog.showAndWait().ifPresent(code -> {
+            if (code.isEmpty()) {
+                showMessage("Please enter a verification code", true);
+            } else {
+                // Here you would validate the verification code
+                // For demo purposes, we'll just show a message
+                showMessage("Verification code accepted", false);
+            }
+        });
+    }
+
+    /**
+     * 显示消息
+     */
+    private void showMessage(String message, boolean isError) {
+        if (messageLabel != null) {
+            messageLabel.setText(message);
+            messageLabel.setTextFill(isError ? Color.RED : Color.GREEN);
         }
     }
-    
+
     /**
-     * Handle the Sign up link click to switch to register view
+     * 清空字段
      */
-    @FXML
-    private void switchToRegister(ActionEvent event) {
-        navigateToRegister(event);
-    }
-    
-    /**
-     * 显示注册消息
-     */
-    private void showRegisterMessage(String message, boolean isError) {
-        if (registerMessage != null) {
-            registerMessage.setText(message);
-            registerMessage.setTextFill(isError ? Color.RED : Color.GREEN);
+    private void clearFields() {
+        emailPhone.clear();
+        password.clear();
+        if (confirmPassword != null) {
+            confirmPassword.clear();
         }
     }
-    
-    /**
-     * 显示登录消息
-     */
-    private void showLoginMessage(String message, boolean isError) {
-        if (loginMessage != null) {
-            loginMessage.setText(message);
-            loginMessage.setTextFill(isError ? Color.RED : Color.WHITE);
-        }
-    }
-    
-    /**
-     * 清空注册字段
-     */
-    private void clearRegisterFields() {
-        if (registerUsername != null) {
-            registerUsername.clear();
-            registerPassword.clear();
-            registerConfirmPassword.clear();
-            registerEmail.clear();
-        }
-    }
-    
-    /**
-     * 清空登录字段
-     */
-    private void clearLoginFields() {
-        if (loginUsername != null) {
-            loginUsername.clear();
-            loginPassword.clear();
-        }
-    }
-    
+
     /**
      * 用户账户类（内部类）
      */
@@ -229,21 +211,21 @@ public class LoginRegisterController {
         private String username;
         private String password;
         private String email;
-        
+
         public UserAccount(String username, String password, String email) {
             this.username = username;
             this.password = password;
             this.email = email;
         }
-        
+
         public String getUsername() {
             return username;
         }
-        
+
         public String getPassword() {
             return password;
         }
-        
+
         public String getEmail() {
             return email;
         }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.loginapp.BillingViewController">
+
+    <!-- Left Side Panel (20%) -->
+    <VBox prefWidth="200" style="-fx-background-color: #f0f0f0;" spacing="10">
+        <padding>
+            <Insets top="20" right="10" bottom="20" left="10"/>
+        </padding>
+
+        <!-- Username Display -->
+        <Label fx:id="usernameLabel" style="-fx-font-size: 18px;"/>
+
+        <!-- Search Box -->
+        <TextField fx:id="searchField" promptText="Search" style="-fx-background-color: #e0e0e0;"/>
+
+        <!-- Menu Items -->
+        <VBox spacing="5">
+            <Button text="Billing Details" styleClass="menu-button" fx:id="billingButton"/>
+            <Button text="Summary" styleClass="menu-button" fx:id="summaryButton"/>
+            <Button text="Saving" styleClass="menu-button" fx:id="savingButton"/>
+            <Button text="Set" styleClass="menu-button" fx:id="setButton"/>
+        </VBox>
+    </VBox>
+
+    <!-- Right Side Content (80%) -->
+    <VBox HBox.hgrow="ALWAYS" spacing="20">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <!-- Header Section -->
+        <HBox alignment="CENTER_LEFT">
+            <Label text="Billing Details" style="-fx-font-size: 24px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Add CSV" fx:id="addCsvButton"/>
+        </HBox>
+
+        <!-- Input Form Section -->
+        <GridPane vgap="10" hgap="10">
+            <TextField fx:id="productField" promptText="Product" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="priceField" promptText="Price" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <ComboBox fx:id="categoryComboBox" promptText="Category" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <DatePicker fx:id="timePicker" promptText="Time" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+        </GridPane>
+
+        <!-- Table Section -->
+        <TableView fx:id="billingTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="productColumn" text="Product"/>
+                <TableColumn fx:id="priceColumn" text="Price"/>
+                <TableColumn fx:id="categoryColumn" text="Category"/>
+                <TableColumn fx:id="timeColumn" text="Time"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <stylesheets>
+        <URL value="@/styles/billing.css"/>
+    </stylesheets>
+</HBox>
