@@ -15,13 +15,7 @@ import java.time.LocalDate;
 import java.io.IOException;
 
 public class BillingViewController {
-    @FXML private Label usernameLabel;
-    @FXML private TextField searchField;
-    @FXML private Button billingButton;
-    @FXML private Button summaryButton;
-    @FXML private Button savingButton;
-    @FXML private Button footprintButton;
-    @FXML private Button setButton;
+    @FXML private Label usernameLabel; // Only needed for displaying username
     @FXML private Button addCsvButton;
 
     @FXML private TextField productField;
@@ -120,12 +114,7 @@ public class BillingViewController {
         buildButton.setOnAction(event -> handleAddRecord()); // Build button adds a record
         inquireButton.setOnAction(event -> handleFuzzySearch()); // Inquire button performs fuzzy search
 
-        // Menu button handlers
-        billingButton.setOnAction(event -> System.out.println("Already on Billing Details"));
-        summaryButton.setOnAction(event -> navigateToSummary());
-        savingButton.setOnAction(event -> navigateToSaving());
-        footprintButton.setOnAction(event -> System.out.println("Footprint clicked"));
-        setButton.setOnAction(event -> System.out.println("Set clicked"));
+        // We no longer need menu button handlers as they are handled by BaseViewController
     }
 
     private void addSampleData() {
@@ -238,54 +227,21 @@ public class BillingViewController {
         alert.showAndWait();
     }
 
-    /**
-     * Navigate to the Summary view
-     */
-    private void navigateToSummary() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SummaryView.fxml"));
-            Parent summaryView = loader.load();
+    // Navigation methods removed as they are now handled by BaseViewController
 
-            // Get the controller and set the username
-            SummaryViewController controller = loader.getController();
-            controller.setUsername(usernameLabel.getText());
-
-            // Switch to the summary view
-            Scene scene = new Scene(summaryView, 1000, 600); // Use consistent dimensions
-            Stage stage = (Stage) summaryButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Error loading summary view");
-        }
-    }
-
-    /**
-     * Navigate to the Saving view
-     */
-    private void navigateToSaving() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SavingView.fxml"));
-            Parent savingView = loader.load();
-
-            // Get the controller and set the username
-            SavingViewController controller = loader.getController();
-            controller.setUsername(usernameLabel.getText());
-
-            // Switch to the saving view
-            Scene scene = new Scene(savingView, 1000, 600); // Use consistent dimensions
-            Stage stage = (Stage) savingButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Error loading saving view");
-        }
-    }
+    // Store username as a field since we don't have the label in the content view
+    private String username;
 
     public void setUsername(String username) {
-        usernameLabel.setText(username);
+        this.username = username;
+        // Only set the label text if the label exists
+        if (usernameLabel != null) {
+            usernameLabel.setText(username);
+        }
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public static class BillingEntry {

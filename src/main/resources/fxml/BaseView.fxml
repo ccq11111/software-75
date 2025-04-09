@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.loginapp.BaseViewController"
+      styleClass="main-container">
+
+    <!-- Left Side Panel (Global Sidebar) -->
+    <VBox styleClass="sidebar" prefWidth="200">
+        <padding>
+            <Insets top="20" right="10" bottom="20" left="10"/>
+        </padding>
+
+        <!-- Username Display -->
+        <HBox styleClass="user-section" alignment="CENTER_LEFT" spacing="10">
+            <ImageView fitHeight="30" fitWidth="30" styleClass="user-avatar">
+                <Image url="@../images/user_avatar.png"/>
+            </ImageView>
+            <Label fx:id="usernameLabel" styleClass="username-label" text="Username"/>
+        </HBox>
+
+        <!-- Search Box -->
+        <HBox styleClass="search-container" alignment="CENTER_LEFT">
+            <ImageView fitHeight="15" fitWidth="15">
+                <Image url="@../images/search_icon.png"/>
+            </ImageView>
+            <TextField fx:id="searchField" promptText="search" styleClass="search-field"/>
+        </HBox>
+
+        <!-- Menu Items -->
+        <VBox styleClass="menu-container" spacing="10">
+            <HBox fx:id="billingMenuItem" styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/billing_icon.png"/>
+                </ImageView>
+                <Button text="Billing Details" styleClass="menu-button" fx:id="billingButton"/>
+            </HBox>
+
+            <HBox fx:id="summaryMenuItem" styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/summary_icon.png"/>
+                </ImageView>
+                <Button text="Summary" styleClass="menu-button" fx:id="summaryButton"/>
+            </HBox>
+
+            <HBox fx:id="savingMenuItem" styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/saving_icon.png"/>
+                </ImageView>
+                <Button text="Saving" styleClass="menu-button" fx:id="savingButton"/>
+            </HBox>
+
+            <HBox fx:id="footprintMenuItem" styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/footprint_icon.png"/>
+                </ImageView>
+                <Button text="Footprint" styleClass="menu-button" fx:id="footprintButton"/>
+            </HBox>
+
+            <HBox fx:id="setMenuItem" styleClass="menu-item" alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="20" fitWidth="20">
+                    <Image url="@../images/set_icon.png"/>
+                </ImageView>
+                <Button text="Set" styleClass="menu-button" fx:id="setButton"/>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- Right Side Content Area - This will be dynamically replaced -->
+    <StackPane fx:id="contentArea" HBox.hgrow="ALWAYS">
+        <!-- Content will be loaded here dynamically -->
+    </StackPane>
+
+    <stylesheets>
+        <URL value="@/styles/billing.css"/>
+    </stylesheets>
+</HBox>

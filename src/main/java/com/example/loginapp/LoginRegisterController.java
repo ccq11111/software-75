@@ -109,23 +109,23 @@ public class LoginRegisterController {
             return;
         }
 
-        // 切换到账单界面
+        // 切换到基础视图（包含全局侧边栏）
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BillingView.fxml"));
-            Parent billingView = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BaseView.fxml"));
+            Parent baseView = loader.load();
 
             // 获取控制器并设置用户名
-            BillingViewController billingController = loader.getController();
-            billingController.setUsername(phone);
+            BaseViewController baseViewController = loader.getController();
+            baseViewController.setUsername(phone);
 
-            // 切换到账单界面
-            Scene scene = new Scene(billingView, 1000, 600); // Use consistent dimensions
+            // 切换到基础视图
+            Scene scene = new Scene(baseView, 1000, 600); // Use consistent dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showMessage("Error loading billing view", true);
+            showMessage("Error loading application view", true);
         }
     }
 
