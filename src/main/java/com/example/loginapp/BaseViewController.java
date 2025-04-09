@@ -3,11 +3,16 @@ package com.example.loginapp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -25,6 +30,7 @@ public class BaseViewController {
     @FXML private Button savingButton;
     @FXML private Button footprintButton;
     @FXML private Button setButton;
+    @FXML private Button aiButton;
 
     // Menu item containers for styling active state
     @FXML private HBox billingMenuItem;
@@ -47,6 +53,9 @@ public class BaseViewController {
         savingButton.setOnAction(event -> loadSavingView());
         footprintButton.setOnAction(event -> System.out.println("Footprint clicked"));
         setButton.setOnAction(event -> loadSetView());
+
+        // Set up AI button handler
+        aiButton.setOnAction(event -> openAIDialog());
 
         // Load the billing view by default
         loadBillingView();
@@ -246,5 +255,37 @@ public class BaseViewController {
      */
     public void setUsername(String username) {
         usernameLabel.setText(username);
+    }
+
+    /**
+     * Open the AI dialog
+     */
+    private void openAIDialog() {
+        try {
+            // Load the AI view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AIView.fxml"));
+            Parent aiView = loader.load();
+
+            // Create a new stage for the AI dialog
+            Stage aiStage = new Stage();
+            aiStage.initModality(Modality.NONE); // Non-modal dialog
+            aiStage.initStyle(StageStyle.UNDECORATED); // No window decorations
+            aiStage.setTitle("AI Assistant");
+
+            // Set the scene
+            Scene scene = new Scene(aiView);
+            aiStage.setScene(scene);
+
+            // Position the dialog relative to the main window
+            Stage mainStage = (Stage) aiButton.getScene().getWindow();
+            aiStage.setX(mainStage.getX() + (mainStage.getWidth() - 800) / 2);
+            aiStage.setY(mainStage.getY() + (mainStage.getHeight() - 600) / 2);
+
+            // Show the dialog
+            aiStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading AI view: " + e.getMessage());
+        }
     }
 }

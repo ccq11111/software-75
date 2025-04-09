@@ -73,11 +73,27 @@
     </VBox>
 
     <!-- Right Side Content Area - This will be dynamically replaced -->
-    <StackPane fx:id="contentArea" HBox.hgrow="ALWAYS">
-        <!-- Content will be loaded here dynamically -->
+    <StackPane HBox.hgrow="ALWAYS">
+        <!-- Content area -->
+        <StackPane fx:id="contentArea">
+            <!-- Content will be loaded here dynamically -->
+        </StackPane>
+
+        <!-- AI Button (positioned at the bottom right) -->
+        <StackPane alignment="BOTTOM_RIGHT" mouseTransparent="false">
+            <padding>
+                <Insets bottom="30" right="30"/>
+            </padding>
+            <Button fx:id="aiButton" styleClass="ai-button">
+                <graphic>
+                    <Label text="AI" styleClass="ai-button-text"/>
+                </graphic>
+            </Button>
+        </StackPane>
     </StackPane>
 
     <stylesheets>
         <URL value="@/styles/billing.css"/>
+        <URL value="@/styles/ai.css"/>
     </stylesheets>
 </HBox>
