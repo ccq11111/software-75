@@ -60,7 +60,7 @@ public class SummaryViewController {
         // Set up button handlers for navigation
         billingButton.setOnAction(event -> navigateToBilling());
         summaryButton.setOnAction(event -> System.out.println("Already on Summary"));
-        savingButton.setOnAction(event -> System.out.println("Saving clicked"));
+        savingButton.setOnAction(event -> navigateToSaving());
         footprintButton.setOnAction(event -> System.out.println("Footprint clicked"));
         setButton.setOnAction(event -> System.out.println("Set clicked"));
 
@@ -280,6 +280,29 @@ public class SummaryViewController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Navigate to the Saving view
+     */
+    private void navigateToSaving() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SavingView.fxml"));
+            Parent savingView = loader.load();
+
+            // Get the controller and set the username
+            SavingViewController controller = loader.getController();
+            controller.setUsername(usernameLabel.getText());
+
+            // Switch to the saving view
+            Scene scene = new Scene(savingView, 1000, 600); // Use consistent dimensions
+            Stage stage = (Stage) savingButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading saving view: " + e.getMessage());
         }
     }
 
