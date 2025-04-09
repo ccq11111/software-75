@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 public class BillingViewController {
@@ -19,12 +21,20 @@ public class BillingViewController {
 
     @FXML private TextField productField;
     @FXML private TextField priceField;
-    @FXML private ComboBox<String> categoryComboBox;
     @FXML private DatePicker timePicker;
+
+    // Category radio buttons
+    @FXML private ToggleGroup categoryGroup;
+    @FXML private RadioButton livingCostsRadio;
+    @FXML private RadioButton communicationRadio;
+    @FXML private RadioButton salaryRadio;
+    @FXML private RadioButton cosmeticsRadio;
 
     @FXML private Button resetButton;
     @FXML private Button buildButton;
     @FXML private Button inquireButton;
+
+    // Removed ComboBox as we're now using radio buttons
 
     @FXML private TableView<BillingEntry> billingTable;
     @FXML private TableColumn<BillingEntry, String> categoryColumn;
@@ -37,12 +47,6 @@ public class BillingViewController {
 
     @FXML
     public void initialize() {
-        // Set up the category combo box
-        categoryComboBox.setItems(FXCollections.observableArrayList(
-            "Living costs", "Communication", "Salary", "Cosmetics", "Food", "Transportation", "Entertainment", "Shopping", "Others"
-        ));
-        categoryComboBox.setValue("Living costs"); // Set default value
-
         // Configure table columns
         categoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
         productColumn.setCellValueFactory(cellData -> cellData.getValue().productProperty());
@@ -73,6 +77,30 @@ public class BillingViewController {
             }
         });
 
+        // Custom cell factory for category column to show icons
+        categoryColumn.setCellFactory(column -> new TableCell<BillingEntry, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Create an ImageView with the appropriate icon based on category
+                    String iconPath = getCategoryIconPath(item);
+                    if (iconPath != null) {
+                        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
+                        imageView.setFitHeight(24);
+                        imageView.setFitWidth(24);
+                        setGraphic(imageView);
+                    } else {
+                        setText(item);
+                    }
+                }
+            }
+        });
+
         billingTable.setItems(billingData);
 
         // Set current date as default for date picker
@@ -84,8 +112,8 @@ public class BillingViewController {
         // Button handlers
         addCsvButton.setOnAction(event -> handleAddCsv());
         resetButton.setOnAction(event -> clearInputFields());
-        buildButton.setOnAction(event -> handleBuild());
-        inquireButton.setOnAction(event -> handleAddEntry());
+        buildButton.setOnAction(event -> handleAddRecord()); // Build button adds a record
+        inquireButton.setOnAction(event -> handleFuzzySearch()); // Inquire button performs fuzzy search
 
         // Menu button handlers
         billingButton.setOnAction(event -> System.out.println("Billing Details clicked"));
@@ -103,11 +131,11 @@ public class BillingViewController {
         billingData.add(new BillingEntry("Cosmetics", "-", -300.00, LocalDate.of(2024, 12, 13), "14:29"));
     }
 
-    private void handleAddEntry() {
+    private void handleAddRecord() {
         try {
             String product = productField.getText().trim();
             double price = Double.parseDouble(priceField.getText().trim());
-            String category = categoryComboBox.getValue();
+            String category = getSelectedCategory();
             LocalDate date = timePicker.getValue();
 
             if (product.isEmpty() || category == null || date == null) {
@@ -122,21 +150,71 @@ public class BillingViewController {
         }
     }
 
+    private void handleFuzzySearch() {
+        String searchTerm = productField.getText().trim().toLowerCase();
+        if (searchTerm.isEmpty()) {
+            showAlert("Search Error", "Please enter a search term");
+            return;
+        }
+
+        // Create a filtered list for the search results
+        ObservableList<BillingEntry> searchResults = FXCollections.observableArrayList();
+
+        // Perform fuzzy search on product and remark fields
+        for (BillingEntry entry : billingData) {
+            if (entry.productProperty().get().toLowerCase().contains(searchTerm) ||
+                entry.remarkProperty().get().toLowerCase().contains(searchTerm)) {
+                searchResults.add(entry);
+            }
+        }
+
+        // Update the table with search results
+        if (searchResults.isEmpty()) {
+            showInfo("Search Results", "No matching records found");
+        } else {
+            billingTable.setItems(searchResults);
+            showInfo("Search Results", searchResults.size() + " matching records found");
+        }
+    }
+
     private void handleAddCsv() {
         // This would handle importing data from a CSV file
         showInfo("CSV Import", "CSV import functionality would be implemented here.");
     }
 
-    private void handleBuild() {
-        // This would handle building reports or charts
-        showInfo("Build Report", "Report building functionality would be implemented here.");
+    // Helper method to get the selected category from radio buttons
+    private String getSelectedCategory() {
+        RadioButton selectedRadio = (RadioButton) categoryGroup.getSelectedToggle();
+        if (selectedRadio != null) {
+            return (String) selectedRadio.getUserData();
+        }
+        return "Living costs"; // Default
+    }
+
+    // Helper method to get the icon path for a category
+    private String getCategoryIconPath(String category) {
+        switch (category) {
+            case "Living costs":
+                return "/images/living_costs.png";
+            case "Communication":
+                return "/images/communication.png";
+            case "Salary":
+                return "/images/salary.png";
+            case "Cosmetics":
+                return "/images/cosmetics.png";
+            default:
+                return null;
+        }
     }
 
     private void clearInputFields() {
         productField.clear();
         priceField.clear();
-        categoryComboBox.setValue("Living costs");
+        livingCostsRadio.setSelected(true); // Reset to default category
         timePicker.setValue(LocalDate.now());
+
+        // Reset table to show all data after a search
+        billingTable.setItems(billingData);
     }
 
     private void showAlert(String title, String content) {

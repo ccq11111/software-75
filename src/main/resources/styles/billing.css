@@ -79,20 +79,23 @@
 
 /* Content Area Styles */
 .content-area {
-    -fx-background-color: #fafafa;
+    -fx-background-color: #f5f4ea;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
 }
 
 /* Header Section */
 .header-section {
-    -fx-padding: 0 0 10 0;
-    -fx-border-color: transparent transparent #e0e0e0 transparent;
-    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0 0 15 0;
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-border-width: 0;
 }
 
 .header-title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #5e3c1c;
+    -fx-padding: 0 0 5 0;
 }
 
 .add-csv-button {
@@ -102,6 +105,7 @@
     -fx-padding: 8px 15px;
     -fx-background-radius: 5;
     -fx-cursor: hand;
+    -fx-min-width: 100;
 }
 
 .add-csv-button:hover {
@@ -109,6 +113,18 @@
 }
 
 /* Form Styles */
+.input-form-container {
+    -fx-padding: 15;
+    -fx-alignment: center;
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 0);
+    -fx-border-color: #f0f0f0;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+    -fx-margin: 10;
+}
+
 .input-form {
     -fx-padding: 15 0 15 0;
 }
@@ -124,35 +140,75 @@
     -fx-border-color: #e0e0e0;
     -fx-border-radius: 3;
     -fx-padding: 8;
+    -fx-prompt-text-fill: #aaaaaa;
 }
 
 .form-field:focused {
     -fx-border-color: #ffe100;
 }
 
+/* Category Radio Buttons */
+.category-radio-container {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+    -fx-padding: 5 0 0 0;
+}
+
+.category-radio {
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.category-radio:selected {
+    -fx-background-color: #fff8d0;
+}
+
+.category-radio .radio {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-border-radius: 0;
+}
+
+.category-radio .dot {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-radius: 0;
+}
+
 /* Action Buttons */
+.action-buttons-container {
+    -fx-padding: 15 0 0 0;
+    -fx-spacing: 10;
+    -fx-alignment: center-right;
+    -fx-min-width: 100;
+}
+
 .action-buttons {
     -fx-padding: 0 0 10 0;
 }
 
 .reset-button {
-    -fx-background-color: #f5f5f5;
+    -fx-background-color: white;
     -fx-text-fill: #333333;
     -fx-padding: 8 15;
     -fx-background-radius: 5;
     -fx-border-color: #e0e0e0;
     -fx-border-radius: 5;
     -fx-cursor: hand;
+    -fx-min-width: 80;
 }
 
 .build-button {
-    -fx-background-color: #f5f5f5;
+    -fx-background-color: white;
     -fx-text-fill: #333333;
     -fx-padding: 8 15;
     -fx-background-radius: 5;
     -fx-border-color: #e0e0e0;
     -fx-border-radius: 5;
     -fx-cursor: hand;
+    -fx-min-width: 80;
 }
 
 .inquire-button {
@@ -162,6 +218,7 @@
     -fx-padding: 8 15;
     -fx-background-radius: 5;
     -fx-cursor: hand;
+    -fx-min-width: 80;
 }
 
 .reset-button:hover, .build-button:hover {
@@ -174,18 +231,20 @@
 
 /* Table Styles */
 .billing-table {
-    -fx-background-color: transparent;
-    -fx-border-color: #e0e0e0;
+    -fx-background-color: white;
+    -fx-border-color: #f0f0f0;
     -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 0);
 }
 
 .billing-table .column-header {
-    -fx-background-color: #f8f8f8;
+    -fx-background-color: #fff8d0;
     -fx-padding: 10 5;
 }
 
 .billing-table .column-header .label {
-    -fx-text-fill: #666666;
+    -fx-text-fill: #5e3c1c;
     -fx-font-weight: bold;
 }
 
@@ -196,14 +255,14 @@
 }
 
 .billing-table .table-row-cell:odd {
-    -fx-background-color: #fafafa;
+    -fx-background-color: #ffffff;
 }
 
 .billing-table .table-row-cell:selected {
     -fx-background-color: #fff8d0;
 }
 
-/* Special styling for price column */
+/* Special styling for columns */
 .positive-amount {
     -fx-text-fill: #4CAF50;
     -fx-font-weight: bold;
@@ -212,4 +271,8 @@
 .negative-amount {
     -fx-text-fill: #F44336;
     -fx-font-weight: bold;
+}
+
+.category-column {
+    -fx-alignment: center;
 }
