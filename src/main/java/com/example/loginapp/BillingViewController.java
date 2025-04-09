@@ -7,7 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.beans.property.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import java.time.LocalDate;
+import java.io.IOException;
 
 public class BillingViewController {
     @FXML private Label usernameLabel;
@@ -116,8 +121,8 @@ public class BillingViewController {
         inquireButton.setOnAction(event -> handleFuzzySearch()); // Inquire button performs fuzzy search
 
         // Menu button handlers
-        billingButton.setOnAction(event -> System.out.println("Billing Details clicked"));
-        summaryButton.setOnAction(event -> System.out.println("Summary clicked"));
+        billingButton.setOnAction(event -> System.out.println("Already on Billing Details"));
+        summaryButton.setOnAction(event -> navigateToSummary());
         savingButton.setOnAction(event -> System.out.println("Saving clicked"));
         footprintButton.setOnAction(event -> System.out.println("Footprint clicked"));
         setButton.setOnAction(event -> System.out.println("Set clicked"));
@@ -231,6 +236,29 @@ public class BillingViewController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    /**
+     * Navigate to the Summary view
+     */
+    private void navigateToSummary() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SummaryView.fxml"));
+            Parent summaryView = loader.load();
+
+            // Get the controller and set the username
+            SummaryViewController controller = loader.getController();
+            controller.setUsername(usernameLabel.getText());
+
+            // Switch to the summary view
+            Scene scene = new Scene(summaryView, 1000, 600); // Use consistent dimensions
+            Stage stage = (Stage) summaryButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Error loading summary view");
+        }
     }
 
     public void setUsername(String username) {
