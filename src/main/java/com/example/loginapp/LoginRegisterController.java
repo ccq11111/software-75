@@ -119,7 +119,7 @@ public class LoginRegisterController {
             billingController.setUsername(phone);
 
             // 切换到账单界面
-            Scene scene = new Scene(billingView);
+            Scene scene = new Scene(billingView, 1000, 600); // Use consistent dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -136,7 +136,7 @@ public class LoginRegisterController {
     private void switchToRegister(ActionEvent event) {
         try {
             Parent registerView = FXMLLoader.load(getClass().getResource("/fxml/RegisterView.fxml"));
-            Scene scene = new Scene(registerView);
+            Scene scene = new Scene(registerView, 1000, 600); // Use consistent dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -152,7 +152,7 @@ public class LoginRegisterController {
     private void navigateToLogin(ActionEvent event) {
         try {
             Parent loginView = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
-            Scene scene = new Scene(loginView);
+            Scene scene = new Scene(loginView, 1000, 600); // Use consistent dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
