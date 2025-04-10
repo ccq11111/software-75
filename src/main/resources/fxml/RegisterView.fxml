@@ -17,16 +17,16 @@
 <?import java.net.URL?>
 
 <StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.loginapp.LoginRegisterController">
-    <HBox styleClass="login-container" prefHeight="600.0" prefWidth="1000.0">
+    <HBox styleClass="login-container" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
         <!-- Left side with money image -->
-        <VBox styleClass="image-container" prefWidth="500.0">
+        <VBox styleClass="image-container" HBox.hgrow="ALWAYS" prefWidth="500.0" minWidth="300.0">
             <ImageView fitHeight="400.0" fitWidth="400.0" preserveRatio="true">
                 <Image url="@../images/money.png"/>
             </ImageView>
         </VBox>
 
         <!-- Right side with registration form -->
-        <VBox styleClass="form-container" prefWidth="500.0">
+        <VBox styleClass="form-container" HBox.hgrow="ALWAYS" prefWidth="500.0" minWidth="300.0">
             <Label text="Welcome to PurseAI" styleClass="welcome-text"/>
 
             <VBox styleClass="login-form-container, register-form" alignment="CENTER">
@@ -82,5 +82,6 @@
         <URL value="@../styles/login.css"/>
         <URL value="@../styles/register.css"/>
         <URL value="@../styles/notification.css"/>
+        <URL value="@../styles/responsive.css"/>
     </stylesheets>
 </StackPane>

@@ -209,8 +209,12 @@ public class SetViewController {
             BaseViewController baseViewController = loader.getController();
             baseViewController.setUsername(username);
 
+            // Get current window size for the new scene
+            double width = stage.getWidth();
+            double height = stage.getHeight();
+
             // Set the scene
-            Scene scene = new Scene(baseView, 1000, 600);
+            Scene scene = new Scene(baseView, width, height);
             stage.setScene(scene);
 
             // Navigate to the saving view
@@ -244,10 +248,16 @@ public class SetViewController {
      */
     private void handleLogout() {
         try {
+            // Get the current stage
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+
             // Navigate to the login view
             Parent loginView = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
-            Scene scene = new Scene(loginView, 1000, 600);
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
+
+            // Get current window size for the new scene
+            double width = stage.getWidth();
+            double height = stage.getHeight();
+            Scene scene = new Scene(loginView, width, height);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

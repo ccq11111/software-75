@@ -12,7 +12,7 @@
       styleClass="main-container">
 
     <!-- Left Side Panel (Global Sidebar) -->
-    <VBox styleClass="sidebar" prefWidth="200">
+    <VBox styleClass="sidebar" prefWidth="200" minWidth="180" maxWidth="250">
         <padding>
             <Insets top="20" right="10" bottom="20" left="10"/>
         </padding>
@@ -95,5 +95,6 @@
     <stylesheets>
         <URL value="@/styles/billing.css"/>
         <URL value="@/styles/ai.css"/>
+        <URL value="@/styles/responsive.css"/>
     </stylesheets>
 </HBox>

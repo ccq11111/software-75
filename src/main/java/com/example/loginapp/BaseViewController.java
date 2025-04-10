@@ -272,14 +272,25 @@ public class BaseViewController {
             aiStage.initStyle(StageStyle.UNDECORATED); // No window decorations
             aiStage.setTitle("AI Assistant");
 
-            // Set the scene
-            Scene scene = new Scene(aiView);
+            // Get the main window
+            Stage mainStage = (Stage) aiButton.getScene().getWindow();
+
+            // Calculate AI dialog size based on main window size (80% of main window)
+            double aiWidth = mainStage.getWidth() * 0.8;
+            double aiHeight = mainStage.getHeight() * 0.8;
+
+            // Set the scene with dynamic size
+            Scene scene = new Scene(aiView, aiWidth, aiHeight);
             aiStage.setScene(scene);
 
-            // Position the dialog relative to the main window
-            Stage mainStage = (Stage) aiButton.getScene().getWindow();
-            aiStage.setX(mainStage.getX() + (mainStage.getWidth() - 800) / 2);
-            aiStage.setY(mainStage.getY() + (mainStage.getHeight() - 600) / 2);
+            // Position the dialog relative to the main window (centered)
+            aiStage.setX(mainStage.getX() + (mainStage.getWidth() - aiWidth) / 2);
+            aiStage.setY(mainStage.getY() + (mainStage.getHeight() - aiHeight) / 2);
+
+            // Make the AI dialog resizable
+            aiStage.setResizable(true);
+            aiStage.setMinWidth(600);
+            aiStage.setMinHeight(400);
 
             // Show the dialog
             aiStage.show();

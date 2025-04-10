@@ -132,7 +132,11 @@ public class LoginRegisterController {
             baseViewController.setUsername(phone);
 
             // 切换到基础视图
-            Scene scene = new Scene(baseView, 1000, 600); // Use consistent dimensions
+            // Get current window size for the new scene
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            double width = currentStage.getWidth();
+            double height = currentStage.getHeight();
+            Scene scene = new Scene(baseView, width, height); // Use current window dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -150,7 +154,11 @@ public class LoginRegisterController {
     private void switchToRegister(ActionEvent event) {
         try {
             Parent registerView = FXMLLoader.load(getClass().getResource("/fxml/RegisterView.fxml"));
-            Scene scene = new Scene(registerView, 1000, 600); // Use consistent dimensions
+            // Get current window size for the new scene
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            double width = currentStage.getWidth();
+            double height = currentStage.getHeight();
+            Scene scene = new Scene(registerView, width, height); // Use current window dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -166,7 +174,11 @@ public class LoginRegisterController {
     private void navigateToLogin(ActionEvent event) {
         try {
             Parent loginView = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
-            Scene scene = new Scene(loginView, 1000, 600); // Use consistent dimensions
+            // Get current window size for the new scene
+            Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            double width = currentStage.getWidth();
+            double height = currentStage.getHeight();
+            Scene scene = new Scene(loginView, width, height); // Use current window dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
