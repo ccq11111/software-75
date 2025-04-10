@@ -81,5 +81,6 @@
     <stylesheets>
         <URL value="@../styles/login.css"/>
         <URL value="@../styles/register.css"/>
+        <URL value="@../styles/notification.css"/>
     </stylesheets>
 </StackPane>

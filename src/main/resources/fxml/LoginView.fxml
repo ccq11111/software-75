@@ -80,5 +80,6 @@
 
     <stylesheets>
         <URL value="@../styles/login.css"/>
+        <URL value="@../styles/notification.css"/>
     </stylesheets>
 </StackPane>

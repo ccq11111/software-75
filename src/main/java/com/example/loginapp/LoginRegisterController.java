@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -63,25 +64,32 @@ public class LoginRegisterController {
         String pwd = password.getText().trim();
         String confirmPwd = confirmPassword.getText().trim();
 
+        // Get the window for notifications
+        Window window = emailPhone.getScene().getWindow();
+
         // 验证输入
         if (phone.isEmpty() || pwd.isEmpty() || confirmPwd.isEmpty()) {
             showMessage("All fields must be filled", true);
+            NotificationManager.showError(window, "Registration Error", "All fields must be filled");
             return;
         }
 
         if (!pwd.equals(confirmPwd)) {
             showMessage("Passwords do not match", true);
+            NotificationManager.showError(window, "Registration Error", "Passwords do not match");
             return;
         }
 
         if (userAccounts.containsKey(phone)) {
             showMessage("Account already exists", true);
+            NotificationManager.showError(window, "Registration Error", "Account already exists");
             return;
         }
 
         // 创建新账户
         userAccounts.put(phone, new UserAccount(phone, pwd, ""));
         showMessage("Registration successful!", false);
+        NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!");
         clearFields();
 
         // 切换到登录界面
@@ -96,9 +104,13 @@ public class LoginRegisterController {
         String phone = emailPhone.getText().trim();
         String pwd = password.getText().trim();
 
+        // Get the window for notifications
+        Window window = emailPhone.getScene().getWindow();
+
         // 验证输入
         if (phone.isEmpty() || pwd.isEmpty()) {
             showMessage("Please enter phone and password", true);
+            NotificationManager.showError(window, "Login Error", "Please enter phone and password");
             return;
         }
 
@@ -106,6 +118,7 @@ public class LoginRegisterController {
 
         if (account == null || !account.getPassword().equals(pwd)) {
             showMessage("Invalid phone or password", true);
+            NotificationManager.showError(window, "Login Error", "Invalid phone or password");
             return;
         }
 
@@ -126,6 +139,7 @@ public class LoginRegisterController {
         } catch (IOException e) {
             e.printStackTrace();
             showMessage("Error loading application view", true);
+            NotificationManager.showError(emailPhone.getScene().getWindow(), "Error", "Error loading application view");
         }
     }
 
@@ -173,12 +187,15 @@ public class LoginRegisterController {
         dialog.setContentText("Code:");
 
         dialog.showAndWait().ifPresent(code -> {
+            Window window = emailPhone.getScene().getWindow();
             if (code.isEmpty()) {
                 showMessage("Please enter a verification code", true);
+                NotificationManager.showError(window, "Verification Error", "Please enter a verification code");
             } else {
                 // Here you would validate the verification code
                 // For demo purposes, we'll just show a message
                 showMessage("Verification code accepted", false);
+                NotificationManager.showSuccess(window, "Verification Successful", "Verification code accepted");
             }
         });
     }
