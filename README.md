@@ -74,13 +74,7 @@ chmod +x build.sh
 
 #### 手动构建
 
-1. 克隆仓库：
-   ```bash
-   git clone https://github.com/Shirley041767/test-commit.git
-   cd test-commit
-   ```
-
-2. 使用Maven构建项目：
+1. 使用Maven构建项目：
    ```bash
    mvn clean package
    ```
