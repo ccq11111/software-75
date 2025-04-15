@@ -45,7 +45,7 @@
 
 /* User message bubble */
 .user-message {
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: #e8f5e9;
     -fx-background-radius: 20;
     -fx-padding: 15;
     -fx-max-width: 600px;

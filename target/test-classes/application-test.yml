@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ai-demo-test
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: deepseek-r1
+        options:
+          temperature: 0.8
+logging:
+  level:
+    org.springframework.ai: debug
+    com.itheima.ai: debug 

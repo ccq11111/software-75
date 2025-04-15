@@ -13,14 +13,20 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.ScrollPane;
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Controller for the AI View
  */
+@Component
 public class AIViewController {
     @FXML private Label aiTitleLabel;
     @FXML private VBox messageContainer;
@@ -30,17 +36,12 @@ public class AIViewController {
     @FXML private Button aiCloseButton;
     @FXML private HBox quickActionsContainer;
 
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final String backendEndpoint = "http://localhost:8088/api/ai/chat";
+
     // Sample quick actions
     private final List<String> quickActions = Arrays.asList(
             "Travel advice", "Assistant", "Festival budget"
-    );
-
-    // Sample AI responses
-    private final List<String> aiResponses = Arrays.asList(
-            "OK! According to the billing data you recorded, with an annual income of $300,000 and annual expenses of $150,000, your average monthly expenses are about $12,500. As an important festival in China, the expenditure of the Spring Festival is usually higher than usual, mainly including the following aspects:\n\n1.Gifts and red envelopes: Spring Festival is a peak time for gifts and red envelopes, especially for family members, relatives and friends. Depending on your income level, you can expect to spend between $10,000 and $20,000, depending on the number and amount of money you need to give out.\n\n2.Food and meals: Family meals and purchases are common expenses during the Spring Festival. Expect to spend between $5,000 and $10,000 depending on the size of your family and the frequency of meals.\n\n3.Travel and entertainment: If you plan to travel or participate in entertainment activitie during the Chinese New Year, this part of the expenditure may be higher. It is expected that the cost of the trip can be between 10,000 and 30,000, depending on the distance to the destination and the method of travel.",
-            "Based on your spending patterns, I recommend setting aside about 15% of your monthly income for savings. This would be approximately ¥3,750 per month based on your current income level.",
-            "Looking at your transaction history, your largest expense categories are housing (35%), food (25%), and transportation (15%). You might want to consider reducing your dining out expenses, which account for 60% of your food budget.",
-            "I've analyzed your investment portfolio and noticed it's heavily weighted towards technology stocks (65%). For better diversification, consider allocating more to other sectors like healthcare and consumer staples."
     );
 
     // List to store message history
@@ -71,8 +72,11 @@ public class AIViewController {
             Button actionButton = new Button(action);
             actionButton.getStyleClass().add("ai-quick-action");
             actionButton.setOnAction(event -> {
-                aiInputField.setText(action);
-                handleSendMessage();
+                // Add user message directly
+                addUserMessage(action);
+                aiInputField.clear();
+                // Generate AI response with typing effect
+                generateAIResponse(action);
             });
             quickActionsContainer.getChildren().add(actionButton);
         }
@@ -92,7 +96,7 @@ public class AIViewController {
         aiInputField.clear();
 
         // Generate AI response with typing effect
-        generateAIResponse();
+        generateAIResponse(message);
     }
 
     /**
@@ -113,39 +117,67 @@ public class AIViewController {
     /**
      * Generate an AI response with typing effect
      */
-    private void generateAIResponse() {
-        // Select a random response
-        Random random = new Random();
-        String fullResponse = aiResponses.get(random.nextInt(aiResponses.size()));
-
+    private void generateAIResponse(String userMessage) {
         // Create the AI message label
-        Label aiMessage = new Label("");
+        final Label aiMessage = new Label("");
         aiMessage.getStyleClass().add("ai-message");
         aiMessage.setMaxWidth(600);
         aiMessage.setWrapText(true);
 
-        HBox messageBox = new HBox(aiMessage);
+        final HBox messageBox = new HBox(aiMessage);
         messageBox.setAlignment(Pos.CENTER_LEFT);
 
         messageContainer.getChildren().add(messageBox);
 
-        // Simulate typing effect
-        final int[] charIndex = {0};
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(10), event -> {
-                    if (charIndex[0] < fullResponse.length()) {
-                        aiMessage.setText(fullResponse.substring(0, ++charIndex[0]));
+        // Get response from backend in a background thread
+        new Thread(() -> {
+            try {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                
+                HttpEntity<String> request = new HttpEntity<>(userMessage, headers);
+                final String fullResponse = restTemplate.postForObject(backendEndpoint, request, String.class);
+                
+                // Post-process the response
+                final String processedResponse = fullResponse
+                    .replaceAll("(?s)<think>.*?</think>", "") // 使用(?s)使.能匹配换行符
+                    .replaceAll("(?s)<think>.*</think>", "")  // 处理没有闭合标签的情况
+                    .replaceAll("```.*?```", "")
+                    .replaceAll("`.*?`", "")
+                    .replaceAll("\\*\\*.*?\\*\\*", "")
+                    .replaceAll("\\*.*?\\*", "")
+                    .replaceAll("#{1,6}\\s", "")
+                    .replaceAll("\\[.*?\\]\\(.*?\\)", "")
+                    .replaceAll(">\\s", "")
+                    .replaceAll("-\\s", "")
+                    .replaceAll("\\d+\\.\\s", "")
+                    .trim();
 
-                        // Scroll to bottom as text is added
-                        Platform.runLater(() -> {
-                            messageContainer.layout();
-                            messageScrollPane.setVvalue(1.0);
-                        });
-                    }
-                })
-        );
-        timeline.setCycleCount(fullResponse.length());
-        timeline.play();
+                // Update UI on JavaFX thread with typing effect
+                Platform.runLater(() -> {
+                    // Simulate typing effect
+                    final int[] charIndex = {0};
+                    Timeline timeline = new Timeline(
+                            new KeyFrame(Duration.millis(10), event -> {
+                                if (charIndex[0] < processedResponse.length()) {
+                                    aiMessage.setText(processedResponse.substring(0, ++charIndex[0]));
+
+                                    // Scroll to bottom as text is added
+                                    messageContainer.layout();
+                                    messageScrollPane.setVvalue(1.0);
+                                }
+                            })
+                    );
+                    timeline.setCycleCount(processedResponse.length());
+                    timeline.play();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    aiMessage.setText("Sorry, I encountered an error while processing your request.");
+                });
+            }
+        }).start();
     }
 
     /**
