@@ -4,7 +4,6 @@ import com.example.ccqbackend.model.LoginRequest;
 import com.example.ccqbackend.model.RegisterRequest;
 import com.example.ccqbackend.model.User;
 import com.example.ccqbackend.service.UserService;
-import com.example.ccqbackend.model.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
