@@ -1,6 +1,9 @@
 package com.example.ccqbackend.model;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class BillingEntry {
 
@@ -8,8 +11,13 @@ public class BillingEntry {
     private String product;
     private double price;
     private String remark;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
-    // Getters and Setters
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime time;
+
+    // Getters 和 Setters
     public String getCategory() {
         return category;
     }
@@ -39,9 +47,22 @@ public class BillingEntry {
     }
 
     public void setRemark(String remark) {
-
+        this.remark = remark;
     }
 
-    public void setEntryDateTime(LocalDateTime now) {
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 }
