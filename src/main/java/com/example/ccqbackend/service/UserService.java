@@ -2,7 +2,7 @@ package com.example.ccqbackend.service;
 
 import com.example.ccqbackend.model.LoginRequest;
 import com.example.ccqbackend.model.RegisterRequest;
-import com.example.ccqbackend.service.JwtSecretKeyService;
+import com.example.ccqbackend.service.JwtConfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -23,10 +23,10 @@ public class UserService {
 
     private List<User> users = new ArrayList<>();
 
-    private final JwtSecretKeyService jwtSecretKeyService;
+    private final JwtConfig jwtSecretKeyService;
 
     @Autowired
-    public UserService(JwtSecretKeyService jwtSecretKeyService) {
+    public UserService(JwtConfig jwtSecretKeyService) {
         this.jwtSecretKeyService = jwtSecretKeyService;
     }
 
@@ -61,13 +61,14 @@ public class UserService {
     }
 
     public String generateJwtToken(User user) {
-        String jwtSecretKey = jwtSecretKeyService.getJwtSecretKey();
-        Key secretKey = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
+        // 获取 JwtConfig 中的密钥
+        Key jwtSecretKey = jwtSecretKeyService.getJwtSecretKey();
 
+        // 使用 HS256 算法和密钥生成 JWT Token
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getId())
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .signWith(jwtSecretKey, SignatureAlgorithm.HS256)  // 使用正确的密钥
                 .compact();
     }
 }
