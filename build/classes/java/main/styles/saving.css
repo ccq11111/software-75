@@ -1,0 +1,123 @@
+/* Saving View Styles */
+
+/* Savings card */
+.savings-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 0);
+    -fx-border-color: #f0f0f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+/* Section title with yellow rectangle */
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5e3c1c;
+}
+
+/* Slider styles */
+.amount-slider {
+    -fx-pref-height: 30px;
+}
+
+.amount-slider .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+    -fx-pref-height: 8px;
+}
+
+.amount-slider .thumb {
+    -fx-background-color: #ffe100;
+    -fx-background-radius: 15;
+    -fx-pref-height: 15px;
+    -fx-pref-width: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 0);
+}
+
+.slider-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5e3c1c;
+    -fx-min-width: 80px;
+}
+
+/* Active menu button */
+.active-menu-button {
+    -fx-text-fill: #ffe100;
+    -fx-font-weight: bold;
+}
+
+/* ComboBox styles */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 3;
+}
+
+.combo-box:focused {
+    -fx-border-color: #ffe100;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #666666;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 8;
+    -fx-text-fill: #333333;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: #ffe100;
+    -fx-text-fill: #333333;
+}
+
+/* DatePicker styles */
+.date-picker {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 3;
+}
+
+.date-picker:focused {
+    -fx-border-color: #ffe100;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.date-picker .arrow {
+    -fx-background-color: #666666;
+}
+
+.date-picker .cell {
+    -fx-background-color: white;
+    -fx-text-fill: #333333;
+}
+
+.date-picker .cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.date-picker .cell:selected {
+    -fx-background-color: #ffe100;
+    -fx-text-fill: #333333;
+}

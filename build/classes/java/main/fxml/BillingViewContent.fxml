@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.loginapp.BillingViewController"
+      styleClass="content-area" spacing="15">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Header Section -->
+    <HBox alignment="CENTER_LEFT" styleClass="header-section">
+        <Label text="Billing Details" styleClass="header-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Add CSV" fx:id="addCsvButton" styleClass="add-csv-button"/>
+    </HBox>
+
+    <!-- Input Form Section -->
+    <HBox spacing="20" styleClass="input-form-container">
+        <!-- Left side form fields -->
+        <GridPane styleClass="input-form" vgap="15" hgap="20" HBox.hgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
+            </columnConstraints>
+
+            <!-- Row 1: Product and Price -->
+            <Label text="Product" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="Price" styleClass="form-label" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="productField" promptText="Input" styleClass="form-field"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="priceField" promptText="Input" styleClass="form-field"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <!-- Row 2: Category and Time -->
+            <Label text="Category" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label text="Time" styleClass="form-label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <!-- Category Radio Buttons -->
+            <HBox spacing="10" styleClass="category-radio-container" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <fx:define>
+                    <ToggleGroup fx:id="categoryGroup"/>
+                </fx:define>
+
+                <RadioButton fx:id="livingCostsRadio" text="" toggleGroup="$categoryGroup" selected="true" userData="Living costs" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/living_costs.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+
+                <RadioButton fx:id="communicationRadio" text="" toggleGroup="$categoryGroup" userData="Communication" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/communication.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+
+                <RadioButton fx:id="salaryRadio" text="" toggleGroup="$categoryGroup" userData="Salary" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/salary.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+
+                <RadioButton fx:id="cosmeticsRadio" text="" toggleGroup="$categoryGroup" userData="Cosmetics" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/cosmetics.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+            </HBox>
+
+            <DatePicker fx:id="timePicker" promptText="Select Time" styleClass="form-field"
+                        GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        </GridPane>
+
+        <!-- Right side buttons -->
+        <VBox spacing="10" alignment="CENTER_RIGHT" styleClass="action-buttons-container">
+            <Button text="Reset" fx:id="resetButton" styleClass="reset-button"/>
+            <Button text="Build" fx:id="buildButton" styleClass="build-button"/>
+            <Button text="Inquire" fx:id="inquireButton" styleClass="inquire-button"/>
+        </VBox>
+    </HBox>
+
+    <!-- Spacer -->
+    <Region prefHeight="10" />
+
+    <!-- Table Section -->
+    <TableView fx:id="billingTable" VBox.vgrow="ALWAYS" styleClass="billing-table">
+        <columns>
+            <TableColumn fx:id="categoryColumn" text="Category" prefWidth="120" styleClass="category-column"/>
+            <TableColumn fx:id="productColumn" text="Product" prefWidth="150"/>
+            <TableColumn fx:id="timeColumn" text="Time" prefWidth="150"/>
+            <TableColumn fx:id="priceColumn" text="金額" prefWidth="120"/>
+            <TableColumn fx:id="remarkColumn" text="Remark" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <stylesheets>
+        <URL value="@/styles/billing.css"/>
+    </stylesheets>
+</VBox>
