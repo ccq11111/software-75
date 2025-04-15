@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>AI Icon</title>
+    <g id="AI-Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M9,4 L9,20 L7,20 L7,4 L9,4 Z M17,4 L17,20 L15,20 L15,4 L17,4 Z M13,4 L13,20 L11,20 L11,4 L13,4 Z" id="AI" fill="#333333" fill-rule="nonzero"></path>
+    </g>
+</svg>
