@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -230,17 +231,42 @@ public class SetViewController {
      */
     private void handleBackup() {
         try {
-            // In a real app, this would trigger a backup process
-            // For now, just show an alert
+            backupData();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Backup");
+            alert.setTitle("Backup Successful");
             alert.setHeaderText(null);
-            alert.setContentText("Backup functionality would be implemented here.");
+            alert.setContentText("Data has been successfully backed up to local file.");
             alert.showAndWait();
         } catch (Exception e) {
-            System.err.println("Error handling backup: " + e.getMessage());
+            System.err.println("Error during backup: " + e.getMessage());
             e.printStackTrace();
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Backup Failed");
+            alert.setHeaderText(null);
+            alert.setContentText("An error occurred during backup. Please try again.");
+            alert.showAndWait();
         }
+    }
+
+    /**
+     * Backup plan data to local file
+     */
+    private void backupData() throws IOException {
+        // Create backup directory if it doesn't exist
+        File backupDir = new File("backups");
+        if (!backupDir.exists()) {
+            backupDir.mkdir();
+        }
+
+        // Create backup filename with timestamp
+        String timestamp = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        File backupFile = new File(backupDir, "saving_plans_backup_" + timestamp + ".json");
+
+        // Convert data to JSON format
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+        mapper.writeValue(backupFile, planItems);
     }
 
     /**
