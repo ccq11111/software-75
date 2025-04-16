@@ -11,11 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Controller for the Set View
@@ -103,6 +105,18 @@ public class SetViewController {
                 new SavingPlanModel.SavingPlan("financial", java.time.LocalDate.now(),
                     "Daily", 50, 2000, "USD ($)"));
         }
+        
+        // Add row click event handler
+        planTable.setRowFactory(tv -> {
+            TableRow<SavingPlanModel.SavingPlan> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    SavingPlanModel.SavingPlan clickedPlan = row.getItem();
+                    showAddSavingDialog(clickedPlan);
+                }
+            });
+            return row;
+        });
     }
 
     /**
@@ -111,22 +125,59 @@ public class SetViewController {
     private void initializeChart() {
         // Calculate total assets from all plans
         double totalAssets = calculateTotalAssets();
+        
+        // Create chart data with individual plan contributions
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        
+        // Add data for each plan that has savings
+        for (SavingPlanModel.SavingPlan plan : planItems) {
+            double amount = plan.getSavedAmount();
+            
+            // Skip plans with zero savings
+            if (amount <= 0) {
+                continue;
+            }
+            
+            // Convert to CNY for consistent display
+            if (plan.getCurrency().startsWith("USD")) {
+                amount *= 7.2;
+            } else if (plan.getCurrency().startsWith("EUR")) {
+                amount *= 7.9;
+            } else if (plan.getCurrency().startsWith("GBP")) {
+                amount *= 9.3;
+            } else if (plan.getCurrency().startsWith("JPY")) {
+                amount *= 0.048;
+            }
+            
+            // Add the plan to chart data
+            pieChartData.add(new PieChart.Data(plan.getName(), amount));
+        }
+        
+        // If no plans have savings, add a placeholder
+        if (pieChartData.isEmpty()) {
+            pieChartData.add(new PieChart.Data("No Savings", 100));
+        }
 
-        // Create chart data
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Assets", totalAssets)
-        );
-
+        // Apply the data to the chart
         assetsChart.setData(pieChartData);
-        assetsChart.setLegendVisible(false);
+        
+        // Show the legend to identify different plans
+        assetsChart.setLegendVisible(true);
+        
+        // Apply custom colors to each slice
+        String[] colorPalette = {
+            "#ff6b6b", "#4d96ff", "#5cb85c", "#f0ad4e", "#6f42c1",
+            "#20c997", "#6610f2", "#fd7e14", "#e83e8c", "#17a2b8"
+        };
+        
+        int colorIndex = 0;
+        for (PieChart.Data data : pieChartData) {
+            String color = colorPalette[colorIndex % colorPalette.length];
+            data.getNode().setStyle("-fx-pie-color: " + color + ";");
+            colorIndex++;
+        }
 
-        // Apply custom colors to the chart
-        pieChartData.get(0).getNode().setStyle("-fx-pie-color: #ff6b6b;");
-
-        // Make the chart a donut chart
-        assetsChart.setStartAngle(90);
-
-        // Set total assets label
+        // Set total assets label with CNY symbol
         if (totalAssetsLabel != null) {
             totalAssetsLabel.setText(String.format("¥%.2f", totalAssets));
         }
@@ -138,16 +189,31 @@ public class SetViewController {
     private double calculateTotalAssets() {
         double total = 0.0;
 
-        // Sum up all plan amounts
+        // Sum up all plan saved amounts
         for (SavingPlanModel.SavingPlan plan : planItems) {
-            // Only count CNY plans for simplicity
-            if (plan.getCurrency().startsWith("CNY")) {
-                total += plan.calculateTotalAmount();
+            // Convert all currencies to CNY
+            double amount = plan.getSavedAmount();
+            
+            // Apply exchange rates for different currencies
+            if (plan.getCurrency().startsWith("USD")) {
+                // USD to CNY (approximate exchange rate: 1 USD = 7.2 CNY)
+                amount *= 7.2;
+            } else if (plan.getCurrency().startsWith("EUR")) {
+                // EUR to CNY (approximate exchange rate: 1 EUR = 7.9 CNY)
+                amount *= 7.9;
+            } else if (plan.getCurrency().startsWith("GBP")) {
+                // GBP to CNY (approximate exchange rate: 1 GBP = 9.3 CNY)
+                amount *= 9.3;
+            } else if (plan.getCurrency().startsWith("JPY")) {
+                // JPY to CNY (approximate exchange rate: 1 JPY = 0.048 CNY)
+                amount *= 0.048;
             }
+            
+            // Add to total (CNY plans remain unchanged)
+            total += amount;
         }
 
-        // Ensure we have at least 8000 for demonstration
-        return Math.max(total, 8000.0);
+        return total;
     }
 
     /**
@@ -317,5 +383,86 @@ public class SetViewController {
         return username;
     }
 
-
+    /**
+     * Show dialog to add saving amount to a plan
+     */
+    private void showAddSavingDialog(SavingPlanModel.SavingPlan plan) {
+        try {
+            // Create the custom dialog
+            Dialog<Double> dialog = new Dialog<>();
+            dialog.setTitle("Add Saving");
+            dialog.setHeaderText("Add amount to " + plan.getName() + " plan");
+            
+            // Set the button types
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+            
+            // Create the amount field and label
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+            
+            TextField amountField = new TextField();
+            amountField.setPromptText("Amount");
+            
+            // Show current saved amount
+            Label currentSavedLabel = new Label("Current saved: " + plan.getSavedDisplay());
+            Label currencyLabel = new Label(plan.getCurrency());
+            
+            grid.add(new Label("Amount to add:"), 0, 0);
+            grid.add(amountField, 1, 0);
+            grid.add(currencyLabel, 2, 0);
+            grid.add(currentSavedLabel, 0, 1, 3, 1);
+            
+            dialog.getDialogPane().setContent(grid);
+            
+            // Request focus on the amount field by default
+            javafx.application.Platform.runLater(() -> amountField.requestFocus());
+            
+            // Convert the result to a number when the save button is clicked
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButtonType) {
+                    try {
+                        return Double.parseDouble(amountField.getText());
+                    } catch (NumberFormatException e) {
+                        // Show error for invalid input
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid Input");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Please enter a valid number.");
+                        alert.showAndWait();
+                        return null;
+                    }
+                }
+                return null;
+            });
+            
+            // Show the dialog and wait for the user's response
+            Optional<Double> result = dialog.showAndWait();
+            
+            // Process the result
+            result.ifPresent(amount -> {
+                // Update the saved amount
+                double currentSaved = plan.getSavedAmount();
+                plan.setSavedAmount(currentSaved + amount);
+                
+                // Refresh the table and chart
+                planTable.refresh();
+                initializeChart(); // Update the chart with new data
+                
+                // Show confirmation
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Amount Added");
+                alert.setHeaderText(null);
+                alert.setContentText(String.format("Successfully added %.2f to %s plan.", 
+                        amount, plan.getName()));
+                alert.showAndWait();
+            });
+            
+        } catch (Exception e) {
+            System.err.println("Error showing add saving dialog: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
