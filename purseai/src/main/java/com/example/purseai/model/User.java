@@ -1,31 +1,13 @@
 package com.example.purseai.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "users")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
-
-    @Column(nullable = false, unique = true)
     private String username;
-
-    @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false, unique = true)
     private String email;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<SavingsPlan> savingsPlans = new HashSet<>();
-
-    @Embedded
     private UserSettings userSettings = new UserSettings();
     
     // 构造函数
@@ -65,14 +47,6 @@ public class User {
         this.email = email;
     }
 
-    public Set<SavingsPlan> getSavingsPlans() {
-        return savingsPlans;
-    }
-
-    public void setSavingsPlans(Set<SavingsPlan> savingsPlans) {
-        this.savingsPlans = savingsPlans;
-    }
-
     public UserSettings getUserSettings() {
         return userSettings;
     }
@@ -80,4 +54,4 @@ public class User {
     public void setUserSettings(UserSettings userSettings) {
         this.userSettings = userSettings;
     }
-} 
+}

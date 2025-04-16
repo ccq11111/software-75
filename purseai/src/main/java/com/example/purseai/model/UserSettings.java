@@ -1,21 +1,9 @@
 package com.example.purseai.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
-@Embeddable
 public class UserSettings {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "preferred_currency")
-    private SavingsPlan.CurrencyType currency = SavingsPlan.CurrencyType.CNY;
-
-    @Column(name = "email_notifications")
+    private String preferredCurrency = "CNY";
     private boolean emailNotifications = true;
-
-    @Column(name = "push_notifications")
     private boolean pushNotifications = false;
     
     // 构造函数
@@ -23,12 +11,12 @@ public class UserSettings {
     }
     
     // Getters and Setters
-    public SavingsPlan.CurrencyType getCurrency() {
-        return currency;
+    public String getPreferredCurrency() {
+        return preferredCurrency;
     }
     
-    public void setCurrency(SavingsPlan.CurrencyType currency) {
-        this.currency = currency;
+    public void setPreferredCurrency(String preferredCurrency) {
+        this.preferredCurrency = preferredCurrency;
     }
     
     public boolean isEmailNotifications() {
@@ -46,4 +34,4 @@ public class UserSettings {
     public void setPushNotifications(boolean pushNotifications) {
         this.pushNotifications = pushNotifications;
     }
-} 
+}

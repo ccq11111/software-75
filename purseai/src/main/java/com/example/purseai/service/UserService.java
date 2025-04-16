@@ -38,7 +38,7 @@ public class UserService {
         UserSettings userSettings = user.getUserSettings();
         
         if (request.getCurrency() != null) {
-            userSettings.setCurrency(request.getCurrency());
+            userSettings.setPreferredCurrency(request.getCurrency().toString());
         }
         
         if (request.getNotifications() != null) {

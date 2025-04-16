@@ -1,56 +1,34 @@
 package com.example.purseai.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Entity
-@Table(name = "savings_plans")
 public class SavingsPlan {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+
     private String planId;
-    
-    @Column(nullable = false)
     private String name;
-    
-    @Column(nullable = false)
     private Instant startDate;
-    
-    @Column(nullable = false)
     private Instant endDate;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CycleType cycle;
-    
-    @Column(nullable = false)
-    private Integer cycleTimes;
-    
-    @Column(nullable = false, precision = 10, scale = 2)
+    private String cycle;
+    private int cycleTimes;
     private BigDecimal amount;
-    
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
+    private BigDecimal savedAmount = BigDecimal.ZERO;
+    private String currency;
+    private String userId;
     
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal savedAmount;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CurrencyType currency;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-    
-    // 构造函数
-    public SavingsPlan() {
-        this.savedAmount = BigDecimal.ZERO;
+    // 枚举类型
+    public enum CycleType {
+        Daily, Weekly, Monthly, Quarterly, Yearly
     }
     
-    // Getters and Setters
+    public enum CurrencyType {
+        CNY, USD, EUR
+    }
+    
+    // 构造函数、getter和setter
     public String getPlanId() {
         return planId;
     }
@@ -83,19 +61,19 @@ public class SavingsPlan {
         this.endDate = endDate;
     }
 
-    public CycleType getCycle() {
+    public String getCycle() {
         return cycle;
     }
 
-    public void setCycle(CycleType cycle) {
+    public void setCycle(String cycle) {
         this.cycle = cycle;
     }
 
-    public Integer getCycleTimes() {
+    public int getCycleTimes() {
         return cycleTimes;
     }
 
-    public void setCycleTimes(Integer cycleTimes) {
+    public void setCycleTimes(int cycleTimes) {
         this.cycleTimes = cycleTimes;
     }
 
@@ -123,27 +101,19 @@ public class SavingsPlan {
         this.savedAmount = savedAmount;
     }
 
-    public CurrencyType getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(CurrencyType currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-    
-    public enum CycleType {
-        Daily, Weekly, Monthly, Quarterly, Yearly
-    }
-    
-    public enum CurrencyType {
-        USD, CNY, EUR
-    }
-} 
+}

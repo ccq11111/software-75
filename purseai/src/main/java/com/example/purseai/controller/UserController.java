@@ -32,7 +32,7 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("settings", Map.of(
-                "currency", updatedSettings.getCurrency(),
+                "currency", updatedSettings.getPreferredCurrency(),
                 "notifications", Map.of(
                         "email", updatedSettings.isEmailNotifications(),
                         "push", updatedSettings.isPushNotifications()

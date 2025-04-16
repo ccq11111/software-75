@@ -8,13 +8,13 @@ public class SavingsPlanResponse {
     private boolean success;
     private String planId;
     private String name;
-    private Instant startDate;
-    private Instant endDate;
-    private SavingsPlan.CycleType cycle;
+    private String startDate;
+    private String  endDate;
+    private String cycle;
     private Integer cycleTimes;
     private BigDecimal amount;
     private BigDecimal totalAmount;
-    private SavingsPlan.CurrencyType currency;
+    private String currency;
     private BigDecimal savedAmount;
     
     public SavingsPlanResponse() {
@@ -44,27 +44,27 @@ public class SavingsPlanResponse {
         this.name = name;
     }
     
-    public Instant getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
     
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
     
-    public Instant getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
     
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     
-    public SavingsPlan.CycleType getCycle() {
+    public String getCycle() {
         return cycle;
     }
     
-    public void setCycle(SavingsPlan.CycleType cycle) {
+    public void setCycle(String cycle) {
         this.cycle = cycle;
     }
     
@@ -92,11 +92,11 @@ public class SavingsPlanResponse {
         this.totalAmount = totalAmount;
     }
     
-    public SavingsPlan.CurrencyType getCurrency() {
+    public String getCurrency() {
         return currency;
     }
     
-    public void setCurrency(SavingsPlan.CurrencyType currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
     
