@@ -57,16 +57,19 @@
                 <Label fx:id="totalAssetsLabel" text="¥8,000.00" styleClass="total-assets-label"/>
                 <Label text="¥8,000" styleClass="assets-detail-label"/>
             </VBox>
-            
+
             <!-- Donut Chart -->
-            <PieChart fx:id="assetsChart" styleClass="assets-chart" 
+            <PieChart fx:id="assetsChart" styleClass="assets-chart"
                       legendVisible="false" labelsVisible="false"
                       prefHeight="200" prefWidth="200"/>
         </HBox>
     </VBox>
 
+    <!-- Spacer to push buttons to bottom -->
+    <Region VBox.vgrow="ALWAYS" />
+
     <!-- Action Buttons -->
-    <HBox alignment="CENTER_RIGHT" spacing="10">
+    <HBox alignment="CENTER_LEFT" spacing="10">
         <Button fx:id="backupButton" text="Backup" styleClass="inquire-button"/>
         <Button fx:id="logoutButton" text="Log out" styleClass="inquire-button"/>
     </HBox>

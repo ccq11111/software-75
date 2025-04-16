@@ -1,16 +1,12 @@
 package com.example.loginapp;
 
+import com.example.loginapp.api.*;
 import com.example.loginapp.model.SavingPlanModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Locale;
@@ -30,6 +26,9 @@ public class SavingViewController {
     @FXML private Label amountLabel;
     @FXML private ComboBox<String> currencyComboBox;
     @FXML private Button savePlanButton;
+
+    // API service factory
+    private final ApiServiceFactory apiServiceFactory = ApiServiceFactory.getInstance();
 
     // Currency formatter
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
@@ -167,43 +166,77 @@ public class SavingViewController {
             LocalDate startDate = startDatePicker.getValue();
             String cycle = cycleComboBox.getValue();
             int cycleTimes = cycleTimesComboBox.getValue();
-            double amount = amountSlider.getValue();
-            String currency = currencyComboBox.getValue();
+            BigDecimal amount = BigDecimal.valueOf(amountSlider.getValue());
+            String currency = extractCurrencyCode(currencyComboBox.getValue());
 
-            // Create a new saving plan
-            SavingPlanModel.SavingPlan savingPlan = new SavingPlanModel.SavingPlan(planName, startDate, cycle, cycleTimes, amount, currency);
+            try {
+                // Get the savings service
+                SavingsService savingsService = apiServiceFactory.getSavingsService();
 
-            // Add the plan to our model (shared between controllers)
-            SavingPlanModel.getInstance().addPlan(savingPlan);
+                // Create the plan
+                SavingPlanResponse response = savingsService.createPlan(
+                    planName, startDate, cycle, cycleTimes, amount, currency);
 
-            // Show a success message with calculated values
-            String message = String.format(
-                    "Plan '%s' created successfully!\n\n" +
-                    "Start Date: %s\n" +
-                    "End Date: %s\n" +
-                    "Cycle: %s\n" +
-                    "Cycle Times: %d\n" +
-                    "Amount per cycle: %s\n" +
-                    "Total amount: %s\n" +
-                    "Currency: %s",
-                    savingPlan.getName(),
-                    savingPlan.getStartDate(),
-                    savingPlan.calculateEndDate(),
-                    savingPlan.getCycle(),
-                    savingPlan.getCycleTimes(),
-                    currencyFormat.format(savingPlan.getAmount()),
-                    currencyFormat.format(savingPlan.calculateTotalAmount()),
-                    savingPlan.getCurrency());
+                // Also add to local model for display in other views
+                SavingPlanModel.SavingPlan localPlan = new SavingPlanModel.SavingPlan(
+                    planName, startDate, cycle, cycleTimes, amount.doubleValue(), currency);
+                SavingPlanModel.getInstance().addPlan(localPlan);
 
-            showInfo("Plan Created", message);
+                // Show a success message with calculated values
+                String message = String.format(
+                        "Plan '%s' created successfully!\n\n" +
+                        "Start Date: %s\n" +
+                        "End Date: %s\n" +
+                        "Cycle: %s\n" +
+                        "Cycle Times: %d\n" +
+                        "Amount per cycle: %s\n" +
+                        "Total amount: %s\n" +
+                        "Currency: %s",
+                        response.getName(),
+                        response.getStartDate(),
+                        response.getEndDate(),
+                        response.getCycle(),
+                        response.getCycleTimes(),
+                        currencyFormat.format(response.getAmount()),
+                        currencyFormat.format(response.getTotalAmount()),
+                        response.getCurrency());
 
-            // Clear form for next entry
-            planNameField.clear();
-            amountSlider.setValue(0);
+                showInfo("Plan Created", message);
+
+                // Clear form for next entry
+                planNameField.clear();
+                amountSlider.setValue(0);
+            } catch (ApiException e) {
+                System.err.println("API Error saving plan: " + e.getMessage());
+                showAlert("Error", "Failed to save plan: " + e.getMessage());
+            }
         } catch (Exception e) {
             System.err.println("Error saving plan: " + e.getMessage());
             e.printStackTrace();
             showAlert("Error", "An error occurred while saving the plan");
+        }
+    }
+
+    /**
+     * Extract the currency code from the display string
+     */
+    private String extractCurrencyCode(String currencyDisplay) {
+        if (currencyDisplay == null) {
+            return "CNY";
+        }
+
+        if (currencyDisplay.startsWith("CNY")) {
+            return "CNY";
+        } else if (currencyDisplay.startsWith("USD")) {
+            return "USD";
+        } else if (currencyDisplay.startsWith("EUR")) {
+            return "EUR";
+        } else if (currencyDisplay.startsWith("GBP")) {
+            return "GBP";
+        } else if (currencyDisplay.startsWith("JPY")) {
+            return "JPY";
+        } else {
+            return "CNY"; // Default
         }
     }
 

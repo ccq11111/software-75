@@ -28,7 +28,7 @@ public class BaseViewController {
     @FXML private Button billingButton;
     @FXML private Button summaryButton;
     @FXML private Button savingButton;
-    @FXML private Button footprintButton;
+    // Footprint button removed
     @FXML private Button setButton;
     @FXML private Button aiButton;
 
@@ -36,7 +36,7 @@ public class BaseViewController {
     @FXML private HBox billingMenuItem;
     @FXML private HBox summaryMenuItem;
     @FXML private HBox savingMenuItem;
-    @FXML private HBox footprintMenuItem;
+    // Footprint menu item removed
     @FXML private HBox setMenuItem;
 
     // Content area where different views will be loaded
@@ -51,7 +51,7 @@ public class BaseViewController {
         billingButton.setOnAction(event -> loadBillingView());
         summaryButton.setOnAction(event -> loadSummaryView());
         savingButton.setOnAction(event -> loadSavingView());
-        footprintButton.setOnAction(event -> System.out.println("Footprint clicked"));
+        // Footprint button handler removed
         setButton.setOnAction(event -> loadSetView());
 
         // Set up AI button handler
@@ -176,10 +176,7 @@ public class BaseViewController {
         savingButton.getStyleClass().remove("menu-button-active");
         savingButton.getStyleClass().add("menu-button");
 
-        footprintMenuItem.getStyleClass().remove("menu-item-active");
-        footprintMenuItem.getStyleClass().add("menu-item");
-        footprintButton.getStyleClass().remove("menu-button-active");
-        footprintButton.getStyleClass().add("menu-button");
+        // Footprint menu item styling removed
 
         setMenuItem.getStyleClass().remove("menu-item-active");
         setMenuItem.getStyleClass().add("menu-item");
@@ -206,12 +203,7 @@ public class BaseViewController {
                 savingButton.getStyleClass().remove("menu-button");
                 savingButton.getStyleClass().add("menu-button-active");
                 break;
-            case "footprint":
-                footprintMenuItem.getStyleClass().remove("menu-item");
-                footprintMenuItem.getStyleClass().add("menu-item-active");
-                footprintButton.getStyleClass().remove("menu-button");
-                footprintButton.getStyleClass().add("menu-button-active");
-                break;
+            // Footprint case removed
             case "set":
                 setMenuItem.getStyleClass().remove("menu-item");
                 setMenuItem.getStyleClass().add("menu-item-active");
