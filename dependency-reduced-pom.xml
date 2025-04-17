@@ -12,6 +12,13 @@
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
@@ -23,7 +30,15 @@
           <options>
             <option>--add-opens</option>
             <option>java.base/java.lang=ALL-UNNAMED</option>
+            <option>--add-modules</option>
+            <option>javafx.controls,javafx.fxml,javafx.graphics,javafx.base</option>
           </options>
+          <jlinkImageName>purseai</jlinkImageName>
+          <launcher>launcher</launcher>
+          <compress>2</compress>
+          <noHeaderFiles>true</noHeaderFiles>
+          <noManPages>true</noManPages>
+          <stripDebug>true</stripDebug>
         </configuration>
       </plugin>
       <plugin>
@@ -59,10 +74,19 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.30</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   <properties>
     <app.vendor>PurseAI</app.vendor>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
+    <lombok.version>1.18.30</lombok.version>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.version>17.0.2</javafx.version>
     <app.mainClass>com.example.loginapp.Launcher</app.mainClass>
