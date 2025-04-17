@@ -4,17 +4,26 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Model class for a billing entry
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingEntry {
     private String entryId;
     private String category;
     private String product;
     private BigDecimal price;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
+    
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime time;
+    
     private String formattedTime;
     private String remark;
     
@@ -79,7 +88,7 @@ public class BillingEntry {
     
     public void setTime(LocalTime time) {
         this.time = time;
-        this.formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        this.formattedTime = time != null ? time.format(DateTimeFormatter.ofPattern("HH:mm")) : null;
     }
     
     public String getFormattedTime() {

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class RealAuthService implements AuthService {
 
-    private static final String BASE_URL = "http://127.0.0.1:8080/v1";
+    private static final String BASE_URL = "http://127.0.0.1:8080";
     private static final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .connectTimeout(Duration.ofSeconds(10))
@@ -31,20 +31,45 @@ public class RealAuthService implements AuthService {
             requestBody.put("username", username);
             requestBody.put("password", password);
 
+            System.out.println("发送登录请求：" + BASE_URL + "/api.purseai.com/v1/auth/login");
+            System.out.println("登录请求体: " + objectMapper.writeValueAsString(requestBody));
+
             // Create the HTTP request
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/auth/login"))
+                    .uri(URI.create(BASE_URL + "/api.purseai.com/v1/auth/login"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
                     .build();
 
             // Send the request
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            System.out.println("登录响应状态码: " + response.statusCode());
+            System.out.println("登录响应内容: " + response.body());
 
             // Check if the request was successful
             if (response.statusCode() == 200) {
                 // Parse the response
-                return objectMapper.readValue(response.body(), AuthResponse.class);
+                AuthResponse authResponse = objectMapper.readValue(response.body(), AuthResponse.class);
+                if (authResponse.getToken() != null) {
+                    System.out.println("成功获取令牌: " + authResponse.getToken());
+                } else {
+                    // 尝试从原始响应中提取token
+                    try {
+                        Map<String, Object> responseMap = objectMapper.readValue(
+                            response.body(), 
+                            new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {}
+                        );
+                        if (responseMap.containsKey("token")) {
+                            String token = responseMap.get("token").toString();
+                            System.out.println("从原始响应中提取令牌: " + token);
+                            authResponse.setToken(token);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("从原始响应提取token失败: " + e.getMessage());
+                    }
+                }
+                return authResponse;
             } else {
                 // Parse the error response
                 ApiError error = objectMapper.readValue(response.body(), ApiError.class);
@@ -62,12 +87,12 @@ public class RealAuthService implements AuthService {
             Map<String, String> requestBody = new HashMap<>();
             requestBody.put("username", username);
             requestBody.put("password", password);
-            if (email != null) requestBody.put("email", email);
-            if (phone != null) requestBody.put("phone", phone);
+            requestBody.put("email", username);
+            requestBody.put("phone", "");
 
             // Create the HTTP request
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/auth/register"))
+                    .uri(URI.create(BASE_URL + "/api.purseai.com/v1/auth/register"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
                     .build();

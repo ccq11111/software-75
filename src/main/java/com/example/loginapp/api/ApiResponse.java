@@ -1,8 +1,11 @@
 package com.example.loginapp.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Base class for API responses
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiResponse {
     private boolean success;
     private String message;

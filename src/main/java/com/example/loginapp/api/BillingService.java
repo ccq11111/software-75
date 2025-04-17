@@ -73,4 +73,12 @@ public interface BillingService {
      * @throws ApiException If import fails
      */
     ImportResponse importFromCsv(File file) throws ApiException;
+    
+    /**
+     * Save billing data to backend files without quotes
+     * 
+     * @return API response indicating success or failure
+     * @throws ApiException If saving fails
+     */
+    ApiResponse saveData() throws ApiException;
 }

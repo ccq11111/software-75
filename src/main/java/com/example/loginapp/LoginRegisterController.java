@@ -76,17 +76,28 @@ public class LoginRegisterController {
         try {
             // 调用注册API
             AuthService authService = apiServiceFactory.getAuthService();
-            authService.register(username, pwd, "", "");
-
-            showMessage("Registration successful!", false);
-            NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!");
-            clearFields();
-
-            // 切换到登录界面
-            navigateToLogin(event);
+            RegistrationResponse response = authService.register(username, pwd, "", "");
+            
+            if (response.isSuccess()) {
+                showMessage("Registration successful!", false);
+                NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!");
+                clearFields();
+                // 切换到登录界面
+                navigateToLogin(event);
+            } else {
+                showMessage(response.getMessage(), true);
+                NotificationManager.showError(window, "Registration Error", response.getMessage());
+            }
         } catch (ApiException e) {
+            System.err.println("Registration error: " + e.getMessage());
+            e.printStackTrace();
             showMessage(e.getMessage(), true);
             NotificationManager.showError(window, "Registration Error", e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error during registration: " + e.getMessage());
+            e.printStackTrace();
+            showMessage("An unexpected error occurred", true);
+            NotificationManager.showError(window, "Registration Error", "An unexpected error occurred");
         }
     }
 
@@ -142,6 +153,7 @@ public class LoginRegisterController {
             // 获取控制器并设置用户名
             BaseViewController baseViewController = loader.getController();
             baseViewController.setUsername(username);
+            baseViewController.setToken(token);
 
             // 切换到基础视图
             // Get current window size for the new scene

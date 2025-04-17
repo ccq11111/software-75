@@ -205,4 +205,13 @@ public class MockBillingService implements BillingService {
         // Return the response
         return new ImportResponse(entriesImported, entriesSkipped);
     }
+
+    @Override
+    public ApiResponse saveData() throws ApiException {
+        // 模拟服务，简单返回成功
+        ApiResponse response = new ApiResponse();
+        response.setSuccess(true);
+        response.setMessage("模拟服务：数据已保存（无引号格式）");
+        return response;
+    }
 }

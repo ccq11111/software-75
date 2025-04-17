@@ -1,12 +1,17 @@
 package com.example.loginapp.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.time.ZonedDateTime;
+
 /**
  * Class representing API errors
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiError {
     private String code;
     private String message;
     private Object details;
+    private ZonedDateTime timestamp;
     
     public ApiError() {
     }
@@ -14,12 +19,14 @@ public class ApiError {
     public ApiError(String code, String message) {
         this.code = code;
         this.message = message;
+        this.timestamp = ZonedDateTime.now();
     }
     
     public ApiError(String code, String message, Object details) {
         this.code = code;
         this.message = message;
         this.details = details;
+        this.timestamp = ZonedDateTime.now();
     }
     
     public String getCode() {
@@ -44,5 +51,13 @@ public class ApiError {
     
     public void setDetails(Object details) {
         this.details = details;
+    }
+    
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
+    }
+    
+    public void setTimestamp(ZonedDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

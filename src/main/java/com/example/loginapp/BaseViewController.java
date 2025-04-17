@@ -45,6 +45,8 @@ public class BaseViewController {
     // Current active view
     private String currentView = "";
 
+    private String token; // 添加token字段
+
     @FXML
     public void initialize() {
         // Set up button handlers for navigation
@@ -75,6 +77,11 @@ public class BaseViewController {
             // Get the controller and set the username
             BillingViewController controller = loader.getController();
             controller.setUsername(usernameLabel.getText());
+            
+            // 设置token，用于API调用
+            if (token != null) {
+                controller.setToken(token);
+            }
 
             // Update the content area
             contentArea.getChildren().clear();
@@ -243,10 +250,17 @@ public class BaseViewController {
     }
 
     /**
-     * Set the username in the view
+     * Set the username and token in the view
      */
     public void setUsername(String username) {
         usernameLabel.setText(username);
+    }
+
+    /**
+     * Set the token for API calls
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /**
