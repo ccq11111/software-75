@@ -1,0 +1,806 @@
+[ {
+  "category" : "2",
+  "product" : "2",
+  "price" : 2.0,
+  "remark" : "2",
+  "date" : "2025-04-02",
+  "time" : "00:58"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "00:59"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "00:59"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "00:59"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "00:59"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "00:59"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "00:59"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "00:59"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "00:59"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "00:59"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "00:59"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "00:59"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "00:59"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "00:59"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "00:59"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:01"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:01"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:01"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:01"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:01"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:01"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:01"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:01"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:01"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:01"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:01"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:01"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:01"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:01"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:03"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:03"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:03"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:03"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:03"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:03"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:03"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:03"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:03"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:03"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:03"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:03"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:03"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:03"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:11"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:11"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:11"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:11"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:11"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:11"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:11"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:11"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:11"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:11"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:11"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:11"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:11"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:11"
+}, {
+  "category" : "1",
+  "product" : "1",
+  "price" : 1.0,
+  "remark" : "1",
+  "date" : "2025-04-10",
+  "time" : "01:11"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:13"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:13"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:13"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:13"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:13"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:13"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:13"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:13"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:13"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:13"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:13"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:13"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:13"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:13"
+}, {
+  "category" : "1",
+  "product" : "1",
+  "price" : 1.0,
+  "remark" : "1",
+  "date" : "2025-04-08",
+  "time" : "01:13"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:16"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:16"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:16"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:16"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:16"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:16"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:16"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:16"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:16"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:16"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:16"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:16"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:16"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:16"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:21"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:21"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:21"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:21"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:21"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:21"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:21"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:21"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:21"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:21"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:21"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:21"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:21"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:21"
+}, {
+  "category" : "餐饮",
+  "product" : "午餐",
+  "price" : 35.50,
+  "remark" : "12:30",
+  "date" : "2023-12-01",
+  "time" : "01:27"
+}, {
+  "category" : "餐饮",
+  "product" : "晚餐",
+  "price" : 89.00,
+  "remark" : "19:15",
+  "date" : "2023-12-01",
+  "time" : "01:27"
+}, {
+  "category" : "交通",
+  "product" : "出租车",
+  "price" : 56.00,
+  "remark" : "18:45",
+  "date" : "2023-12-01",
+  "time" : "01:27"
+}, {
+  "category" : "交通",
+  "product" : "地铁",
+  "price" : 4.00,
+  "remark" : "08:30",
+  "date" : "2023-12-02",
+  "time" : "01:27"
+}, {
+  "category" : "购物",
+  "product" : "日用品",
+  "price" : 128.50,
+  "remark" : "10:15",
+  "date" : "2023-12-02",
+  "time" : "01:27"
+}, {
+  "category" : "购物",
+  "product" : "衣服",
+  "price" : 299.00,
+  "remark" : "15:20",
+  "date" : "2023-12-03",
+  "time" : "01:27"
+}, {
+  "category" : "教育",
+  "product" : "网课",
+  "price" : 199.00,
+  "remark" : "20:00",
+  "date" : "2023-12-04",
+  "time" : "01:27"
+}, {
+  "category" : "医疗",
+  "product" : "药品",
+  "price" : 87.60,
+  "remark" : "09:30",
+  "date" : "2023-12-05",
+  "time" : "01:27"
+}, {
+  "category" : "娱乐",
+  "product" : "电影票",
+  "price" : 80.00,
+  "remark" : "19:00",
+  "date" : "2023-12-05",
+  "time" : "01:27"
+}, {
+  "category" : "住宿",
+  "product" : "酒店",
+  "price" : 450.00,
+  "remark" : "14:00",
+  "date" : "2023-12-06",
+  "time" : "01:27"
+}, {
+  "category" : "工资",
+  "product" : "月薪",
+  "price" : 12000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-10",
+  "time" : "01:27"
+}, {
+  "category" : "奖金",
+  "product" : "年终奖",
+  "price" : 5000.00,
+  "remark" : "10:00",
+  "date" : "2023-12-25",
+  "time" : "01:27"
+}, {
+  "category" : "通讯",
+  "product" : "手机话费",
+  "price" : 100.00,
+  "remark" : "15:00",
+  "date" : "2023-12-15",
+  "time" : "01:27"
+}, {
+  "category" : "水电",
+  "product" : "电费",
+  "price" : 150.00,
+  "remark" : "16:00",
+  "date" : "2023-12-18",
+  "time" : "01:27"
+} ]
