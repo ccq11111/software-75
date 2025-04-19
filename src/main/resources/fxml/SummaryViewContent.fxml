@@ -9,7 +9,7 @@
 <?import javafx.scene.chart.PieChart?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.loginapp.SummaryViewController"
+      fx:controller="com.example.saving.controller.SummaryViewController"
       styleClass="content-area">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -37,12 +37,6 @@
                 <DatePicker fx:id="expendStartDatePicker" styleClass="date-picker" prefWidth="120"/>
                 <Label text="End Date:" styleClass="date-picker-label"/>
                 <DatePicker fx:id="expendEndDatePicker" styleClass="date-picker" prefWidth="120"/>
-            </HBox>
-            
-            <!-- Month Selector (initially hidden) -->
-            <HBox styleClass="month-selector-container" spacing="5" alignment="CENTER_LEFT">
-                <Label text="Select Month:" styleClass="month-selector-label"/>
-                <ComboBox fx:id="expendMonthSelector" styleClass="month-selector" prefWidth="120" visible="false"/>
             </HBox>
             
             <!-- Amount Display -->
@@ -86,12 +80,6 @@
                 <DatePicker fx:id="incomeStartDatePicker" styleClass="date-picker" prefWidth="120"/>
                 <Label text="End Date:" styleClass="date-picker-label"/>
                 <DatePicker fx:id="incomeEndDatePicker" styleClass="date-picker" prefWidth="120"/>
-            </HBox>
-            
-            <!-- Month Selector (initially hidden) -->
-            <HBox styleClass="month-selector-container" spacing="5" alignment="CENTER_LEFT">
-                <Label text="Select Month:" styleClass="month-selector-label"/>
-                <ComboBox fx:id="incomeMonthSelector" styleClass="month-selector" prefWidth="120" visible="false"/>
             </HBox>
             
             <!-- Amount Display -->
