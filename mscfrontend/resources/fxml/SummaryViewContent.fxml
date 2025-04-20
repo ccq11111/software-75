@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.PieChart?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.loginapp.SummaryViewController"
+      styleClass="content-area">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Title -->
+    <Label text="Consumption Summary" styleClass="page-title"/>
+
+    <!-- Content Grid: 2 columns for Expenditure and Income -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Expenditure Section -->
+        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
+            <Label text="Expend" styleClass="section-title"/>
+            
+            <!-- Tab Buttons for Week/Month/Year -->
+            <HBox styleClass="tab-container" spacing="5">
+                <Button text="Week" styleClass="tab-button-active" fx:id="expendWeekButton"/>
+                <Button text="Month" styleClass="tab-button" fx:id="expendMonthButton"/>
+                <Button text="Year" styleClass="tab-button" fx:id="expendYearButton"/>
+            </HBox>
+            
+            <!-- Amount Display -->
+            <Label text="¥2,000" styleClass="amount-label, amount-negative"/>
+            
+            <!-- Pie Chart -->
+            <PieChart fx:id="expendPieChart" styleClass="pie-chart" legendVisible="false" 
+                      labelsVisible="true" VBox.vgrow="ALWAYS"/>
+            
+            <!-- Legend -->
+            <VBox styleClass="legend-container" spacing="5">
+                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
+                    <Region styleClass="legend-color-cosmetics" prefWidth="15" prefHeight="15"/>
+                    <Label text="Cosmetics" styleClass="legend-text"/>
+                </HBox>
+                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
+                    <Region styleClass="legend-color-communication" prefWidth="15" prefHeight="15"/>
+                    <Label text="Communication" styleClass="legend-text"/>
+                </HBox>
+                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
+                    <Region styleClass="legend-color-living" prefWidth="15" prefHeight="15"/>
+                    <Label text="Living Costs" styleClass="legend-text"/>
+                </HBox>
+            </VBox>
+        </VBox>
+        
+        <!-- Income Section -->
+        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
+            <Label text="Income" styleClass="section-title"/>
+            
+            <!-- Tab Buttons for Week/Month/Year -->
+            <HBox styleClass="tab-container" spacing="5">
+                <Button text="Week" styleClass="tab-button-active" fx:id="incomeWeekButton"/>
+                <Button text="Month" styleClass="tab-button" fx:id="incomeMonthButton"/>
+                <Button text="Year" styleClass="tab-button" fx:id="incomeYearButton"/>
+            </HBox>
+            
+            <!-- Amount Display -->
+            <Label text="¥18,800.00" styleClass="amount-label, amount-positive"/>
+            
+            <!-- Pie Chart -->
+            <PieChart fx:id="incomePieChart" styleClass="pie-chart" legendVisible="false" 
+                      labelsVisible="true" VBox.vgrow="ALWAYS"/>
+            
+            <!-- Legend -->
+            <VBox styleClass="legend-container" spacing="5">
+                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
+                    <Region styleClass="legend-color-salary" prefWidth="15" prefHeight="15"/>
+                    <Label text="Salary" styleClass="legend-text"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@/styles/billing.css"/>
+    </stylesheets>
+</VBox>
