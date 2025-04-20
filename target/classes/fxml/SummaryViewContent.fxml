@@ -9,7 +9,7 @@
 <?import javafx.scene.chart.PieChart?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.loginapp.SummaryViewController"
+      fx:controller="com.example.saving.controller.SummaryViewController"
       styleClass="content-area">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -24,11 +24,19 @@
         <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
             <Label text="Expend" styleClass="section-title"/>
             
-            <!-- Tab Buttons for Week/Month/Year -->
+            <!-- Tab Buttons for Custom/Month/Year -->
             <HBox styleClass="tab-container" spacing="5">
-                <Button text="Week" styleClass="tab-button-active" fx:id="expendWeekButton"/>
+                <Button text="Custom" styleClass="tab-button-active" fx:id="expendCustomButton"/>
                 <Button text="Month" styleClass="tab-button" fx:id="expendMonthButton"/>
                 <Button text="Year" styleClass="tab-button" fx:id="expendYearButton"/>
+            </HBox>
+            
+            <!-- Date Range Selector -->
+            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT">
+                <Label text="Start Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="expendStartDatePicker" styleClass="date-picker" prefWidth="120"/>
+                <Label text="End Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="expendEndDatePicker" styleClass="date-picker" prefWidth="120"/>
             </HBox>
             
             <!-- Amount Display -->
@@ -59,11 +67,19 @@
         <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
             <Label text="Income" styleClass="section-title"/>
             
-            <!-- Tab Buttons for Week/Month/Year -->
+            <!-- Tab Buttons for Custom/Month/Year -->
             <HBox styleClass="tab-container" spacing="5">
-                <Button text="Week" styleClass="tab-button-active" fx:id="incomeWeekButton"/>
+                <Button text="Custom" styleClass="tab-button-active" fx:id="incomeCustomButton"/>
                 <Button text="Month" styleClass="tab-button" fx:id="incomeMonthButton"/>
                 <Button text="Year" styleClass="tab-button" fx:id="incomeYearButton"/>
+            </HBox>
+            
+            <!-- Date Range Selector -->
+            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT">
+                <Label text="Start Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="incomeStartDatePicker" styleClass="date-picker" prefWidth="120"/>
+                <Label text="End Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="incomeEndDatePicker" styleClass="date-picker" prefWidth="120"/>
             </HBox>
             
             <!-- Amount Display -->
