@@ -1,0 +1,94 @@
+/* Responsive Styles */
+
+/* Make text fields responsive */
+.text-field, .password-field {
+    -fx-pref-width: 100%;
+    -fx-max-width: 400px;
+}
+
+/* Make buttons responsive */
+.login-button, .inquire-button, .reset-button, .build-button, .add-csv-button {
+    -fx-pref-width: 100%;
+    -fx-max-width: 400px;
+}
+
+/* Make tables responsive */
+.table-view {
+    -fx-pref-width: 100%;
+}
+
+/* Make charts responsive */
+.chart {
+    -fx-pref-width: 100%;
+    -fx-pref-height: 100%;
+    -fx-min-height: 200px;
+}
+
+/* Make images responsive */
+.image-container ImageView {
+    -fx-preserve-ratio: true;
+    -fx-fit-width: 80%;
+    -fx-fit-height: 80%;
+    -fx-max-width: 400px;
+    -fx-max-height: 400px;
+}
+
+/* Responsive padding for containers */
+@media (max-width: 800px) {
+    .form-container {
+        -fx-padding: 20;
+    }
+    
+    .image-container {
+        -fx-padding: 10;
+    }
+    
+    .content-area {
+        -fx-padding: 15;
+    }
+}
+
+/* Responsive font sizes */
+@media (max-width: 800px) {
+    .welcome-text {
+        -fx-font-size: 24px;
+    }
+    
+    .header-title {
+        -fx-font-size: 20px;
+    }
+    
+    .section-title {
+        -fx-font-size: 16px;
+    }
+}
+
+/* Responsive layout for small screens */
+@media (max-width: 600px) {
+    .login-container {
+        -fx-orientation: vertical;
+    }
+    
+    .image-container, .form-container {
+        -fx-pref-width: 100%;
+    }
+}
+
+/* Responsive AI dialog */
+.ai-dialog {
+    -fx-pref-width: 100%;
+    -fx-pref-height: 100%;
+}
+
+/* Responsive sidebar */
+.sidebar {
+    -fx-pref-width: 20%;
+    -fx-min-width: 180px;
+    -fx-max-width: 250px;
+}
+
+/* Responsive content area */
+.content-area {
+    -fx-pref-width: 100%;
+    -fx-pref-height: 100%;
+}
