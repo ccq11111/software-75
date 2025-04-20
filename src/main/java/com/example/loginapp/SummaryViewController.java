@@ -129,8 +129,9 @@ public class SummaryViewController {
         );
 
         // Income data
+        // For Week, we'll set up a test case with zero income to demonstrate the placeholder
         incomeWeekData = FXCollections.observableArrayList(
-            new PieChart.Data("Salary", 18800)
+            new PieChart.Data("Salary", 0) // Zero income for testing the placeholder
         );
 
         incomeMonthData = FXCollections.observableArrayList(
@@ -184,12 +185,38 @@ public class SummaryViewController {
                 break;
         }
 
-        incomePieChart.setData(data);
+        // Check if there's any income data
+        boolean hasIncome = false;
+        double totalIncome = 0;
 
-        // Apply custom colors to match the design
-        for (PieChart.Data slice : incomePieChart.getData()) {
-            if (slice.getName().equals("Salary")) {
-                slice.getNode().setStyle("-fx-pie-color: #FF6B6B;");
+        for (PieChart.Data slice : data) {
+            totalIncome += slice.getPieValue();
+            if (slice.getPieValue() > 0) {
+                hasIncome = true;
+            }
+        }
+
+        // If there's no income, create a white placeholder pie chart
+        if (!hasIncome || totalIncome == 0) {
+            // Create a placeholder with a white pie chart
+            ObservableList<PieChart.Data> placeholderData = FXCollections.observableArrayList(
+                new PieChart.Data("No Income", 1)
+            );
+            incomePieChart.setData(placeholderData);
+
+            // Set the placeholder slice to white
+            for (PieChart.Data slice : incomePieChart.getData()) {
+                slice.getNode().setStyle("-fx-pie-color: white;");
+            }
+        } else {
+            // Normal case with income data
+            incomePieChart.setData(data);
+
+            // Apply custom colors to match the design
+            for (PieChart.Data slice : incomePieChart.getData()) {
+                if (slice.getName().equals("Salary")) {
+                    slice.getNode().setStyle("-fx-pie-color: #FF6B6B;");
+                }
             }
         }
     }
