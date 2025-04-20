@@ -59,21 +59,21 @@ public class SummaryViewController {
             // Set up button handlers for expenditure tabs
             if (expendWeekButton != null) {
                 expendWeekButton.setOnAction(event -> {
-                    setActiveExpendTab("Week");
+                    System.out.println("Expend Week button clicked");
                     updateExpendChart("Week");
                 });
             }
 
             if (expendMonthButton != null) {
                 expendMonthButton.setOnAction(event -> {
-                    setActiveExpendTab("Month");
+                    System.out.println("Expend Month button clicked");
                     updateExpendChart("Month");
                 });
             }
 
             if (expendYearButton != null) {
                 expendYearButton.setOnAction(event -> {
-                    setActiveExpendTab("Year");
+                    System.out.println("Expend Year button clicked");
                     updateExpendChart("Year");
                 });
             }
@@ -81,21 +81,21 @@ public class SummaryViewController {
             // Set up button handlers for income tabs
             if (incomeWeekButton != null) {
                 incomeWeekButton.setOnAction(event -> {
-                    setActiveIncomeTab("Week");
+                    System.out.println("Income Week button clicked");
                     updateIncomeChart("Week");
                 });
             }
 
             if (incomeMonthButton != null) {
                 incomeMonthButton.setOnAction(event -> {
-                    setActiveIncomeTab("Month");
+                    System.out.println("Income Month button clicked");
                     updateIncomeChart("Month");
                 });
             }
 
             if (incomeYearButton != null) {
                 incomeYearButton.setOnAction(event -> {
-                    setActiveIncomeTab("Year");
+                    System.out.println("Income Year button clicked");
                     updateIncomeChart("Year");
                 });
             }
@@ -147,6 +147,9 @@ public class SummaryViewController {
      * Update the expenditure chart based on the selected time period
      */
     private void updateExpendChart(String period) {
+        // First, make sure the correct tab is visually selected
+        setActiveExpendTab(period);
+
         ObservableList<PieChart.Data> data;
 
         switch (period) {
@@ -171,6 +174,9 @@ public class SummaryViewController {
      * Update the income chart based on the selected time period
      */
     private void updateIncomeChart(String period) {
+        // First, make sure the correct tab is visually selected
+        setActiveIncomeTab(period);
+
         ObservableList<PieChart.Data> data;
 
         switch (period) {
@@ -272,14 +278,24 @@ public class SummaryViewController {
      * Set the active tab for income section
      */
     private void setActiveIncomeTab(String tab) {
+        System.out.println("Setting active income tab: " + tab);
+
+        // Debug current style classes
+        System.out.println("Before change - Week button classes: " + incomeWeekButton.getStyleClass());
+        System.out.println("Before change - Month button classes: " + incomeMonthButton.getStyleClass());
+        System.out.println("Before change - Year button classes: " + incomeYearButton.getStyleClass());
+
+        // First remove active class from all buttons
         incomeWeekButton.getStyleClass().remove("tab-button-active");
         incomeMonthButton.getStyleClass().remove("tab-button-active");
         incomeYearButton.getStyleClass().remove("tab-button-active");
 
+        // Then ensure all buttons have the base tab-button class
         incomeWeekButton.getStyleClass().add("tab-button");
         incomeMonthButton.getStyleClass().add("tab-button");
         incomeYearButton.getStyleClass().add("tab-button");
 
+        // Finally, set the active class on the selected button
         switch (tab) {
             case "Month":
                 incomeMonthButton.getStyleClass().remove("tab-button");
@@ -294,6 +310,11 @@ public class SummaryViewController {
                 incomeWeekButton.getStyleClass().add("tab-button-active");
                 break;
         }
+
+        // Debug updated style classes
+        System.out.println("After change - Week button classes: " + incomeWeekButton.getStyleClass());
+        System.out.println("After change - Month button classes: " + incomeMonthButton.getStyleClass());
+        System.out.println("After change - Year button classes: " + incomeYearButton.getStyleClass());
     }
 
     // Navigation methods removed as they are now handled by BaseViewController
