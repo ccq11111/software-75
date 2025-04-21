@@ -2,6 +2,8 @@ package com.example.purseai.controller;
 
 import com.example.purseai.dto.SavingsPlanRequest;
 import com.example.purseai.dto.SavingsPlanResponse;
+import com.example.purseai.model.User;
+import com.example.purseai.security.UserDetailsImpl;
 import com.example.purseai.service.SavingsPlanService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,18 +29,18 @@ public class SavingsPlanController {
 
     @PostMapping
     public ResponseEntity<SavingsPlanResponse> createPlan(@Valid @RequestBody SavingsPlanRequest request) {
-        UserDetails userDetails = getCurrentUser();
-        String userId = getUserIdFromToken(userDetails.getUsername());
-        
+        User user = getCurrentUser();
+        String userId = user.getUserId();
+
         SavingsPlanResponse response = savingsPlanService.createPlan(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllPlans() {
-        UserDetails userDetails = getCurrentUser();
-        String userId = getUserIdFromToken(userDetails.getUsername());
-        
+        User user = getCurrentUser();
+        String userId = user.getUserId();
+
         List<SavingsPlanResponse> plans = savingsPlanService.getAllPlans(userId);
         
         Map<String, Object> response = new HashMap<>();
@@ -50,8 +52,8 @@ public class SavingsPlanController {
 
     @GetMapping("/{planId}")
     public ResponseEntity<SavingsPlanResponse> getPlan(@PathVariable String planId) {
-        UserDetails userDetails = getCurrentUser();
-        String userId = getUserIdFromToken(userDetails.getUsername());
+        User user = getCurrentUser();
+        String userId = user.getUserId();
         
         SavingsPlanResponse response = savingsPlanService.getPlan(planId, userId);
         return ResponseEntity.ok(response);
@@ -61,8 +63,8 @@ public class SavingsPlanController {
     public ResponseEntity<SavingsPlanResponse> updatePlan(
             @PathVariable String planId,
             @Valid @RequestBody SavingsPlanRequest request) {
-        UserDetails userDetails = getCurrentUser();
-        String userId = getUserIdFromToken(userDetails.getUsername());
+        User user = getCurrentUser();
+        String userId = user.getUserId();
         
         SavingsPlanResponse response = savingsPlanService.updatePlan(planId, request, userId);
         return ResponseEntity.ok(response);
@@ -70,10 +72,9 @@ public class SavingsPlanController {
 
     @DeleteMapping("/{planId}")
     public ResponseEntity<Map<String, Object>> deletePlan(@PathVariable String planId) {
-        UserDetails userDetails = getCurrentUser();
-        String userId = getUserIdFromToken(userDetails.getUsername());
-        
-        savingsPlanService.deletePlan(planId, userId);
+        User user = getCurrentUser();
+
+        savingsPlanService.deletePlan(planId, user.getUserId());
         
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
@@ -82,9 +83,10 @@ public class SavingsPlanController {
         return ResponseEntity.ok(response);
     }
 
-    private UserDetails getCurrentUser() {
+    private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetails) authentication.getPrincipal();
+        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
+        return principal.getUser();
     }
 
     private String getUserIdFromToken(String username) {
