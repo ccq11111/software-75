@@ -1,0 +1,25 @@
+[ {
+  "planId" : "8b58d8d1-c66c-44c5-ad74-40ae38af8758",
+  "name" : "212121",
+  "startDate" : "2025-04-09T00:00:00Z",
+  "endDate" : "2025-04-30T00:00:00Z",
+  "cycle" : "Weekly",
+  "cycleTimes" : 3,
+  "amount" : 2000.0,
+  "totalAmount" : 6000.0,
+  "savedAmount" : 0,
+  "currency" : "CNY",
+  "userId" : "25523abf-5c32-4944-8704-795a0e96430f"
+}, {
+  "planId" : "8fb1655e-a293-4737-bd7e-46fa41b3f480",
+  "name" : "2222",
+  "startDate" : "2025-04-09T00:00:00Z",
+  "endDate" : "2025-04-23T00:00:00Z",
+  "cycle" : "Weekly",
+  "cycleTimes" : 2,
+  "amount" : 3600.0,
+  "totalAmount" : 7200.0,
+  "savedAmount" : 0,
+  "currency" : "USD",
+  "userId" : "25523abf-5c32-4944-8704-795a0e96430f"
+} ]

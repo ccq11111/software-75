@@ -3,42 +3,42 @@ package com.example.purseai.service;
 import com.example.purseai.dto.UserSettingsRequest;
 import com.example.purseai.model.User;
 import com.example.purseai.model.UserSettings;
-import com.example.purseai.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.purseai.repository.JsonFileUserRepository;
+import java.util.NoSuchElementException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.UUID;
 
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final JsonFileUserRepository userRepository;
     
-    public UserService(UserRepository userRepository) {
+    public UserService(JsonFileUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @Transactional(readOnly = true)
     public User getUserById(String userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return userRepository.findByUsername(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
-    @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    @Transactional
-    public UserSettings updateUserSettings(String userId, UserSettingsRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public UserSettings updateUserSettings(String username, UserSettingsRequest request) {
+        User user = getUserByUsername(username);
 
         UserSettings userSettings = user.getUserSettings();
+        if (userSettings == null) {
+            userSettings = new UserSettings();
+        }
         
         if (request.getCurrency() != null) {
-            userSettings.setCurrency(request.getCurrency());
+            userSettings.setPreferredCurrency(request.getCurrency().toString());
         }
         
         if (request.getNotifications() != null) {

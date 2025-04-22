@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/v1/users")
+@RequestMapping("/api/purseai/v1/users")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
     private final UserService userService;
@@ -25,14 +26,12 @@ public class UserController {
     @PutMapping("/settings")
     public ResponseEntity<Map<String, Object>> updateUserSettings(@RequestBody UserSettingsRequest request) {
         UserDetails userDetails = getCurrentUser();
-        String userId = getUserIdFromToken(userDetails.getUsername());
-        
-        UserSettings updatedSettings = userService.updateUserSettings(userId, request);
+        UserSettings updatedSettings = userService.updateUserSettings(userDetails.getUsername(), request);
         
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("settings", Map.of(
-                "currency", updatedSettings.getCurrency(),
+                "currency", updatedSettings.getPreferredCurrency(),
                 "notifications", Map.of(
                         "email", updatedSettings.isEmailNotifications(),
                         "push", updatedSettings.isPushNotifications()
@@ -45,11 +44,5 @@ public class UserController {
     private UserDetails getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (UserDetails) authentication.getPrincipal();
-    }
-
-    private String getUserIdFromToken(String username) {
-        // In a real implementation, you would extract the userId from the token
-        // or look up the user by username. This is a simplified version.
-        return username;
     }
 } 
