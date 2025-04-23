@@ -6,12 +6,17 @@ package com.example.loginapp.api;
  * This factory determines which implementation to return based on the username:
  * - For username "test", it returns mock implementations that work completely offline
  * - For username "admin", it returns real implementations but with special handling during login
+ * - For username "csv" or if USE_CSV_AUTH is true, it returns CSV-based auth with mock services
  * - For all other usernames, it returns real implementations
  */
 public class ApiServiceFactory {
 
     private static final String TEST_USERNAME = "test";
     private static final String ADMIN_USERNAME = "admin";
+    private static final String CSV_USERNAME = "csv";
+    
+    // 设置为true使用CSV认证服务，设置为false使用原来的认证服务
+    private static final boolean USE_CSV_AUTH = true;
 
     private static ApiServiceFactory instance;
 
@@ -87,6 +92,15 @@ public class ApiServiceFactory {
     public boolean isAdminUser() {
         return ADMIN_USERNAME.equals(currentUsername);
     }
+    
+    /**
+     * Check if the current user is the CSV user
+     *
+     * @return True if the current user is the CSV user
+     */
+    public boolean isCsvUser() {
+        return CSV_USERNAME.equals(currentUsername);
+    }
 
     /**
      * Get the authentication service
@@ -94,7 +108,9 @@ public class ApiServiceFactory {
      * @return The authentication service
      */
     public AuthService getAuthService() {
-        if (isTestUser()) {
+        if (USE_CSV_AUTH) {
+            return new CsvAuthService();
+        } else if (isTestUser()) {
             return new MockAuthService();
         } else if (isAdminUser()) {
             return new AdminAuthService();
@@ -109,7 +125,7 @@ public class ApiServiceFactory {
      * @return The savings service
      */
     public SavingsService getSavingsService() {
-        if (isTestUser()) {
+        if (isTestUser() || USE_CSV_AUTH) {
             return new MockSavingsService();
         } else {
             return new RealSavingsService(token);
@@ -122,7 +138,7 @@ public class ApiServiceFactory {
      * @return The billing service
      */
     public BillingService getBillingService() {
-        if (isTestUser()) {
+        if (isTestUser() || USE_CSV_AUTH) {
             return new MockBillingService();
         } else {
             return new RealBillingService(token);
@@ -135,7 +151,7 @@ public class ApiServiceFactory {
      * @return The summary service
      */
     public SummaryService getSummaryService() {
-        if (isTestUser()) {
+        if (isTestUser() || USE_CSV_AUTH) {
             return new MockSummaryService();
         } else {
             return new RealSummaryService(token);
@@ -148,7 +164,7 @@ public class ApiServiceFactory {
      * @return The AI service
      */
     public AIService getAIService() {
-        if (isTestUser()) {
+        if (isTestUser() || USE_CSV_AUTH) {
             return new MockAIService();
         } else {
             return new RealAIService(token);
@@ -161,7 +177,7 @@ public class ApiServiceFactory {
      * @return The user service
      */
     public UserService getUserService() {
-        if (isTestUser()) {
+        if (isTestUser() || USE_CSV_AUTH) {
             return new MockUserService();
         } else {
             return new RealUserService(token);
