@@ -18,29 +18,31 @@ import java.io.IOException;
  */
 public class LoginRegisterController {
 
-    private final ApiServiceFactory apiServiceFactory = ApiServiceFactory.getInstance(); // 获取API服务工厂实例
+    // API service factory
+    private final ApiServiceFactory apiServiceFactory = ApiServiceFactory.getInstance();
+
+    // 注册界面组件
+    @FXML
+    private TextField emailPhone;
 
     @FXML
-    private TextField emailPhone; // 用户输入的邮箱或手机号字段
+    private PasswordField password;
 
     @FXML
-    private PasswordField password; // 密码字段
+    private PasswordField confirmPassword;
 
     @FXML
-    private PasswordField confirmPassword; // 注册时确认密码字段
+    private Label messageLabel;
 
     @FXML
-    private Label messageLabel; // 显示消息的标签（错误或成功信息）
-
-    @FXML
-    private Hyperlink verificationLink; // 验证码链接（用于登录时）
+    private Hyperlink verificationLink;
 
     /**
      * 初始化控制器
      */
     @FXML
     public void initialize() {
-        // 如果verificationLink存在，则添加事件处理器（此链接只在登录界面中存在）
+        // Add event handler for verification link if it exists (it's only in the login view)
         if (verificationLink != null) {
             verificationLink.setOnAction(this::handleVerificationCode);
         }
@@ -51,52 +53,40 @@ public class LoginRegisterController {
      */
     @FXML
     private void handleRegister(ActionEvent event) {
-        String username = emailPhone.getText().trim(); // 获取输入的用户名（邮箱或手机号）
-        String pwd = password.getText().trim(); // 获取输入的密码
-        String confirmPwd = confirmPassword.getText().trim(); // 获取确认密码
+        String username = emailPhone.getText().trim();
+        String pwd = password.getText().trim();
+        String confirmPwd = confirmPassword.getText().trim();
 
-        Window window = emailPhone.getScene().getWindow(); // 获取当前窗口引用，用于弹出通知
+        // Get the window for notifications
+        Window window = emailPhone.getScene().getWindow();
 
-        // 验证输入字段是否为空
+        // 验证输入
         if (username.isEmpty() || pwd.isEmpty() || confirmPwd.isEmpty()) {
-            showMessage("All fields must be filled", true); // 显示错误消息
-            NotificationManager.showError(window, "Registration Error", "All fields must be filled"); // 弹出错误通知
+            showMessage("All fields must be filled", true);
+            NotificationManager.showError(window, "Registration Error", "All fields must be filled");
             return;
         }
 
-        // 检查密码和确认密码是否一致
         if (!pwd.equals(confirmPwd)) {
-            showMessage("Passwords do not match", true); // 显示错误消息
-            NotificationManager.showError(window, "Registration Error", "Passwords do not match"); // 弹出错误通知
+            showMessage("Passwords do not match", true);
+            NotificationManager.showError(window, "Registration Error", "Passwords do not match");
             return;
         }
 
         try {
-            // 调用注册API服务
+            // 调用注册API
             AuthService authService = apiServiceFactory.getAuthService();
-            RegistrationResponse response = authService.register(username, pwd, "", "");
+            authService.register(username, pwd, "", "");
 
-            // 判断注册是否成功
-            if (response.isSuccess()) {
-                showMessage("Registration successful!", false); // 显示成功消息
-                NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!"); // 弹出成功通知
-                clearFields(); // 清空输入字段
-                // 切换到登录界面
-                navigateToLogin(event);
-            } else {
-                showMessage(response.getMessage(), true); // 显示错误消息
-                NotificationManager.showError(window, "Registration Error", response.getMessage()); // 弹出错误通知
-            }
+            showMessage("Registration successful!", false);
+            NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!");
+            clearFields();
+
+            // 切换到登录界面
+            navigateToLogin(event);
         } catch (ApiException e) {
-            System.err.println("Registration error: " + e.getMessage());
-            e.printStackTrace();
-            showMessage(e.getMessage(), true); // 显示错误消息
-            NotificationManager.showError(window, "Registration Error", e.getMessage()); // 弹出错误通知
-        } catch (Exception e) {
-            System.err.println("Unexpected error during registration: " + e.getMessage());
-            e.printStackTrace();
-            showMessage("An unexpected error occurred", true); // 显示通用错误消息
-            NotificationManager.showError(window, "Registration Error", "An unexpected error occurred"); // 弹出错误通知
+            showMessage(e.getMessage(), true);
+            NotificationManager.showError(window, "Registration Error", e.getMessage());
         }
     }
 
@@ -105,78 +95,67 @@ public class LoginRegisterController {
      */
     @FXML
     private void handleLogin(ActionEvent event) {
-        String username = emailPhone.getText().trim(); // 获取输入的用户名（邮箱或手机号）
-        String pwd = password.getText().trim(); // 获取输入的密码
+        String username = emailPhone.getText().trim();
+        String pwd = password.getText().trim();
 
-        Window window = emailPhone.getScene().getWindow(); // 获取当前窗口引用，用于弹出通知
+        // Get the window for notifications
+        Window window = emailPhone.getScene().getWindow();
 
-        // 验证输入字段是否为空
+        // 验证输入
         if (username.isEmpty() || pwd.isEmpty()) {
-            showMessage("Please enter username and password", true); // 显示错误消息
-            NotificationManager.showError(window, "Login Error", "Please enter username and password"); // 弹出错误通知
+            showMessage("Please enter username and password", true);
+            NotificationManager.showError(window, "Login Error", "Please enter username and password");
             return;
         }
 
-        // 测试账户特殊处理 - 离线模式
+        // Special handling for test account - completely offline mode
         if ("test".equals(username) && "test".equals(pwd)) {
-            handleSuccessfulLogin(username, "mock-token-test-account", event); // 模拟登录成功
+            handleSuccessfulLogin(username, "mock-token-test-account", event);
             return;
         }
 
         try {
-            // 调用登录API服务
+            // 调用登录API
             AuthService authService = apiServiceFactory.getAuthService();
             AuthResponse response = authService.login(username, pwd);
 
-            // 确保检查响应的success字段
-            if (!response.isSuccess()) {
-                showMessage(response.getMessage(), true);
-                NotificationManager.showError(window, "Login Error", response.getMessage());
-                return;
-            }
-            
-            // 登录成功，设置用户上下文并切换界面
-            apiServiceFactory.setUserContext(username, response.getToken());
+            // Handle successful login
             handleSuccessfulLogin(username, response.getToken(), event);
         } catch (ApiException e) {
             showMessage(e.getMessage(), true);
             NotificationManager.showError(window, "Login Error", e.getMessage());
-        } catch (Exception e) {
-            showMessage("An unexpected error occurred", true);
-            NotificationManager.showError(window, "Login Error", "An unexpected error occurred: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
     /**
-     * 处理登录成功，切换到主应用界面
+     * Handle successful login and navigate to main application
      */
     private void handleSuccessfulLogin(String username, String token, ActionEvent event) {
         // 设置用户上下文
         apiServiceFactory.setUserContext(username, token);
 
-        // 切换到主应用视图（包含全局侧边栏）
+        // 切换到基础视图（包含全局侧边栏）
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BaseView.fxml"));
             Parent baseView = loader.load();
 
-            // 获取控制器并设置用户名和token
+            // 获取控制器并设置用户名
             BaseViewController baseViewController = loader.getController();
             baseViewController.setUsername(username);
-            baseViewController.setToken(token);
 
-            // 切换到主界面
+            // 切换到基础视图
+            // Get current window size for the new scene
             Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             double width = currentStage.getWidth();
             double height = currentStage.getHeight();
-            Scene scene = new Scene(baseView, width, height); // 使用当前窗口的尺寸
+            Scene scene = new Scene(baseView, width, height); // Use current window dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showMessage("Error loading application view", true); // 显示错误消息
-            NotificationManager.showError(emailPhone.getScene().getWindow(), "Error", "Error loading application view"); // 弹出错误通知
+            showMessage("Error loading application view", true);
+            NotificationManager.showError(emailPhone.getScene().getWindow(), "Error", "Error loading application view");
         }
     }
 
@@ -187,11 +166,11 @@ public class LoginRegisterController {
     private void switchToRegister(ActionEvent event) {
         try {
             Parent registerView = FXMLLoader.load(getClass().getResource("/fxml/RegisterView.fxml"));
-            // 获取当前窗口尺寸
+            // Get current window size for the new scene
             Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             double width = currentStage.getWidth();
             double height = currentStage.getHeight();
-            Scene scene = new Scene(registerView, width, height); // 使用当前窗口的尺寸
+            Scene scene = new Scene(registerView, width, height); // Use current window dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -207,11 +186,11 @@ public class LoginRegisterController {
     private void navigateToLogin(ActionEvent event) {
         try {
             Parent loginView = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
-            // 获取当前窗口尺寸
+            // Get current window size for the new scene
             Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             double width = currentStage.getWidth();
             double height = currentStage.getHeight();
-            Scene scene = new Scene(loginView, width, height); // 使用当前窗口的尺寸
+            Scene scene = new Scene(loginView, width, height); // Use current window dimensions
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -221,11 +200,11 @@ public class LoginRegisterController {
     }
 
     /**
-     * 处理验证码链接点击事件
+     * Handle verification code link click
      */
     @FXML
     private void handleVerificationCode(ActionEvent event) {
-        // 弹出对话框让用户输入验证码
+        // Show a dialog to enter verification code
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Verification Code");
         dialog.setHeaderText("Enter the verification code sent to your email/phone");
@@ -234,19 +213,19 @@ public class LoginRegisterController {
         dialog.showAndWait().ifPresent(code -> {
             Window window = emailPhone.getScene().getWindow();
             if (code.isEmpty()) {
-                showMessage("Please enter a verification code", true); // 显示错误消息
-                NotificationManager.showError(window, "Verification Error", "Please enter a verification code"); // 弹出错误通知
+                showMessage("Please enter a verification code", true);
+                NotificationManager.showError(window, "Verification Error", "Please enter a verification code");
             } else {
                 try {
-                    // 调用验证码API进行验证
+                    // 调用验证码API
                     AuthService authService = apiServiceFactory.getAuthService();
                     authService.verifyCode("temp-user-id", code, "email");
 
-                    showMessage("Verification code accepted", false); // 显示成功消息
-                    NotificationManager.showSuccess(window, "Verification Successful", "Verification code accepted"); // 弹出成功通知
+                    showMessage("Verification code accepted", false);
+                    NotificationManager.showSuccess(window, "Verification Successful", "Verification code accepted");
                 } catch (ApiException e) {
-                    showMessage(e.getMessage(), true); // 显示错误消息
-                    NotificationManager.showError(window, "Verification Error", e.getMessage()); // 弹出错误通知
+                    showMessage(e.getMessage(), true);
+                    NotificationManager.showError(window, "Verification Error", e.getMessage());
                 }
             }
         });
@@ -258,7 +237,7 @@ public class LoginRegisterController {
     private void showMessage(String message, boolean isError) {
         if (messageLabel != null) {
             messageLabel.setText(message);
-            messageLabel.setTextFill(isError ? Color.RED : Color.GREEN); // 设置文本颜色，错误时为红色，成功时为绿色
+            messageLabel.setTextFill(isError ? Color.RED : Color.GREEN);
         }
     }
 
@@ -266,10 +245,12 @@ public class LoginRegisterController {
      * 清空字段
      */
     private void clearFields() {
-        emailPhone.clear(); // 清空邮箱/手机号字段
-        password.clear(); // 清空密码字段
+        emailPhone.clear();
+        password.clear();
         if (confirmPassword != null) {
-            confirmPassword.clear(); // 清空确认密码字段
+            confirmPassword.clear();
         }
     }
+
+
 }
