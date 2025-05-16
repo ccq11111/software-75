@@ -9,7 +9,7 @@
 <?import javafx.scene.chart.PieChart?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.saving.controller.SummaryViewController"
+      fx:controller="com.example.software.view.SummaryViewController"
       styleClass="content-area">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -24,21 +24,23 @@
         <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
             <Label text="Expend" styleClass="section-title"/>
             
-            <!-- Tab Buttons for Custom/Month/Year -->
+            <!-- Tab Buttons for Week/Month/Year -->
             <HBox styleClass="tab-container" spacing="5">
                 <Button text="Custom" styleClass="tab-button-active" fx:id="expendCustomButton"/>
+<!--                <Button text="Week" styleClass="tab-button-active" fx:id="expendWeekButton"/>-->
                 <Button text="Month" styleClass="tab-button" fx:id="expendMonthButton"/>
                 <Button text="Year" styleClass="tab-button" fx:id="expendYearButton"/>
             </HBox>
-            
+
             <!-- Date Range Selector -->
-            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT">
+            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT" fx:id="expendDatePicker">
                 <Label text="Start Date:" styleClass="date-picker-label"/>
                 <DatePicker fx:id="expendStartDatePicker" styleClass="date-picker" prefWidth="120"/>
                 <Label text="End Date:" styleClass="date-picker-label"/>
                 <DatePicker fx:id="expendEndDatePicker" styleClass="date-picker" prefWidth="120"/>
             </HBox>
-            
+            <!-- Month Selector -->
+            <ComboBox fx:id="expendMonthSelector" visible="false" prefWidth="120"/>
             <!-- Amount Display -->
             <Label text="¥2,000" styleClass="amount-label, amount-negative"/>
             
@@ -67,21 +69,23 @@
         <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
             <Label text="Income" styleClass="section-title"/>
             
-            <!-- Tab Buttons for Custom/Month/Year -->
+            <!-- Tab Buttons for Week/Month/Year -->
             <HBox styleClass="tab-container" spacing="5">
                 <Button text="Custom" styleClass="tab-button-active" fx:id="incomeCustomButton"/>
+<!--                <Button text="Week" styleClass="tab-button-active" fx:id="incomeWeekButton"/>-->
                 <Button text="Month" styleClass="tab-button" fx:id="incomeMonthButton"/>
                 <Button text="Year" styleClass="tab-button" fx:id="incomeYearButton"/>
             </HBox>
-            
             <!-- Date Range Selector -->
-            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT">
+            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT" fx:id="incomeDatePicker">
                 <Label text="Start Date:" styleClass="date-picker-label"/>
                 <DatePicker fx:id="incomeStartDatePicker" styleClass="date-picker" prefWidth="120"/>
                 <Label text="End Date:" styleClass="date-picker-label"/>
                 <DatePicker fx:id="incomeEndDatePicker" styleClass="date-picker" prefWidth="120"/>
             </HBox>
-            
+
+            <!-- Month Selector -->
+            <ComboBox fx:id="incomeMonthSelector" visible="false" prefWidth="120"/>
             <!-- Amount Display -->
             <Label text="¥18,800.00" styleClass="amount-label, amount-positive"/>
             
@@ -102,4 +106,5 @@
     <stylesheets>
         <URL value="@/styles/billing.css"/>
     </stylesheets>
+
 </VBox>
