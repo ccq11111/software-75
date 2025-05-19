@@ -1,31 +1,48 @@
 package com.example.software.view;
 
+import com.example.software.api.ApiServiceFactory;
+import com.example.software.model.CategorySummary;
+import com.example.software.model.SummaryResponse;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class SummaryViewController {
+//    @Value("${server.port}")
+    private String serverPort = "8080";
     @FXML private Label usernameLabel; // Only needed for displaying username
-
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final ApiServiceFactory apiServiceFactory = ApiServiceFactory.getInstance();// 获取API服务工厂实例
     // Expenditure section
 //    @FXML private Button expendWeekButton;
     @FXML private Button expendCustomButton;
     @FXML private Button expendMonthButton;
     @FXML private Button expendYearButton;
     @FXML private PieChart expendPieChart;
+    @FXML private ComboBox<String> expendYearSelector;
     @FXML private ComboBox<String> expendMonthSelector;
     @FXML private DatePicker expendStartDatePicker; // Start date picker
     @FXML private DatePicker expendEndDatePicker; // End date picker
     @FXML private HBox expendDatePicker;
+    @FXML private Label expendAmountLabel;
+
     // Income section
 //    @FXML private Button incomeWeekButton;
     @FXML private Button incomeMonthButton;
@@ -34,8 +51,10 @@ public class SummaryViewController {
 
     @FXML private PieChart incomePieChart;
     @FXML private ComboBox<String> incomeMonthSelector;
+    @FXML private ComboBox<String> incomeYearSelector;
     @FXML private DatePicker incomeStartDatePicker; // Start date picker
     @FXML private DatePicker incomeEndDatePicker; // End date picker
+    @FXML private Label incomeAmountLabel;
     @FXML private HBox incomeDatePicker;
     // Data for charts
 //    private ObservableList<PieChart.Data> expendWeekData;
@@ -53,6 +72,9 @@ public class SummaryViewController {
     private String currentIncomePeriod = "Custom";
     private int currentExpendMonth = 0; // Default to January
     private int currentIncomeMonth = 0; // Default to January
+
+    private String currentExpendYear = "2023";
+    private String currentIncomeYear = "2023";
 
     // Default date range
     private LocalDate expendStartDate = LocalDate.now().minusDays(7);
@@ -77,10 +99,10 @@ public class SummaryViewController {
             initializeMonthSelectors();
 
             // Set up initial charts
-            if (expendPieChart != null && incomePieChart != null) {
-                updateExpendChart("Custom");
-                updateIncomeChart("Custom");
-            }
+//            if (expendPieChart != null && incomePieChart != null) {
+//                updateExpendChart("Custom");
+//                updateIncomeChart("Custom");
+//            }
 
             // We no longer need menu button handlers as they are handled by BaseViewController
 
@@ -88,9 +110,13 @@ public class SummaryViewController {
             if (expendCustomButton != null) {
                 expendCustomButton.setOnAction(event -> {
                     setActiveExpendTab("Custom");
-                    updateExpendChart("Custom");
+                    updateExpenditureData();
+//                    updateExpendChart("Custom");
                     if (expendMonthSelector != null) {
                         expendMonthSelector.setVisible(false);
+                    }
+                    if (expendYearSelector != null) {
+                        expendYearSelector.setVisible(false);
                     }
                     if (expendDatePicker != null) {
                         expendDatePicker.setVisible(true);
@@ -109,9 +135,13 @@ public class SummaryViewController {
             if (expendMonthButton != null) {
                 expendMonthButton.setOnAction(event -> {
                     setActiveExpendTab("Month");
-                    updateExpendChart("Month");
+                    updateExpenditureData();
+//                    updateExpendChart("Month");
                     if (expendMonthSelector != null) {
                         expendMonthSelector.setVisible(true);
+                    }
+                    if (expendYearSelector != null) {
+                        expendYearSelector.setVisible(true);
                     }
                     if (expendDatePicker != null) {
                         expendDatePicker.setVisible(false);
@@ -123,9 +153,13 @@ public class SummaryViewController {
             if (expendYearButton != null) {
                 expendYearButton.setOnAction(event -> {
                     setActiveExpendTab("Year");
-                    updateExpendChart("Year");
+//                    updateExpendChart("Year");
+                    updateExpenditureData();
                     if (expendMonthSelector != null) {
                         expendMonthSelector.setVisible(false);
+                    }
+                    if (expendYearSelector != null) {
+                        expendYearSelector.setVisible(true);
                     }
                     if (expendDatePicker != null) {
                         expendDatePicker.setVisible(false);
@@ -138,9 +172,13 @@ public class SummaryViewController {
             if (incomeCustomButton != null) {
                 incomeCustomButton.setOnAction(event -> {
                     setActiveIncomeTab("Custom");
-                    updateIncomeChart("Custom");
+//                    updateIncomeChart("Custom");
+                    updateIncomeData();
                     if (incomeMonthSelector != null) {
                         incomeMonthSelector.setVisible(false);
+                    }
+                    if (incomeYearSelector != null) {
+                        incomeYearSelector.setVisible(false);
                     }
                     if (incomeDatePicker != null) {
                         incomeDatePicker.setVisible(true);
@@ -159,9 +197,13 @@ public class SummaryViewController {
             if (incomeMonthButton != null) {
                 incomeMonthButton.setOnAction(event -> {
                     setActiveIncomeTab("Month");
-                    updateIncomeChart("Month");
+//                    updateIncomeChart("Month");
+                    updateIncomeData();
                     if (incomeMonthSelector != null) {
                         incomeMonthSelector.setVisible(true);
+                    }
+                    if (incomeYearSelector != null) {
+                        incomeYearSelector.setVisible(true);
                     }
                     if (incomeDatePicker != null) {
                         incomeDatePicker.setVisible(false);
@@ -173,9 +215,13 @@ public class SummaryViewController {
             if (incomeYearButton != null) {
                 incomeYearButton.setOnAction(event -> {
                     setActiveIncomeTab("Year");
-                    updateIncomeChart("Year");
+//                    updateIncomeChart("Year");
+                    updateIncomeData();
                     if (incomeMonthSelector != null) {
                         incomeMonthSelector.setVisible(false);
+                    }
+                    if (incomeYearSelector != null) {
+                        incomeYearSelector.setVisible(true);
                     }
                     if (incomeDatePicker != null) {
                         incomeDatePicker.setVisible(false);
@@ -191,8 +237,136 @@ public class SummaryViewController {
         initializeMonthlyExpendData();
         // Initialize monthly income data
         initializeMonthlyIncomeData();
+
+        updateExpenditureData();
+        updateIncomeData();
+    }
+    private void updateExpenditureData() {
+        String period = getCurrentPeriod("expend");
+        String startDate = "";
+        String endDate = "";
+        if(period.equals("custom")){
+            startDate = formatDate(expendStartDatePicker.getValue());
+            endDate = formatDate(expendEndDatePicker.getValue());
+        } else if(period.equals("month")){
+            startDate = formatDate(LocalDate.of(Integer.parseInt(currentExpendYear), currentExpendMonth + 1, 1));
+            endDate = formatDate(LocalDate.of(Integer.parseInt(currentExpendYear), currentExpendMonth + 1, 31));
+        } else if(period.equals("year")){
+            startDate = formatDate(LocalDate.of(Integer.parseInt(currentExpendYear), 1, 1));
+            endDate = formatDate(LocalDate.of(Integer.parseInt(currentExpendYear), 12, 31));
+        }
+        try {
+            SummaryResponse response = fetchSummaryData("/api/purseai/v1/summary/expenditure", period, startDate, endDate);
+            updatePieChart(expendPieChart, response.getCategories());
+            expendAmountLabel.setText(String.format("¥%.2f", response.getTotal()));
+        } catch (Exception e) {
+            showError("Failed to load expenditure data: " + e.getMessage());
+        }
     }
 
+    private void updateIncomeData() {
+        String period = getCurrentPeriod("income");
+        String startDate = "";
+        String endDate = "";
+        if(period.equals("custom")){
+            startDate = formatDate(incomeStartDatePicker.getValue());
+            endDate = formatDate(incomeEndDatePicker.getValue());
+        } else if(period.equals("month")){
+            startDate = formatDate(LocalDate.of(Integer.parseInt(currentIncomeYear), currentIncomeMonth + 1, 1));
+            endDate = formatDate(LocalDate.of(Integer.parseInt(currentIncomeYear), currentIncomeMonth + 1, 31));
+        } else if(period.equals("year")){
+            startDate = formatDate(LocalDate.of(Integer.parseInt(currentIncomeYear), 1, 1));
+            endDate = formatDate(LocalDate.of(Integer.parseInt(currentIncomeYear), 12, 31));
+        }
+
+        try {
+            SummaryResponse response = fetchSummaryData("/api/purseai/v1/summary/income", period, startDate, endDate);
+            updatePieChart(incomePieChart, response.getCategories());
+            incomeAmountLabel.setText(String.format("¥%.2f", response.getTotal()));
+        } catch (Exception e) {
+            showError("Failed to load income data: " + e.getMessage());
+        }
+    }
+    private String getCurrentPeriod(String type) {
+        if (type.equals("expend")) {
+            if (expendCustomButton != null && expendCustomButton.getStyleClass().contains("tab-button-active")) {
+                return "custom";
+            }
+            if (expendMonthButton != null && expendMonthButton.getStyleClass().contains("tab-button-active")) {
+                return "month";
+            }
+            if (expendYearButton != null && expendYearButton.getStyleClass().contains("tab-button-active")) {
+                return "year";
+            }
+            return "month";
+        } else {
+            if (incomeCustomButton != null && incomeCustomButton.getStyleClass().contains("tab-button-active")) {
+                return "custom";
+            }
+            if (incomeMonthButton != null && incomeMonthButton.getStyleClass().contains("tab-button-active")) {
+                return "month";
+            }
+            if (incomeYearButton != null && incomeYearButton.getStyleClass().contains("tab-button-active")) {
+                return "year";
+            }
+            return "month";
+        }
+    }
+    private String formatDate(LocalDate date) {
+        return date != null ? date.format(DateTimeFormatter.ISO_LOCAL_DATE) : null;
+    }
+    private SummaryResponse fetchSummaryData(String endpoint, String period, String startDate, String endDate) {
+        String url = String.format("http://localhost:%s%s?period=%s", serverPort, endpoint, period.toLowerCase());
+        if (startDate != null && !startDate.isEmpty()) {
+            url += "&startDate=" + startDate;
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            url += "&endDate=" + endDate;
+        }
+
+        System.out.println("Fetching data from URL: " + url);
+        System.out.println("Period: " + period);
+        System.out.println("Start Date: " + startDate);
+        System.out.println("End Date: " + endDate);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiServiceFactory.getToken());
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    new HttpEntity<>(headers),
+                    String.class
+            );
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                String responseBody = response.getBody();
+                System.out.println("Response body: " + responseBody);
+
+                // 手动解析 JSON
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                SummaryResponse summaryResponse = mapper.readValue(responseBody, SummaryResponse.class);
+                return summaryResponse;
+            } else {
+                throw new RuntimeException("Failed to fetch data: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            System.err.println("Error fetching data: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch data: " + e.getMessage());
+        }
+    }
+    private void showError(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
     /**
      * Initialize date pickers
      */
@@ -210,12 +384,14 @@ public class SummaryViewController {
             // Add date change listeners
             expendStartDatePicker.setOnAction(event -> {
                 expendStartDate = expendStartDatePicker.getValue();
-                updateExpendChart("Custom");
+//                updateExpendChart("Custom");
+                updateExpenditureData();
             });
 
             expendEndDatePicker.setOnAction(event -> {
                 expendEndDate = expendEndDatePicker.getValue();
-                updateExpendChart("Custom");
+//                updateExpendChart("Custom");
+                updateExpenditureData();
             });
         }
 
@@ -231,14 +407,25 @@ public class SummaryViewController {
             // Add date change listeners
             incomeStartDatePicker.setOnAction(event -> {
                 incomeStartDate = incomeStartDatePicker.getValue();
-                updateIncomeChart("Custom");
+//                updateIncomeChart("Custom");
+                updateIncomeData();
             });
 
             incomeEndDatePicker.setOnAction(event -> {
                 incomeEndDate = incomeEndDatePicker.getValue();
-                updateIncomeChart("Custom");
+//                updateIncomeChart("Custom");
+                updateIncomeData();
             });
         }
+    }
+    private void updatePieChart(PieChart chart, List<CategorySummary> categories) {
+        chart.getData().clear();
+        categories.forEach(category ->
+                chart.getData().add(new PieChart.Data(
+                        category.getCategory() + " (" + String.format("%.1f%%", category.getPercentage()) + ")",
+                        category.getAmount()
+                ))
+        );
     }
     /**
      * Initialize month selector dropdowns
@@ -258,7 +445,23 @@ public class SummaryViewController {
 
             expendMonthSelector.setOnAction(event -> {
                 currentExpendMonth = expendMonthSelector.getSelectionModel().getSelectedIndex();
-                updateExpendChart("Month");
+//                updateExpendChart("Month");
+                updateExpenditureData();
+            });
+        }
+        ObservableList<String> years = FXCollections.observableArrayList();
+        years.add("2023");
+        years.add("2024");
+        years.add("2025");
+        if (expendYearSelector != null) {
+            expendYearSelector.setItems(years);
+            expendYearSelector.getSelectionModel().select(0); // Default to January
+            expendYearSelector.setVisible(false); // Initially hidden
+
+            expendYearSelector.setOnAction(event -> {
+                currentExpendYear = expendYearSelector.getSelectionModel().getSelectedItem();
+//                updateExpendChart("Month");
+                updateExpenditureData();
             });
         }
 
@@ -270,7 +473,20 @@ public class SummaryViewController {
 
             incomeMonthSelector.setOnAction(event -> {
                 currentIncomeMonth = incomeMonthSelector.getSelectionModel().getSelectedIndex();
-                updateIncomeChart("Month");
+//                updateIncomeChart("Month");
+                updateIncomeData();
+            });
+        }
+
+        if (incomeYearSelector != null) {
+            incomeYearSelector.setItems(years);
+            incomeYearSelector.getSelectionModel().select(0); // Default to January
+            incomeYearSelector.setVisible(false); // Initially hidden
+
+            incomeYearSelector.setOnAction(event -> {
+                currentIncomeYear = incomeYearSelector.getSelectionModel().getSelectedItem();
+//                updateIncomeChart("Month");
+                updateIncomeData();
             });
         }
     }
