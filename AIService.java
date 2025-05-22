@@ -27,4 +27,35 @@ public interface AIService {
      * @throws ApiException If retrieval fails
      */
     List<QuickAction> getQuickActions() throws ApiException;
+
+    /**
+     * 获取节日消费分析建议
+     * @param csvPath 账单CSV文件路径
+     * @return AI建议响应
+     * @throws ApiException
+     */
+    AIAdviceResponse getHolidayAdvice(String csvPath) throws ApiException;
+
+    /**
+     * 获取旅游消费建议
+     * @param city 目的地
+     * @return AI建议响应
+     * @throws ApiException
+     */
+    AIAdviceResponse getTourismAdvice(String city) throws ApiException;
+
+    /**
+     * 通用GET请求接口
+     */
+    String get(String url) throws ApiException;
+
+    /**
+     * 发送消费记录，AI自动分类并入账
+     */
+    String postConsumeRecord(String record) throws ApiException;
+
+    /**
+     * 获取周期性交易提醒
+     */
+    String getPeriodicReminders() throws ApiException;
 }
