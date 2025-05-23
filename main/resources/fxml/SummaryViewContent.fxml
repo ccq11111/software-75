@@ -9,7 +9,7 @@
 <?import javafx.scene.chart.PieChart?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.loginapp.SummaryViewController"
+      fx:controller="com.example.software.view.SummaryViewController"
       styleClass="content-area">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -26,33 +26,46 @@
             
             <!-- Tab Buttons for Week/Month/Year -->
             <HBox styleClass="tab-container" spacing="5">
-                <Button text="Week" styleClass="tab-button-active" fx:id="expendWeekButton"/>
+                <Button text="Custom" styleClass="tab-button-active" fx:id="expendCustomButton"/>
+<!--                <Button text="Week" styleClass="tab-button-active" fx:id="expendWeekButton"/>-->
                 <Button text="Month" styleClass="tab-button" fx:id="expendMonthButton"/>
                 <Button text="Year" styleClass="tab-button" fx:id="expendYearButton"/>
             </HBox>
-            
+
+            <!-- Date Range Selector -->
+            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT" fx:id="expendDatePicker">
+                <Label text="Start Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="expendStartDatePicker" styleClass="date-picker" prefWidth="120"/>
+                <Label text="End Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="expendEndDatePicker" styleClass="date-picker" prefWidth="120"/>
+            </HBox>
+            <!-- Month Selector -->
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <ComboBox fx:id="expendYearSelector" visible="false" prefWidth="120"/>
+                <ComboBox fx:id="expendMonthSelector" visible="false" prefWidth="120"/>
+            </HBox>
             <!-- Amount Display -->
-            <Label text="¥2,000" styleClass="amount-label, amount-negative"/>
+            <Label fx:id="expendAmountLabel" text="¥2,000" styleClass="amount-label, amount-negative"/>
             
             <!-- Pie Chart -->
-            <PieChart fx:id="expendPieChart" styleClass="pie-chart" legendVisible="false" 
+            <PieChart fx:id="expendPieChart" styleClass="pie-chart" legendVisible="true"
                       labelsVisible="true" VBox.vgrow="ALWAYS"/>
             
             <!-- Legend -->
-            <VBox styleClass="legend-container" spacing="5">
-                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
-                    <Region styleClass="legend-color-cosmetics" prefWidth="15" prefHeight="15"/>
-                    <Label text="Cosmetics" styleClass="legend-text"/>
-                </HBox>
-                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
-                    <Region styleClass="legend-color-communication" prefWidth="15" prefHeight="15"/>
-                    <Label text="Communication" styleClass="legend-text"/>
-                </HBox>
-                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
-                    <Region styleClass="legend-color-living" prefWidth="15" prefHeight="15"/>
-                    <Label text="Living Costs" styleClass="legend-text"/>
-                </HBox>
-            </VBox>
+<!--            <VBox styleClass="legend-container" spacing="5">-->
+<!--                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">-->
+<!--                    <Region styleClass="legend-color-cosmetics" prefWidth="15" prefHeight="15"/>-->
+<!--                    <Label text="Cosmetics" styleClass="legend-text"/>-->
+<!--                </HBox>-->
+<!--                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">-->
+<!--                    <Region styleClass="legend-color-communication" prefWidth="15" prefHeight="15"/>-->
+<!--                    <Label text="Communication" styleClass="legend-text"/>-->
+<!--                </HBox>-->
+<!--                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">-->
+<!--                    <Region styleClass="legend-color-living" prefWidth="15" prefHeight="15"/>-->
+<!--                    <Label text="Living Costs" styleClass="legend-text"/>-->
+<!--                </HBox>-->
+<!--            </VBox>-->
         </VBox>
         
         <!-- Income Section -->
@@ -61,25 +74,39 @@
             
             <!-- Tab Buttons for Week/Month/Year -->
             <HBox styleClass="tab-container" spacing="5">
-                <Button text="Week" styleClass="tab-button-active" fx:id="incomeWeekButton"/>
+                <Button text="Custom" styleClass="tab-button-active" fx:id="incomeCustomButton"/>
+<!--                <Button text="Week" styleClass="tab-button-active" fx:id="incomeWeekButton"/>-->
                 <Button text="Month" styleClass="tab-button" fx:id="incomeMonthButton"/>
                 <Button text="Year" styleClass="tab-button" fx:id="incomeYearButton"/>
             </HBox>
-            
+            <!-- Date Range Selector -->
+            <HBox styleClass="date-range-container" spacing="5" alignment="CENTER_LEFT" fx:id="incomeDatePicker">
+                <Label text="Start Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="incomeStartDatePicker" styleClass="date-picker" prefWidth="120"/>
+                <Label text="End Date:" styleClass="date-picker-label"/>
+                <DatePicker fx:id="incomeEndDatePicker" styleClass="date-picker" prefWidth="120"/>
+            </HBox>
+
+            <!-- Month Selector -->
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <ComboBox fx:id="incomeYearSelector" visible="false" prefWidth="120"/>
+                <ComboBox fx:id="incomeMonthSelector" visible="false" prefWidth="120"/>
+            </HBox>
+
             <!-- Amount Display -->
-            <Label text="¥18,800.00" styleClass="amount-label, amount-positive"/>
+            <Label fx:id="incomeAmountLabel" text="¥18,800.00" styleClass="amount-label, amount-positive"/>
             
             <!-- Pie Chart -->
-            <PieChart fx:id="incomePieChart" styleClass="pie-chart" legendVisible="false" 
+            <PieChart fx:id="incomePieChart" styleClass="pie-chart" legendVisible="true"
                       labelsVisible="true" VBox.vgrow="ALWAYS"/>
             
             <!-- Legend -->
-            <VBox styleClass="legend-container" spacing="5">
-                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">
-                    <Region styleClass="legend-color-salary" prefWidth="15" prefHeight="15"/>
-                    <Label text="Salary" styleClass="legend-text"/>
-                </HBox>
-            </VBox>
+<!--            <VBox styleClass="legend-container" spacing="5">-->
+<!--                <HBox styleClass="legend-item" alignment="CENTER_LEFT" spacing="5">-->
+<!--                    <Region styleClass="legend-color-salary" prefWidth="15" prefHeight="15"/>-->
+<!--                    <Label text="Salary" styleClass="legend-text"/>-->
+<!--                </HBox>-->
+<!--            </VBox>-->
         </VBox>
     </HBox>
 

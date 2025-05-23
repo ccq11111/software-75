@@ -8,7 +8,8 @@
 <?import javafx.scene.text.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.loginapp.AIViewController"
+      fx:id="rootVBox"
+      fx:controller="com.example.software.view.AIViewController"
       styleClass="ai-dialog" prefWidth="800" prefHeight="600">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
