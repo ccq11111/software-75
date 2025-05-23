@@ -9,7 +9,7 @@
 <?import javafx.scene.chart.PieChart?>
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.loginapp.controller.SummaryViewController"
+      fx:controller="com.example.software.view.SummaryViewController"
       styleClass="main-container">
 
     <!-- Left Side Panel (Sidebar) -->
@@ -94,19 +94,9 @@
                     <Button text="Month" styleClass="tab-button" fx:id="expendMonthButton"/>
                     <Button text="Year" styleClass="tab-button" fx:id="expendYearButton"/>
                 </HBox>
-
-                <!-- Date Range Selection -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <DatePicker fx:id="expendStartDatePicker" promptText="Start Date"/>
-                    <Label text="to"/>
-                    <DatePicker fx:id="expendEndDatePicker" promptText="End Date"/>
-                </HBox>
-
-                <!-- Month Selector -->
-                <ComboBox fx:id="expendMonthSelector" visible="false"/>
                 
                 <!-- Amount Display -->
-                <Label fx:id="expendAmountLabel" text="¥0.00" styleClass="amount-label, amount-negative"/>
+                <Label text="¥2,000" styleClass="amount-label, amount-negative"/>
                 
                 <!-- Pie Chart -->
                 <PieChart fx:id="expendPieChart" styleClass="pie-chart" legendVisible="false" 
@@ -139,19 +129,9 @@
                     <Button text="Month" styleClass="tab-button" fx:id="incomeMonthButton"/>
                     <Button text="Year" styleClass="tab-button" fx:id="incomeYearButton"/>
                 </HBox>
-
-                <!-- Date Range Selection -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <DatePicker fx:id="incomeStartDatePicker" promptText="Start Date"/>
-                    <Label text="to"/>
-                    <DatePicker fx:id="incomeEndDatePicker" promptText="End Date"/>
-                </HBox>
-
-                <!-- Month Selector -->
-                <ComboBox fx:id="incomeMonthSelector" visible="false"/>
                 
                 <!-- Amount Display -->
-                <Label fx:id="incomeAmountLabel" text="¥0.00" styleClass="amount-label, amount-positive"/>
+                <Label text="¥18,800.00" styleClass="amount-label, amount-positive"/>
                 
                 <!-- Pie Chart -->
                 <PieChart fx:id="incomePieChart" styleClass="pie-chart" legendVisible="false" 

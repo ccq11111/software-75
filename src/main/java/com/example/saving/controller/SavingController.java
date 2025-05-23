@@ -48,7 +48,7 @@ public class SavingController {
             return ResponseEntity.status(401).body("Unauthorized - Invalid token");
         }
 
-        // 2. 从Token中提取用户ID（假设JWT包含userId）
+        // 2. 从JWT提取userId）
         String userId = jwtService.extractUserId(token);
 
         // 3. 获取动态数据
@@ -66,7 +66,6 @@ public class SavingController {
             @RequestBody(required = true) SavingRequest savingRequest,
             @RequestHeader(name = "Authorization", required = true) String authorizationHeader
     ) {
-        // Token 校验（略）
 
         // 逻辑构造 SavingPlan
         SavingPlan plan = new SavingPlan(
@@ -74,11 +73,11 @@ public class SavingController {
                 savingRequest.getPlanName(),
                 LocalDate.now(),
                 LocalDate.now().plusDays(savingRequest.getDurationDays()),
-                "DAILY",                  // 假设固定 DAILY
+                "DAILY",
                 savingRequest.getDurationDays(),
                 savingRequest.getAmount(),
                 savingRequest.getAmount() * savingRequest.getDurationDays(),
-                "CNY",                    // 假设固定币种
+                "CNY",
                 0.0
         );
 

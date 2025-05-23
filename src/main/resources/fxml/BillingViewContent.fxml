@@ -30,30 +30,59 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="100" prefWidth="150"/>
             </columnConstraints>
 
-            <!-- Row 1: Category -->
-            <Label text="Category" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="categoryField" promptText="Enter category" styleClass="form-field"
-                       GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-
-            <!-- Row 2: Product and Price -->
-            <Label text="Product" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="productField" promptText="Enter product name" styleClass="form-field"
+            <!-- Row 1: Product and Price -->
+            <Label text="Product" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="Price" styleClass="form-label" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="productField" promptText="Input" styleClass="form-field"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="priceField" promptText="Input" styleClass="form-field"
                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-            <!-- Row 3: Price -->
-            <Label text="Price" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="priceField" promptText="Enter price" styleClass="form-field"
-                       GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <!-- Row 2: Category and Time -->
+            <Label text="Category" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label text="Time" styleClass="form-label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <!-- Row 4: Date -->
-            <Label text="Date" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <!-- Category Radio Buttons -->
+            <HBox spacing="10" styleClass="category-radio-container" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <fx:define>
+                    <ToggleGroup fx:id="categoryGroup"/>
+                </fx:define>
+
+                <RadioButton fx:id="livingCostsRadio" text="" toggleGroup="$categoryGroup" selected="true" userData="Living costs" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/living_costs.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+
+                <RadioButton fx:id="communicationRadio" text="" toggleGroup="$categoryGroup" userData="Communication" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/communication.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+
+                <RadioButton fx:id="salaryRadio" text="" toggleGroup="$categoryGroup" userData="Salary" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/salary.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+
+                <RadioButton fx:id="cosmeticsRadio" text="" toggleGroup="$categoryGroup" userData="Cosmetics" styleClass="category-radio">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@../images/cosmetics.png"/>
+                        </ImageView>
+                    </graphic>
+                </RadioButton>
+            </HBox>
+
             <DatePicker fx:id="timePicker" promptText="Select Time" styleClass="form-field"
                         GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                        
-            <!-- Row 5: Remark -->
-            <Label text="Remark" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="remarkField" promptText="Enter remark (optional)" styleClass="form-field"
-                       GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         </GridPane>
 
         <!-- Right side buttons -->
@@ -61,8 +90,6 @@
             <Button text="Reset" fx:id="resetButton" styleClass="reset-button"/>
             <Button text="Build" fx:id="buildButton" styleClass="build-button"/>
             <Button text="Inquire" fx:id="inquireButton" styleClass="inquire-button"/>
-            <Button text="Refresh Auth" fx:id="refreshButton" styleClass="refresh-button"/>
-            <Button text="Delete" fx:id="deleteButton" styleClass="delete-button"/>
         </VBox>
     </HBox>
 
