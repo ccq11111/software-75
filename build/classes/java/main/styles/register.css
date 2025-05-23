@@ -1,0 +1,49 @@
+/* Register Page Styles */
+
+/* Import base login styles */
+@import "login.css";
+
+/* Override login button for register page */
+.login-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+.login-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Additional styles for confirm password field */
+.password-field.confirm {
+    -fx-border-color: #e0e0e0;
+}
+
+.password-field.confirm:focused {
+    -fx-border-color: #3498db;
+}
+
+/* Register form specific styles */
+.register-form {
+    -fx-spacing: 15;
+}
+
+/* Terms checkbox */
+.terms-checkbox {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+.terms-checkbox .box {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 3;
+}
+
+.terms-checkbox:selected .mark {
+    -fx-background-color: #3498db;
+}
+
+.terms-checkbox:selected .box {
+    -fx-background-color: white;
+    -fx-border-color: #3498db;
+}

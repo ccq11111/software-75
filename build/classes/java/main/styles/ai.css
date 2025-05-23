@@ -1,0 +1,145 @@
+/* AI Feature Styles */
+
+/* AI Button */
+.ai-button {
+    -fx-background-color: #ffe100;
+    -fx-background-radius: 50%;
+    -fx-min-width: 60px;
+    -fx-min-height: 60px;
+    -fx-max-width: 60px;
+    -fx-max-height: 60px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    -fx-alignment: center;
+}
+
+.ai-button:hover {
+    -fx-background-color: #ffd000;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 12, 0, 0, 0);
+}
+
+.ai-button-text {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* AI Dialog */
+.ai-dialog {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-padding: 20;
+}
+
+.ai-dialog-header {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffe100;
+    -fx-padding: 0 0 20 0;
+}
+
+/* User message bubble */
+.user-message {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 20;
+    -fx-padding: 15;
+    -fx-max-width: 600px;
+    -fx-wrap-text: true;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* AI message bubble */
+.ai-message {
+    -fx-background-color: #fffbea;
+    -fx-background-radius: 20;
+    -fx-padding: 15;
+    -fx-max-width: 600px;
+    -fx-wrap-text: true;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* AI message list */
+.ai-message-list {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+    -fx-spacing: 15;
+}
+
+/* AI input field */
+.ai-input-field {
+    -fx-background-color: #f8f8f8;
+    -fx-background-radius: 30;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 30;
+    -fx-padding: 15 20;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #999999;
+}
+
+.ai-input-field:focused {
+    -fx-border-color: #ffe100;
+    -fx-background-color: white;
+}
+
+/* Send button */
+.ai-send-button {
+    -fx-background-color: #ffe100;
+    -fx-background-radius: 50%;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-alignment: center;
+}
+
+.ai-send-button:hover {
+    -fx-background-color: #ffd000;
+}
+
+/* Quick action buttons */
+.ai-quick-action {
+    -fx-background-color: #fffbea;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #ffe100;
+    -fx-border-width: 1;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.ai-quick-action:hover {
+    -fx-background-color: #fff8d0;
+}
+
+/* Close button */
+.ai-close-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-text-fill: #999999;
+    -fx-alignment: center;
+}
+
+.ai-close-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #333333;
+}

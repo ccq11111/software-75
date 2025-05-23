@@ -1,5 +1,6 @@
 package com.example.loginapp;
 
+import com.example.loginapp.api.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,16 +12,14 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 登录和注册界面的控制器类
  */
 public class LoginRegisterController {
 
-    // 用于模拟数据存储的用户映射
-    private static Map<String, UserAccount> userAccounts = new HashMap<>();
+    // API service factory
+    private final ApiServiceFactory apiServiceFactory = ApiServiceFactory.getInstance();
 
     // 注册界面组件
     @FXML
@@ -40,15 +39,9 @@ public class LoginRegisterController {
 
     /**
      * 初始化控制器
-     * 添加一些测试账户
      */
     @FXML
     public void initialize() {
-        // 添加一个测试账户（如果还没有添加）
-        if (userAccounts.isEmpty()) {
-            userAccounts.put("123", new UserAccount("123", "123", "test@example.com"));
-        }
-
         // Add event handler for verification link if it exists (it's only in the login view)
         if (verificationLink != null) {
             verificationLink.setOnAction(this::handleVerificationCode);
@@ -60,7 +53,7 @@ public class LoginRegisterController {
      */
     @FXML
     private void handleRegister(ActionEvent event) {
-        String phone = emailPhone.getText().trim();
+        String username = emailPhone.getText().trim();
         String pwd = password.getText().trim();
         String confirmPwd = confirmPassword.getText().trim();
 
@@ -68,7 +61,7 @@ public class LoginRegisterController {
         Window window = emailPhone.getScene().getWindow();
 
         // 验证输入
-        if (phone.isEmpty() || pwd.isEmpty() || confirmPwd.isEmpty()) {
+        if (username.isEmpty() || pwd.isEmpty() || confirmPwd.isEmpty()) {
             showMessage("All fields must be filled", true);
             NotificationManager.showError(window, "Registration Error", "All fields must be filled");
             return;
@@ -80,20 +73,32 @@ public class LoginRegisterController {
             return;
         }
 
-        if (userAccounts.containsKey(phone)) {
-            showMessage("Account already exists", true);
-            NotificationManager.showError(window, "Registration Error", "Account already exists");
-            return;
+        try {
+            // 调用注册API
+            AuthService authService = apiServiceFactory.getAuthService();
+            RegistrationResponse response = authService.register(username, pwd, "", "");
+            
+            if (response.isSuccess()) {
+                showMessage("Registration successful!", false);
+                NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!");
+                clearFields();
+                // 切换到登录界面
+                navigateToLogin(event);
+            } else {
+                showMessage(response.getMessage(), true);
+                NotificationManager.showError(window, "Registration Error", response.getMessage());
+            }
+        } catch (ApiException e) {
+            System.err.println("Registration error: " + e.getMessage());
+            e.printStackTrace();
+            showMessage(e.getMessage(), true);
+            NotificationManager.showError(window, "Registration Error", e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error during registration: " + e.getMessage());
+            e.printStackTrace();
+            showMessage("An unexpected error occurred", true);
+            NotificationManager.showError(window, "Registration Error", "An unexpected error occurred");
         }
-
-        // 创建新账户
-        userAccounts.put(phone, new UserAccount(phone, pwd, ""));
-        showMessage("Registration successful!", false);
-        NotificationManager.showSuccess(window, "Registration Successful", "Your account has been created successfully!");
-        clearFields();
-
-        // 切换到登录界面
-        navigateToLogin(event);
     }
 
     /**
@@ -101,26 +106,44 @@ public class LoginRegisterController {
      */
     @FXML
     private void handleLogin(ActionEvent event) {
-        String phone = emailPhone.getText().trim();
+        String username = emailPhone.getText().trim();
         String pwd = password.getText().trim();
 
         // Get the window for notifications
         Window window = emailPhone.getScene().getWindow();
 
         // 验证输入
-        if (phone.isEmpty() || pwd.isEmpty()) {
-            showMessage("Please enter phone and password", true);
-            NotificationManager.showError(window, "Login Error", "Please enter phone and password");
+        if (username.isEmpty() || pwd.isEmpty()) {
+            showMessage("Please enter username and password", true);
+            NotificationManager.showError(window, "Login Error", "Please enter username and password");
             return;
         }
 
-        UserAccount account = userAccounts.get(phone);
-
-        if (account == null || !account.getPassword().equals(pwd)) {
-            showMessage("Invalid phone or password", true);
-            NotificationManager.showError(window, "Login Error", "Invalid phone or password");
+        // Special handling for test account - completely offline mode
+        if ("test".equals(username) && "test".equals(pwd)) {
+            handleSuccessfulLogin(username, "mock-token-test-account", event);
             return;
         }
+
+        try {
+            // 调用登录API
+            AuthService authService = apiServiceFactory.getAuthService();
+            AuthResponse response = authService.login(username, pwd);
+
+            // Handle successful login
+            handleSuccessfulLogin(username, response.getToken(), event);
+        } catch (ApiException e) {
+            showMessage(e.getMessage(), true);
+            NotificationManager.showError(window, "Login Error", e.getMessage());
+        }
+    }
+
+    /**
+     * Handle successful login and navigate to main application
+     */
+    private void handleSuccessfulLogin(String username, String token, ActionEvent event) {
+        // 设置用户上下文
+        apiServiceFactory.setUserContext(username, token);
 
         // 切换到基础视图（包含全局侧边栏）
         try {
@@ -129,7 +152,8 @@ public class LoginRegisterController {
 
             // 获取控制器并设置用户名
             BaseViewController baseViewController = loader.getController();
-            baseViewController.setUsername(phone);
+            baseViewController.setUsername(username);
+            baseViewController.setToken(token);
 
             // 切换到基础视图
             // Get current window size for the new scene
@@ -204,10 +228,17 @@ public class LoginRegisterController {
                 showMessage("Please enter a verification code", true);
                 NotificationManager.showError(window, "Verification Error", "Please enter a verification code");
             } else {
-                // Here you would validate the verification code
-                // For demo purposes, we'll just show a message
-                showMessage("Verification code accepted", false);
-                NotificationManager.showSuccess(window, "Verification Successful", "Verification code accepted");
+                try {
+                    // 调用验证码API
+                    AuthService authService = apiServiceFactory.getAuthService();
+                    authService.verifyCode("temp-user-id", code, "email");
+
+                    showMessage("Verification code accepted", false);
+                    NotificationManager.showSuccess(window, "Verification Successful", "Verification code accepted");
+                } catch (ApiException e) {
+                    showMessage(e.getMessage(), true);
+                    NotificationManager.showError(window, "Verification Error", e.getMessage());
+                }
             }
         });
     }
@@ -233,30 +264,5 @@ public class LoginRegisterController {
         }
     }
 
-    /**
-     * 用户账户类（内部类）
-     */
-    private static class UserAccount {
-        private String username;
-        private String password;
-        private String email;
 
-        public UserAccount(String username, String password, String email) {
-            this.username = username;
-            this.password = password;
-            this.email = email;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-    }
 }

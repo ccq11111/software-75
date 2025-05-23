@@ -1,6 +1,8 @@
-package com.example.ccqbackend.service;
-import com.example.ccqbackend.model.BillingEntry;
+package com.example.software.service;
+
+import com.example.software.api.BillingEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -10,7 +12,12 @@ import java.util.List;
 @Service
 public class JSONService {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+    
+    public JSONService() {
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule()); // 添加Java 8日期/时间支持
+    }
 
     // 将数据写入JSON文件
     public void writeDataToJSON(List<BillingEntry> entries, String filename) throws IOException {
