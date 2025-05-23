@@ -14,9 +14,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import com.example.software.util.TourismDataUtil;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.*;
+import java.util.stream.Collectors;
+
 
 @Service
 public class AiService {
@@ -43,6 +47,19 @@ public class AiService {
             .replaceAll("expensive", "高价") // 过滤英文单词
             .trim();
     }
+    public static String filterThinkTags(String input) {
+        return input.replaceAll("(?s)<think>.*?</think>", "");
+    }
+    public static String filterThinkTags2(String input) {
+        String prev;
+        do {
+            prev = input;
+            input = input.replaceAll("(?is)<think[^>]*>.*?</think>", "");
+            input = input.replaceAll("(?is)<think[^>]*>", "");
+            input = input.replaceAll("(?is)</think>", "");
+        } while (!input.equals(prev));
+        return input;
+    }
 
     /**
      * 节日消费分析与建议
@@ -54,7 +71,7 @@ public class AiService {
             // 1. 读取账单数据
             List<BillingEntry> entries = new ArrayList<>();
             File csvFile = new File(csvPath);
-            if (!csvFile.exists()) return "未找到账单数据文件。";
+            if (!csvFile.exists()) return "The bill data file was not found.";
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String line = reader.readLine(); // 跳过头行
                 while ((line = reader.readLine()) != null) {
@@ -70,41 +87,36 @@ public class AiService {
                     }
                 }
             }
-            // 2. 查找最近节日
+            // 2. 筛选今天往前7天（含今天）的账单数据
             LocalDate today = LocalDate.now();
-            Optional<HolidayUtil.HolidayInfo> holidayOpt = HolidayUtil.getUpcomingHoliday(today, 30);
-            if (holidayOpt.isEmpty()) return "未来30天内无常见节日。";
-            HolidayUtil.HolidayInfo holiday = holidayOpt.get();
-            // 3. 统计节日前后7天的消费
-            LocalDate start = holiday.date.minusDays(3);
-            LocalDate end = holiday.date.plusDays(3);
-            List<BillingEntry> holidayEntries = new ArrayList<>();
+            LocalDate sevenDaysAgo = today.minusDays(6); // 包含今天共7天
+            List<BillingEntry> recentEntries = new ArrayList<>();
             for (BillingEntry e : entries) {
-                if (e.getDate() != null && !e.getDate().isBefore(start) && !e.getDate().isAfter(end)) {
-                    holidayEntries.add(e);
+                if (e.getDate() != null && !e.getDate().isBefore(sevenDaysAgo) && !e.getDate().isAfter(today)) {
+                    recentEntries.add(e);
                 }
             }
-            BigDecimal total = holidayEntries.stream().map(BillingEntry::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal total = recentEntries.stream().map(BillingEntry::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
             Map<String, BigDecimal> categoryMap = new HashMap<>();
-            for (BillingEntry e : holidayEntries) {
+            for (BillingEntry e : recentEntries) {
                 categoryMap.merge(e.getCategory(), e.getPrice(), BigDecimal::add);
             }
-            // 4. 构造AI分析请求
+            // 3. 构造AI分析请求
             StringBuilder prompt = new StringBuilder();
-            prompt.append("请根据以下账单数据，分析即将到来的节日\"")
-                  .append(holiday.name)
-                  .append("\"的消费情况，并给出合理的支出建议。\n");
-            prompt.append("节日时间：").append(holiday.date).append("\n");
-            prompt.append("节日前后7天总支出：").append(total).append("元\n");
-            prompt.append("各类别支出：\n");
+            prompt.append("Please analyze the following bill data and provide suggestions for the upcoming festival.\n");
+            prompt.append("Festival: ").append("Recent 7-day Consumption").append("\n");
+            prompt.append("Analysis period: ").append(sevenDaysAgo).append(" to ").append(today).append("\n");
+            prompt.append("Total expenditure in the recent 7 days: ").append(total).append(" yuan\n");
+            prompt.append("Expenditure by category:\n");
             for (Map.Entry<String, BigDecimal> entry : categoryMap.entrySet()) {
-                prompt.append(entry.getKey()).append(": ").append(entry.getValue()).append("元\n");
+                prompt.append(entry.getKey()).append(": ").append(entry.getValue()).append(" yuan\n");
             }
-            prompt.append("请结合节日特点，给出餐饮、礼品、出行等方面的预算建议。");
-            // 5. 调用AI模型
-            return filterMarkdown(chat(prompt.toString()));
+            prompt.append("Based on the recent 7-day consumption, please provide reasonable budget suggestions for dining, gifts, travel, etc. for the upcoming festival.\n");
+            prompt.append("Please answer in English.\n");
+            // 4. 调用AI模型
+            return filterMarkdown(filterThinkTags2(chat(prompt.toString())));
         } catch (Exception e) {
-            return "节日消费分析失败：" + e.getMessage();
+            return "Failure of festival consumption analysis:" + e.getMessage();
         }
     }
 
@@ -116,16 +128,19 @@ public class AiService {
     public String tourismAdvice(String city) {
         TourismDataUtil.DestinationInfo info = TourismDataUtil.getDestinationInfo(city);
         if (info == null) {
-            return "暂未收录该城市的旅游信息，请换一个目的地试试。";
+            return "The tourism information of this city has not been included yet. Please try another destination.";
         }
         StringBuilder prompt = new StringBuilder();
-        prompt.append("请为用户规划一次去").append(info.name).append("的旅游消费：\n");
-        prompt.append("当地人均月收入：").append(info.avgIncome).append("元\n");
-        prompt.append("当地特色美食/特产：").append(info.specialties).append("\n");
-        prompt.append("主要景点：").append(info.attractions).append("\n");
-        prompt.append("旅游建议：").append(info.tips).append("\n");
-        prompt.append("请结合以上信息，给出合理的预算分配（如住宿、餐饮、交通、购物等），并推荐必买特产和必玩景点。");
-        return filterMarkdown(chat(prompt.toString()));
+        prompt.append("Please provide a detailed travel spending plan and suggestions for a trip to ").append(info.name).append(".\n");
+        prompt.append("Local average monthly income: ").append(info.avgIncome).append(" yuan\n");
+        prompt.append("Local specialties: ").append(info.specialties).append("\n");
+        prompt.append("Main attractions: ").append(info.attractions).append("\n");
+        prompt.append("Travel tips: ").append(info.tips).append("\n");
+        prompt.append("Based on the above information, please give a reasonable budget allocation (such as accommodation, food, transportation, shopping, etc.), and recommend must-buy specialties and must-visit attractions.\n");
+        prompt.append("Please answer in English.\n");
+        String aiResult = chat(prompt.toString());
+        aiResult = filterThinkTags2(aiResult);
+        return filterMarkdown(aiResult);
     }
 
     /**
@@ -138,7 +153,7 @@ public class AiService {
             List<BillingEntry> entries = new ArrayList<>();
             String csvPath = "data/billing/billingEntries.csv";
             File csvFile = new File(csvPath);
-            if (!csvFile.exists()) return "未找到账单数据文件。";
+            if (!csvFile.exists()) return "The bill data file was not found.";
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String line = reader.readLine(); // 跳过头行
                 while ((line = reader.readLine()) != null) {
@@ -154,18 +169,37 @@ public class AiService {
                     }
                 }
             }
-            // 2. 构造AI分析请求
-            StringBuilder prompt = new StringBuilder();
-            prompt.append("请根据以下账单数据，分析用户的消费模式，并给出下月预算建议：\n");
-            for (BillingEntry e : entries) {
-                prompt.append(e.getCategory()).append(",")
-                      .append(e.getProduct()).append(",")
-                      .append(e.getPrice()).append(",")
-                      .append(e.getDate()).append("\n");
+            // 2. 筛选近三个月的数据
+            LocalDate today = LocalDate.now();
+            LocalDate threeMonthsAgo = today.minusMonths(3);
+            List<BillingEntry> filteredEntries = entries.stream()
+                .filter(e -> !e.getDate().isBefore(threeMonthsAgo) && !e.getDate().isAfter(today))
+                .collect(Collectors.toList());
+            // 3. 构造AI分析请求（只用filteredEntries）
+            String prompt = """
+Please analyze the following bill data and provide a consumption pattern analysis and budget suggestions for next month.
+Requirements:
+1. Output only the analysis results and suggestions. Do not include any thinking process, format check, data cleaning, or requirement clarification.
+2. Do not output any <think> tags or thought content.
+3. The analysis should include:
+a) Expenditure structure model: Analyze the expenditure proportion by category (such as catering, transportation, entertainment, etc.), and indicate which categories have a higher proportion than the average level.
+b) Trend change pattern: Analyze the fluctuation trend and growth trajectory of income and expenditure in recent months, and point out the characteristics of changes in expenditure or income.
+c) Consumption frequency: Analyze small and high-frequency consumption, abnormal expenditures during holidays or specific time periods, and indicate whether there are phenomena such as emotional consumption.
+4. Finally, provide two versions of the budget suggestions for next month:
+- Savings plan version: Generate personalized budget suggestions for the next month based on the user's historical consumption records, including approximate expenditure allocation, specific amount range, and estimated savings amount.
+- No savings plan version: Provide a normal budget suggestion for next month.
+5. The output should be well-organized and described point by point, facilitating users' understanding and reference.
+
+The bill data is as follows (each line: category, product, amount, date):
+""";
+            for (BillingEntry e : filteredEntries) {
+                prompt += e.getCategory() + "," + e.getProduct() + "," + e.getPrice() + "," + e.getDate() + "\n";
             }
-            return filterMarkdown(chat(prompt.toString()));
+            prompt += "Please answer in English.\n";
+            System.out.println("[AI分析Prompt] " + prompt);
+            return filterMarkdown(filterThinkTags2(chat(prompt)));
         } catch (Exception e) {
-            return "消费模式分析失败：" + e.getMessage();
+            return "Failure of consumption pattern analysis" + e.getMessage();
         }
     }
 
@@ -177,35 +211,70 @@ public class AiService {
     public String consumeRecordAndAdd(String record) {
         try {
             // 1. 调用AI模型结构化消费记录
-            String prompt = "请将以下消费描述结构化为账单条目，输出JSON，字段包括：category, product, price, date（yyyy-MM-dd），time（HH:mm），remark。\n消费描述：" + record;
+            String prompt = """
+请将以下消费描述结构化为账单条目，只输出JSON对象，字段包括：category, product, price, date（yyyy-MM-dd），time（HH:mm），remark。
+要求：
+1. 先判断该描述是"收入"还是"支出"。
+2. 如果是"支出"，category字段请严格从以下类别中选择：餐饮、购物、交通、娱乐、医疗、通讯、教育、住宿、其他。
+3. 如果是"收入"，category字段请严格从以下类别中选择：工资、奖金、报销、转账、理财收益、其他收入。
+4. product字段请尽量提取具体的商品、服务或收入来源。
+5. 不要使用"item""thing"等泛泛的词。
+6. price字段只输出数字，不要带"元"或其他单位。
+7. date字段请用yyyy-MM-dd格式，如果描述中是"今天"请自动替换为当天日期。如果没有日期则请自动替换为当天日期。
+8. time字段如果没有具体时间请留空或用当前时间。
+9. 字段顺序和名称必须严格为：category, product, price, date, time, remark。
+10. 请根据语义判断，不要仅凭关键词。例如"工资到账""收到转账""报销到账""理财收益"都属于收入，"买咖啡""看电影""买衣服""打车"都属于支出。
+消费描述：""" + record;
+            prompt += "Please answer in English.\n";
             String aiResult = chat(prompt);
             // 2. 解析AI返回的JSON
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             
-            // 处理可能的格式问题，提取JSON部分
-            if (aiResult.contains("{") && aiResult.contains("}")) {
-                int start = aiResult.indexOf("{");
-                int end = aiResult.lastIndexOf("}") + 1;
-                aiResult = aiResult.substring(start, end);
+            // 1. 提取第一个合法JSON对象
+            Pattern pattern = Pattern.compile("\\{[\\s\\S]*?\\}");
+            Matcher matcher = pattern.matcher(aiResult);
+            if (matcher.find()) {
+                aiResult = matcher.group();
+            } else {
+                throw new RuntimeException("No legal JSON object was found");
             }
             
+            // 2. 解析为Map
             Map<String, Object> map = mapper.readValue(aiResult, Map.class);
+            
+            // 3. 金额字段清洗
+            String priceStr = map.getOrDefault("price", "0").toString().replaceAll("[^\\d.]", "");
+            BigDecimal price = new BigDecimal(priceStr.isEmpty() ? "0" : priceStr);
+            
+            // 4. 日期、时间兜底
+            String dateStr = (String) map.get("date");
+            LocalDate date;
+            if (dateStr == null || dateStr.trim().isEmpty() || "今天".equals(dateStr.trim()) || "today".equalsIgnoreCase(dateStr.trim())) {
+                date = LocalDate.now();
+            } else {
+                try {
+                    date = LocalDate.parse(dateStr.trim());
+                } catch (Exception e) {
+                    date = LocalDate.now();
+                }
+            }
+            
+            String timeStr = (String) map.getOrDefault("time", "");
+            LocalTime time = timeStr.isEmpty() ? LocalTime.now() : LocalTime.parse(timeStr);
+            
             BillingEntry entry = new BillingEntry();
             entry.setEntryId(UUID.randomUUID().toString().substring(0, 8));
             entry.setCategory((String) map.getOrDefault("category", "其他"));
-            entry.setProduct((String) map.getOrDefault("product", "未指定"));
-            entry.setPrice(new BigDecimal(map.getOrDefault("price", "0").toString()));
-            
-            // 日期处理
-            String dateStr = (String) map.getOrDefault("date", LocalDate.now().toString());
-            entry.setDate(LocalDate.parse(dateStr));
-            
-            // 时间处理
-            String timeStr = (String) map.getOrDefault("time", java.time.LocalTime.now().toString());
-            entry.setTime(java.time.LocalTime.parse(timeStr));
-            entry.setFormattedTime(entry.getTime().toString());
-            
+            String product = (String) map.get("product");
+            if (product == null || product.trim().isEmpty() || product.matches("^[\\d.]+元?$")) {
+                product = (String) map.getOrDefault("category", record);
+            }
+            entry.setProduct(product);
+            entry.setPrice(price);
+            entry.setDate(date);
+            entry.setTime(time);
+            entry.setFormattedTime(time.toString());
             entry.setRemark((String) map.getOrDefault("remark", record));
             
             // 3. 写入三种格式的账单文件
@@ -213,11 +282,11 @@ public class AiService {
             saveToJSON(entry);
             saveToTXT(entry);
             
-            return String.format("已自动分类并入账：类别：%s，产品：%s，金额：%s元，日期：%s。",
+            return String.format("Automatically classified and recorded: Category:%s，Product: %s, Amount: %s yuan, Date: %s. ",
                     entry.getCategory(), entry.getProduct(), entry.getPrice(), entry.getDate());
         } catch (Exception e) {
             e.printStackTrace();
-            return "消费记录入账失败：" + e.getMessage();
+            return "Consumption record entry failed" + e.getMessage();
         }
     }
 
@@ -378,7 +447,7 @@ public class AiService {
 
             // 4. 生成输出
             if (periodicTransactions.isEmpty()) {
-                return "未发现即将到来的周期性交易。";
+                return "No upcoming cyclical transactions were detected.";
             }
 
             // 按距离时间排序
@@ -386,8 +455,8 @@ public class AiService {
 
             // 构造表格输出
             StringBuilder result = new StringBuilder();
-            result.append("根据您的历史交易记录，以下是预计未来30天内可能发生的周期性交易：\n\n");
-            result.append("| 类别 | 产品 | 金额 | 周期(天) | 预计日期 | 剩余天数 |\n");
+            result.append("Based on your historical transaction records, the following are the periodic transactions expected to occur within the next 30 days：\n\n");
+            result.append("| Category | Product | Amount | Cycle (days) | Estimated date | Remaining days | \n");
             result.append("|------|------|------|---------|----------|----------|\n");
 
             for (PeriodicTransaction pt : periodicTransactions) {
@@ -401,12 +470,11 @@ public class AiService {
                 ));
             }
 
-            result.append("\n请注意：以上预测基于历史交易规律，仅供参考。");
-
+            result.append("\nNote: Predictions are derived from historical transaction trends and should be considered indicative only.");
             return result.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "分析周期性交易时出错：" + e.getMessage();
+            return "Errors when analyzing cyclical transactions:" + e.getMessage();
         }
     }
 

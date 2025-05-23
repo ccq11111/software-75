@@ -121,48 +121,48 @@ public class AIViewController {
         quickActionsContainer.getChildren().clear();
 
         // 节日消费分析按钮
-        Button holidayBtn = new Button("节日消费分析");
+        Button holidayBtn = new Button("Holiday Analysis");
         holidayBtn.getStyleClass().add("ai-quick-action");
         holidayBtn.setOnAction(event -> {
-            addUserMessage("节日消费分析");
+            addUserMessage("Holiday Analysis");
             new Thread(this::getHolidayAdvice).start();
         });
         
         // 旅游消费规划按钮
-        Button tourismBtn = new Button("旅游消费规划");
+        Button tourismBtn = new Button("Tourism Analysis");
         tourismBtn.getStyleClass().add("ai-quick-action");
         tourismBtn.setOnAction(event -> {
-            addUserMessage("旅游消费规划");
+            addUserMessage("Tourism Analysis");
             Platform.runLater(this::askTourismDestination);
         });
         
         // 消费模式分析按钮
-        Button consumeAnalysisBtn = new Button("消费模式分析");
+        Button consumeAnalysisBtn = new Button("Consumption Patterns");
         consumeAnalysisBtn.getStyleClass().add("ai-quick-action");
         consumeAnalysisBtn.setOnAction(e -> {
-            addUserMessage("消费模式分析");
+            addUserMessage("Consumption Patterns");
             new Thread(this::getConsumeAnalysis).start();
         });
         
         // 记一笔消费按钮
-        Button recordBtn = new Button("记一笔消费");
+        Button recordBtn = new Button("Record an Expense");
         recordBtn.getStyleClass().add("ai-quick-action");
         recordBtn.setOnAction(e -> {
-            addUserMessage("请输入您的消费记录");
+            addUserMessage("Please enter your spending history");
             Platform.runLater(() -> {
-                displayAIResponse("请描述您的消费情况，例如：今天在超市买水果花了50元");
+                displayAIResponse("Please describe your spending, e.g. I spent 50 yuan on fruit at the supermarket today");
                 aiInputField.setPromptText("描述您的消费情况...");
                 aiInputField.requestFocus();
             });
         });
         
         // 周期性提醒按钮
-        Button periodicReminderBtn = new Button("周期性提醒");
+        Button periodicReminderBtn = new Button("Periodic Reminders");
         periodicReminderBtn.getStyleClass().add("ai-quick-action");
         periodicReminderBtn.setOnAction(e -> {
-            addUserMessage("周期性交易提醒");
+            addUserMessage("Periodic Reminders");
             new Thread(this::getPeriodicReminders).start();
-        });
+            });
         
         // 添加所有按钮到容器
         quickActionsContainer.getChildren().addAll(holidayBtn, tourismBtn, consumeAnalysisBtn, recordBtn, periodicReminderBtn);
@@ -182,9 +182,9 @@ public class AIViewController {
         if (isConsumeRecord(message)) {
             new Thread(() -> sendConsumeRecord(message)).start();
         } else {
-            new Thread(() -> {
-                getAIAdvice(message);
-            }).start();
+        new Thread(() -> {
+            getAIAdvice(message);
+        }).start();
         }
     }
 
@@ -393,8 +393,8 @@ public class AIViewController {
     }
 
     private void askTourismDestination() {
-        displayAIResponse("你想去哪里旅游？请输入目的地城市名称。");
-        aiInputField.setPromptText("请输入旅游目的地...");
+        displayAIResponse("Where would you like to travel? Please enter your destination city.");
+        aiInputField.setPromptText("Your travel destination?...");
         aiInputField.setOnAction(event -> {
             String city = aiInputField.getText().trim();
             if (!city.isEmpty()) {
@@ -433,7 +433,7 @@ public class AIViewController {
     private void getPeriodicReminders() {
         try {
             Platform.runLater(() -> {
-                Label processingLabel = new Label("正在分析周期性交易模式...");
+                Label processingLabel = new Label("The cyclical trading pattern is being analyzed...");
                 processingLabel.getStyleClass().add("ai-message");
                 HBox messageBox = new HBox(processingLabel);
                 messageBox.setAlignment(Pos.CENTER_LEFT);
@@ -469,7 +469,7 @@ public class AIViewController {
         try {
             // 显示处理中消息
             Platform.runLater(() -> {
-                Label processingLabel = new Label("正在处理消费记录...");
+                Label processingLabel = new Label("The consumption records are being processed...");
                 processingLabel.getStyleClass().add("ai-message");
                 HBox messageBox = new HBox(processingLabel);
                 messageBox.setAlignment(Pos.CENTER_LEFT);
