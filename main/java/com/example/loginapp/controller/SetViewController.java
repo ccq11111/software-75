@@ -18,7 +18,15 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.FileWriter;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -209,14 +217,14 @@ public class SetViewController {
             savedColumn.setCellValueFactory(cellData -> 
                 new SimpleStringProperty(
                     cellData.getValue().getCurrency().startsWith("CNY") ? 
-                    String.format("¥%.0f", cellData.getValue().getAmount()) : 
-                    cellData.getValue().getCurrency().substring(0, 3) + String.format("%.0f", cellData.getValue().getAmount())
+                    String.format("¥%.0f", cellData.getValue().getSavedAmount()) : 
+                    cellData.getValue().getCurrency().substring(0, 3) + String.format("%.0f", cellData.getValue().getSavedAmount())
                 ));
             
             // Configure action column with edit and delete buttons
             actionColumn.setCellFactory(param -> new TableCell<SavingPlanModel.SavingPlan, SavingPlanModel.SavingPlan>() {
-                private final Button editButton = new Button("编辑");
-                private final Button deleteButton = new Button("删除");
+                private final Button editButton = new Button("Edit");
+                private final Button deleteButton = new Button("Delete");
                 private final HBox buttonBox = new HBox(5, editButton, deleteButton);
                 
                 {
@@ -278,12 +286,13 @@ public class SetViewController {
             
             // Create the dialog
             Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("编辑储蓄计划");
-            dialog.setHeaderText("修改 \"" + plan.getName() + "\" 计划");
+            dialog.setTitle("Edit Saving Plan");
+            dialog.setHeaderText("Edit \"" + plan.getName() + "\" Plan");
 
             // Add buttons
-            ButtonType saveButtonType = new ButtonType("保存", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, cancelButtonType);
 
             // Create the form layout
             GridPane grid = new GridPane();
@@ -297,19 +306,14 @@ public class SetViewController {
             ComboBox<String> cycleComboBox = new ComboBox<>();
             cycleComboBox.getItems().addAll("Daily", "Weekly", "Monthly", "Quarterly", "Yearly");
             cycleComboBox.setValue(plan.getCycle());
-            
-            // 添加已存金额字段
-            TextField savedAmountField = new TextField(String.valueOf(plan.getSavedAmount()));
 
             // Add fields to grid
-            grid.add(new Label("名称:"), 0, 0);
+            grid.add(new Label("Name:"), 0, 0);
             grid.add(nameField, 1, 0);
-            grid.add(new Label("金额:"), 0, 1);
+            grid.add(new Label("Amount:"), 0, 1);
             grid.add(amountField, 1, 1);
-            grid.add(new Label("周期:"), 0, 2);
+            grid.add(new Label("Cycle:"), 0, 2);
             grid.add(cycleComboBox, 1, 2);
-            grid.add(new Label("已存金额:"), 0, 3);
-            grid.add(savedAmountField, 1, 3);
 
             // Set the grid in the dialog
             dialog.getDialogPane().setContent(grid);
@@ -325,21 +329,34 @@ public class SetViewController {
                         String newName = nameField.getText();
                         double newAmount = Double.parseDouble(amountField.getText());
                         String newCycle = cycleComboBox.getValue();
-                        double newSavedAmount = Double.parseDouble(savedAmountField.getText());
                         
                         // 使用计划的实际ID
                         String planId = plan.getPlanId();
-                        System.out.println("保存更改: 计划ID=" + planId + ", 新名称=" + newName + ", 新已存金额=" + newSavedAmount);
+                        System.out.println("Saving changes: Plan ID=" + planId + ", New Name=" + newName);
                         
                         // 尝试通过API更新计划
                         try {
                             // 转换为相应的API数据类型
                             BigDecimal amount = new BigDecimal(newAmount);
-                            BigDecimal savedAmount = new BigDecimal(newSavedAmount);
                             
                             // 确保startDate使用正确的格式，以避免403错误
                             String dateStr = plan.getStartDate().atStartOfDay().toInstant(ZoneOffset.UTC).toString();
-                            System.out.println("发送更新请求: planId=" + planId + ", startDate=" + dateStr);
+                            System.out.println("Sending update request: planId=" + planId + ", startDate=" + dateStr);
+                            
+                            // 获取当前计划的最新数据
+                            List<com.example.software.api.SavingPlan> allPlans = savingsService.getAllPlans();
+                            com.example.software.api.SavingPlan currentPlan = allPlans.stream()
+                                .filter(p -> p.getPlanId().equals(planId))
+                                .findFirst()
+                                .orElse(null);
+                                
+                            if (currentPlan == null) {
+                                showAlert(Alert.AlertType.ERROR, "Error", "Unable to get current plan information");
+                                return;
+                            }
+                            
+                            // 保持已存金额不变
+                            BigDecimal savedAmount = currentPlan.getSavedAmount();
                             
                             savingsService.updatePlan(
                                 planId, 
@@ -357,7 +374,6 @@ public class SetViewController {
                             plan.setName(newName);
                             plan.setAmount(newAmount);
                             plan.setCycle(newCycle);
-                            plan.setSavedAmount(newSavedAmount);
                             
                             // 重新加载计划列表
                             loadPlansFromService();
@@ -369,25 +385,24 @@ public class SetViewController {
                             initializeChart();
                             
                             // Show success message
-                            showAlert(Alert.AlertType.INFORMATION, "计划已更新", "计划 \"" + newName + "\" 已成功更新。");
+                            showAlert(Alert.AlertType.INFORMATION, "Plan Updated", "Plan \"" + newName + "\" has been successfully updated.");
                         } catch (ApiException e) {
-                            System.err.println("API更新计划失败: " + e.getMessage());
+                            System.err.println("API update plan failed: " + e.getMessage());
                             e.printStackTrace();
                             
                             // API调用失败，仍然更新UI
                             plan.setName(newName);
                             plan.setAmount(newAmount);
                             plan.setCycle(newCycle);
-                            plan.setSavedAmount(newSavedAmount);
                             
                             planTable.refresh();
                             initializeChart();
                             
-                            System.err.println("API更新计划失败，但已更新UI: " + e.getMessage());
-                            showAlert(Alert.AlertType.INFORMATION, "计划已更新", "计划 \"" + newName + "\" 已在本地更新。");
+                            System.err.println("API update plan failed, but UI updated: " + e.getMessage());
+                            showAlert(Alert.AlertType.INFORMATION, "Plan Updated", "Plan \"" + newName + "\" has been updated locally.");
                         }
                     } catch (NumberFormatException e) {
-                        showAlert(Alert.AlertType.ERROR, "输入错误", "请输入有效的金额数值。");
+                        showAlert(Alert.AlertType.ERROR, "Input Error", "Please enter a valid amount.");
                     }
                 }
             });
@@ -405,25 +420,31 @@ public class SetViewController {
         try {
             // Check if plan ID is null
             if (plan.getPlanId() == null || plan.getPlanId().isEmpty()) {
-                System.err.println("警告: 计划ID为空，无法删除");
-                showAlert(Alert.AlertType.WARNING, "删除错误", "计划ID不存在，无法删除");
+                System.err.println("Warning: Plan ID is empty, cannot delete");
+                showAlert(Alert.AlertType.WARNING, "Delete Error", "Plan ID does not exist, cannot delete");
                 return;
             }
             
-            System.out.println("准备删除计划: ID=" + plan.getPlanId() + ", 名称=" + plan.getName());
+            System.out.println("Preparing to delete plan: ID=" + plan.getPlanId() + ", Name=" + plan.getName());
             
             // Ask for confirmation
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmAlert.setTitle("确认删除");
-            confirmAlert.setHeaderText("删除计划 \"" + plan.getName() + "\"");
-            confirmAlert.setContentText("您确定要删除此计划吗？此操作无法撤销。");
+            confirmAlert.setTitle("Confirm Delete");
+            confirmAlert.setHeaderText("Delete Plan \"" + plan.getName() + "\"");
+            confirmAlert.setContentText("Are you sure you want to delete this plan? This action cannot be undone.");
+            
+            // 设置按钮文本
+            Button okButton = (Button) confirmAlert.getDialogPane().lookupButton(ButtonType.OK);
+            Button cancelButton = (Button) confirmAlert.getDialogPane().lookupButton(ButtonType.CANCEL);
+            okButton.setText("Delete");
+            cancelButton.setText("Cancel");
             
             confirmAlert.showAndWait().ifPresent(result -> {
                 if (result == ButtonType.OK) {
                     try {
                         // 获取实际的计划ID
                         String planId = plan.getPlanId();
-                        System.out.println("确认删除计划: ID=" + planId);
+                        System.out.println("Confirming plan deletion: ID=" + planId);
 
                         // 尝试通过API删除计划
                         try {
@@ -438,9 +459,9 @@ public class SetViewController {
                             initializeChart();
                             
                             // Show success message
-                            showAlert(Alert.AlertType.INFORMATION, "计划已删除", "计划 \"" + plan.getName() + "\" 已成功删除。");
+                            showAlert(Alert.AlertType.INFORMATION, "Success", "Plan \"" + plan.getName() + "\" has been successfully deleted.");
                         } catch (ApiException e) {
-                            System.err.println("API删除计划失败: " + e.getMessage());
+                            System.err.println("API delete plan failed: " + e.getMessage());
                             e.printStackTrace();
                             
                             // API调用失败，仍然从UI移除
@@ -450,26 +471,26 @@ public class SetViewController {
                             try {
                                 loadPlansFromService();
                             } catch (Exception ex) {
-                                System.err.println("重新加载计划列表失败: " + ex.getMessage());
+                                System.err.println("Failed to reload plan list: " + ex.getMessage());
                             }
                             
                             initializeChart();
                             
-                            System.err.println("API删除计划失败，但已从UI移除: " + e.getMessage());
+                            System.err.println("API delete plan failed, but removed from UI: " + e.getMessage());
                             // 仍然显示成功消息
-                            showAlert(Alert.AlertType.INFORMATION, "计划已删除", "计划 \"" + plan.getName() + "\" 已从本地删除。");
+                            showAlert(Alert.AlertType.INFORMATION, "Success", "Plan \"" + plan.getName() + "\" has been deleted locally.");
                         }
                     } catch (Exception e) {
                         System.err.println("Error deleting plan: " + e.getMessage());
                         e.printStackTrace();
-                        showAlert(Alert.AlertType.ERROR, "删除错误", "删除计划时出错: " + e.getMessage());
+                        showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete plan: " + e.getMessage());
                     }
                 }
             });
         } catch (Exception e) {
             System.err.println("Error showing delete confirmation: " + e.getMessage());
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "错误", "无法显示删除确认对话框: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to show delete confirmation dialog: " + e.getMessage());
         }
     }
     
@@ -615,20 +636,70 @@ public class SetViewController {
     }
 
     /**
-     * Handle backup button click
+     * Handle backup button click - Export saving plans to JSON file
      */
     private void handleBackup() {
         try {
-            // In a real app, this would trigger a backup process
-            // For now, just show an alert
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Backup");
-            alert.setHeaderText(null);
-            alert.setContentText("Backup functionality would be implemented here.");
-            alert.showAndWait();
+            // 创建文件选择器
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Export Saving Plans");
+            fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("JSON Files", "*.json")
+            );
+            
+            // 设置默认文件名
+            String defaultFileName = "saving_plans_" + 
+                java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + 
+                ".json";
+            fileChooser.setInitialFileName(defaultFileName);
+            
+            // 显示文件保存对话框
+            java.io.File file = fileChooser.showSaveDialog(backupButton.getScene().getWindow());
+            
+            if (file != null) {
+                // 准备导出数据
+                Map<String, Object> exportData = new HashMap<>();
+                exportData.put("exportDate", java.time.LocalDateTime.now().toString());
+                exportData.put("username", username);
+                
+                // 转换计划数据为可序列化的格式
+                ArrayList<Map<String, Object>> plansData = new ArrayList<>();
+                for (SavingPlanModel.SavingPlan plan : planItems) {
+                    Map<String, Object> planData = new HashMap<>();
+                    planData.put("planId", plan.getPlanId());
+                    planData.put("name", plan.getName());
+                    planData.put("startDate", plan.getStartDate().toString());
+                    planData.put("cycle", plan.getCycle());
+                    planData.put("cycleTimes", plan.getCycleTimes());
+                    planData.put("amount", plan.getAmount());
+                    planData.put("savedAmount", plan.getSavedAmount());
+                    planData.put("currency", plan.getCurrency());
+                    plansData.add(planData);
+                }
+                exportData.put("plans", plansData);
+                
+                // 使用Gson进行JSON序列化
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                String jsonString = gson.toJson(exportData);
+                
+                // 写入文件
+                try (FileWriter writer = new FileWriter(file)) {
+                    writer.write(jsonString);
+                }
+                
+                // 显示成功消息
+                showAlert(Alert.AlertType.INFORMATION, 
+                    "Export Successful", 
+                    "Saving plans have been successfully exported to:\n" + file.getAbsolutePath());
+                
+                System.out.println("Successfully exported " + plansData.size() + " plans to: " + file.getAbsolutePath());
+            }
         } catch (Exception e) {
-            System.err.println("Error handling backup: " + e.getMessage());
+            System.err.println("Error exporting saving plans: " + e.getMessage());
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, 
+                "Export Error", 
+                "Failed to export saving plans: " + e.getMessage());
         }
     }
 
