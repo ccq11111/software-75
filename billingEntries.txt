@@ -1,8 +1,0 @@
-com.example.ccqbackend.model.BillingEntry@618b9433
-com.example.ccqbackend.model.BillingEntry@30511531
-com.example.ccqbackend.model.BillingEntry@542037fe
-com.example.ccqbackend.model.BillingEntry@685d2e6b
-com.example.ccqbackend.model.BillingEntry@1f93ca39
-com.example.ccqbackend.model.BillingEntry@3474d320
-com.example.ccqbackend.model.BillingEntry@42a440ac
-com.example.ccqbackend.model.BillingEntry@33b3d192
