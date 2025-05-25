@@ -1,0 +1,20 @@
+
+
+Version:	3.50
+CmdLine:	E:\11\Input\Financial management system.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	E:\11\Input\.
+Requires JDK:	No
+Requires 64-Bit: No
+Java min ver:	
+Java max ver:	
+Substitute:	JAVA_HOME = C:\Program Files\Java\jdk-22
+Substitute:	PATH = e:\cursor\resources\app\bin;C:\Program Files (x86)\Microsoft\Edge\Application;E:\Program Files (x86)\VMware\VMware Workstation\bin\;E:\python\Scripts\;C:\Program Files\Java\jdk-22\bin;E:\python\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\PlasticSCM5\server;C:\Program Files\PlasticSCM5\client;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;D:\Windows Kits\10\Windows Performance Toolkit\;D:\matlab 2022b\runtime\win64;D:\matlab 2022b\bin;E:\微信web开发者工具\dll;\bin;E:\anaconda3;E:\anaconda3\Scripts;E:\anaconda3\Library\bin;E:\anaconda3\Library\usr\bin;E:\anaconda3\Library\mingw-w64\bin;C:\Program Files (x86)\ZeroTier\One\;C:\Program Files\Git\cmd;C:\Users\m1332\AppData\Local\Microsoft\WindowsApps;C:\Users\m1332\.dotnet\tools;E:\ffpmeg\ffmpeg-7.0.2-essentials_build\bin;C:\Users\m1332\AppData\Local\Muse Hub\lib;e:\cursor\resources\app\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Git LFS;E:\dev\maven\apache-maven-3.9.9\bin;D:\vs2022\Microsoft VS Code\bin;E:\cursor\resources\app\bin;C:\Users\m1332\AppData\Local\Programs\Ollama;D:\CodeTools\IntelliJ IDEA 2024.1.4\bin;C:\Program Files\Java\jdk-22\bin
+JRE paths:	C:\Program Files\Java\jdk-22;e:\cursor\resources\app\bin;C:\Program Files (x86)\Microsoft\Edge\Application;E:\Program Files (x86)\VMware\VMware Workstation\bin\;E:\python\Scripts\;C:\Program Files\Java\jdk-22\bin;E:\python\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\PlasticSCM5\server;C:\Program Files\PlasticSCM5\client;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;D:\Windows Kits\10\Windows Performance Toolkit\;D:\matlab 2022b\runtime\win64;D:\matlab 2022b\bin;E:\微信web开发者工具\dll;\bin;E:\anaconda3;E:\anaconda3\Scripts;E:\anaconda3\Library\bin;E:\anaconda3\Library\usr\bin;E:\anaconda3\Library\mingw-w64\bin;C:\Program Files (x86)\ZeroTier\One\;C:\Program Files\Git\cmd;C:\Users\m1332\AppData\Local\Microsoft\WindowsApps;C:\Users\m1332\.dotnet\tools;E:\ffpmeg\ffmpeg-7.0.2-essentials_build\bin;C:\Users\m1332\AppData\Local\Muse Hub\lib;e:\cursor\resources\app\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Git LFS;E:\dev\maven\apache-maven-3.9.9\bin;D:\vs2022\Microsoft VS Code\bin;E:\cursor\resources\app\bin;C:\Users\m1332\AppData\Local\Programs\Ollama;D:\CodeTools\IntelliJ IDEA 2024.1.4\bin;C:\Program Files\Java\jdk-22\bin
+Check launcher:	C:\Program Files\Java\jdk-22\bin\javaw.exe (OK)
+Version string: 1.022.000_001 / 64-Bit (OK)
+Launcher:	C:\Program Files\Java\jdk-22\bin\javaw.exe
+Launcher args:	-jar "E:\11\Input\Financial management system.exe"
+Args length:	50/32768 chars
+Exit code:	0
