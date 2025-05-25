@@ -1,6 +1,0 @@
-spring:
-  ai:
-    ollama:
-      base-url: http://localhost:11434
-      chat:
-        model: deepseek-r1 # \u672C\u5730\u7684\u5927\u6A21\u578B
