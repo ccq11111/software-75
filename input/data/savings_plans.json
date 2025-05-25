@@ -1,0 +1,58 @@
+[ {
+  "planId" : "899c456a-0911-4319-b78d-4fe2ceea5f8a",
+  "name" : "存钱计划1",
+  "startDate" : "2025-05-22T00:00:00Z",
+  "endDate" : "2025-05-29T00:00:00Z",
+  "cycle" : "Weekly",
+  "cycleTimes" : 1,
+  "amount" : 2000.0,
+  "totalAmount" : 2000.0,
+  "savedAmount" : 0,
+  "currency" : "CNY",
+  "user" : {
+    "userId" : "4b655c3f-aed9-4f99-b99b-76c2c7103e71",
+    "username" : "zhangsan",
+    "password" : "$2a$10$8Ah1Ad4iuVdCRvGOFokQIe3xktatEGNQc1/5Doj6Ae4d.hrclR4.W",
+    "email" : "",
+    "phone" : null,
+    "userSettings" : null
+  }
+}, {
+  "planId" : "a1434363-81da-4154-bed4-7b905e658f4c",
+  "name" : "1",
+  "startDate" : "2025-05-17T00:00:00Z",
+  "endDate" : "2025-05-18T00:00:00Z",
+  "cycle" : "Daily",
+  "cycleTimes" : 1,
+  "amount" : 0.0,
+  "totalAmount" : 0.0,
+  "savedAmount" : 0,
+  "currency" : "CNY",
+  "user" : {
+    "userId" : "4a34e689-412c-4111-9cdc-be758a49f0b2",
+    "username" : "123",
+    "password" : "$2a$10$DFcaeipDig9VbwrkM2fCWOwF8NoIiC8DARkfXB1voq.0vcBkkBO1K",
+    "email" : "",
+    "phone" : null,
+    "userSettings" : null
+  }
+}, {
+  "planId" : "a7e33b4c-7ca7-4e94-8185-488428d08e3c",
+  "name" : "12",
+  "startDate" : "2025-05-30T00:00:00Z",
+  "endDate" : "2025-05-31T00:00:00Z",
+  "cycle" : "Daily",
+  "cycleTimes" : 1,
+  "amount" : 800.0,
+  "totalAmount" : 800.0,
+  "savedAmount" : 0,
+  "currency" : "CNY",
+  "user" : {
+    "userId" : "4a34e689-412c-4111-9cdc-be758a49f0b2",
+    "username" : "123",
+    "password" : "$2a$10$DFcaeipDig9VbwrkM2fCWOwF8NoIiC8DARkfXB1voq.0vcBkkBO1K",
+    "email" : "",
+    "phone" : null,
+    "userSettings" : null
+  }
+} ]
