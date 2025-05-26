@@ -40,6 +40,20 @@
    ```
    java -jar software.jar
    ```
+3.**Running the Ollama Model**
+
+To run the Ollama model, follow these steps:
+
+1. **Install Ollama**: Ensure you have Ollama installed on your system. You can download it from the [official Ollama website](https://ollama.ai/).
+
+2. **Run the Model**: Use the following command in your terminal to start the Ollama model:
+   ```bash
+   ollama run deepseek-r1:7b
+   ```
+
+3. **Access the Model**: Once running, you can interact with the model through the provided interface or API.
+
+For more detailed instructions, refer to the [Ollama documentation](https://ollama.ai/docs).
 
 ## Main Features
 
@@ -136,7 +150,3 @@
 ## Contact and Support
 
 For questions or suggestions, please contact the developer or submit an issue on the project homepage.
-
----
-
-If you need further customization or additional content (such as screenshots or detailed operation steps), please let us know!
