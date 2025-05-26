@@ -36,7 +36,7 @@
    Double-click `Financial management system.exe` to start the application.
 
 2. **Cross-platform/Command-line Users**  
-   Run the following command in the terminal:
+   Alternatively, Run the following command in the terminal:
    ```
    java -jar software.jar
    ```
