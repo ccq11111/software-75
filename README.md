@@ -28,7 +28,7 @@
 ### Environment Requirements
 
 - Windows 7/10/11 (recommended to run the EXE directly)
-- Java 8 or higher (if using the JAR package)
+- Java 8 or higher (if using the JAR package)（jdk17 is the best option）
 
 ### Launch Methods
 
