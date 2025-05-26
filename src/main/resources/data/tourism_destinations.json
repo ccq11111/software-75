@@ -1,0 +1,212 @@
+[
+  {
+    "name": "北京",
+    "avgIncome": 5000,
+    "specialties": "烤鸭、景泰蓝、文房四宝",
+    "attractions": "故宫、长城、颐和园、南锣鼓巷",
+    "tips": "北京历史文化底蕴深厚，建议参观故宫、长城，品尝北京烤鸭。"
+  },
+  {
+    "name": "上海",
+    "avgIncome": 6000,
+    "specialties": "小笼包、蟹壳黄、梨膏糖",
+    "attractions": "外滩、东方明珠、豫园、迪士尼乐园",
+    "tips": "上海是现代与传统交融的城市，建议夜游外滩，品尝本帮菜。"
+  },
+  {
+    "name": "广州",
+    "avgIncome": 5500,
+    "specialties": "早茶、烧鹅、肠粉",
+    "attractions": "广州塔、白云山、沙面、长隆欢乐世界",
+    "tips": "广州美食丰富，建议体验早茶文化，游览珠江夜景。"
+  },
+  {
+    "name": "深圳",
+    "avgIncome": 7000,
+    "specialties": "海鲜、客家菜、荔枝",
+    "attractions": "世界之窗、欢乐谷、大梅沙、深圳湾公园",
+    "tips": "深圳是现代化都市，适合亲子游和科技体验。"
+  },
+  {
+    "name": "成都",
+    "avgIncome": 3500,
+    "specialties": "火锅、熊猫、川剧变脸",
+    "attractions": "宽窄巷子、锦里、都江堰、青城山",
+    "tips": "成都是美食之都，建议品尝火锅和小吃，体验川剧变脸，参观大熊猫基地。"
+  },
+  {
+    "name": "重庆",
+    "avgIncome": 4000,
+    "specialties": "火锅、小面、酸辣粉",
+    "attractions": "洪崖洞、解放碑、磁器口、长江索道",
+    "tips": "重庆山城风光独特，夜景迷人，火锅必尝。"
+  },
+  {
+    "name": "西安",
+    "avgIncome": 3800,
+    "specialties": "肉夹馍、羊肉泡馍、凉皮",
+    "attractions": "兵马俑、大雁塔、回民街、城墙",
+    "tips": "西安历史悠久，建议参观兵马俑，品尝地道小吃。"
+  },
+  {
+    "name": "杭州",
+    "avgIncome": 5200,
+    "specialties": "西湖醋鱼、龙井茶、东坡肉",
+    "attractions": "西湖、灵隐寺、千岛湖、宋城",
+    "tips": "杭州以西湖著称，建议骑行环湖，品龙井茶。"
+  },
+  {
+    "name": "南京",
+    "avgIncome": 5000,
+    "specialties": "盐水鸭、鸭血粉丝汤、金陵糕点",
+    "attractions": "中山陵、夫子庙、秦淮河、明孝陵",
+    "tips": "南京古都风韵浓厚，夜游秦淮河别有风味。"
+  },
+  {
+    "name": "苏州",
+    "avgIncome": 4800,
+    "specialties": "苏式月饼、桂花糖藕、松鹤楼菜",
+    "attractions": "拙政园、周庄、虎丘、平江路",
+    "tips": "苏州园林精致，建议慢游古镇，品尝苏帮菜。"
+  },
+  {
+    "name": "青岛",
+    "avgIncome": 4500,
+    "specialties": "啤酒、海鲜、蛤蜊",
+    "attractions": "栈桥、五四广场、崂山、八大关",
+    "tips": "青岛海滨风光优美，夏季适合海鲜啤酒节。"
+  },
+  {
+    "name": "厦门",
+    "avgIncome": 4200,
+    "specialties": "海蛎煎、花生汤、沙茶面",
+    "attractions": "鼓浪屿、曾厝垵、南普陀寺、环岛路",
+    "tips": "厦门气候宜人，鼓浪屿音乐氛围浓厚。"
+  },
+  {
+    "name": "三亚",
+    "avgIncome": 4000,
+    "specialties": "椰子、海鲜、热带水果",
+    "attractions": "亚龙湾、天涯海角、南山寺、蜈支洲岛",
+    "tips": "三亚是度假天堂，建议体验潜水和热带水果。"
+  },
+  {
+    "name": "哈尔滨",
+    "avgIncome": 3800,
+    "specialties": "红肠、冰棍、锅包肉",
+    "attractions": "中央大街、冰雪大世界、索菲亚教堂、太阳岛",
+    "tips": "冬季冰雪节盛大，俄式风情浓郁。"
+  },
+  {
+    "name": "拉萨",
+    "avgIncome": 3500,
+    "specialties": "酥油茶、糌粑、藏香猪",
+    "attractions": "布达拉宫、大昭寺、八廓街、纳木错",
+    "tips": "高原风光壮美，注意防晒和高反。"
+  },
+  {
+    "name": "乌鲁木齐",
+    "avgIncome": 3700,
+    "specialties": "烤羊肉串、葡萄干、馕",
+    "attractions": "天山天池、红山公园、国际大巴扎、南山牧场",
+    "tips": "新疆美食丰富，建议品尝羊肉串和干果。"
+  },
+  {
+    "name": "贵阳",
+    "avgIncome": 3600,
+    "specialties": "肠旺面、豆腐圆子、丝娃娃",
+    "attractions": "甲秀楼、青岩古镇、花溪公园、红枫湖",
+    "tips": "贵阳气候凉爽，适合夏季避暑。"
+  },
+  {
+    "name": "昆明",
+    "avgIncome": 3900,
+    "specialties": "过桥米线、鲜花饼、野生菌",
+    "attractions": "石林、滇池、翠湖、大观楼",
+    "tips": "四季如春，鲜花和美食不可错过。"
+  },
+  {
+    "name": "南宁",
+    "avgIncome": 3700,
+    "specialties": "老友粉、柠檬鸭、螺蛳粉",
+    "attractions": "青秀山、南湖公园、德天瀑布、南宁动物园",
+    "tips": "南宁绿城美誉，适合生态游。"
+  },
+  {
+    "name": "郑州",
+    "avgIncome": 4100,
+    "specialties": "烩面、胡辣汤、羊肉汤",
+    "attractions": "少林寺、黄河风景区、嵩山、二七广场",
+    "tips": "中原文化发源地，建议参观少林寺。"
+  },
+  {
+    "name": "长沙",
+    "avgIncome": 4300,
+    "specialties": "臭豆腐、口味虾、糖油粑粑",
+    "attractions": "岳麓山、橘子洲、太平街、世界之窗",
+    "tips": "长沙夜生活丰富，小吃街值得一逛。"
+  },
+  {
+    "name": "合肥",
+    "avgIncome": 4000,
+    "specialties": "庐州烤鸭、毛豆腐、鸭油烧饼",
+    "attractions": "包公园、三河古镇、逍遥津、天鹅湖",
+    "tips": "合肥历史文化深厚，适合亲子游。"
+  },
+  {
+    "name": "济南",
+    "avgIncome": 4200,
+    "specialties": "泉水、把子肉、油旋",
+    "attractions": "大明湖、趵突泉、千佛山、黑虎泉",
+    "tips": "泉城风光秀丽，建议品尝泉水美食。"
+  },
+  {
+    "name": "太原",
+    "avgIncome": 3900,
+    "specialties": "刀削面、过油肉、老陈醋",
+    "attractions": "晋祠、双塔寺、蒙山大佛、柳巷",
+    "tips": "山西面食丰富，历史遗迹众多。"
+  },
+  {
+    "name": "石家庄",
+    "avgIncome": 3800,
+    "specialties": "驴肉火烧、羊汤、缸炉烧饼",
+    "attractions": "正定古城、西柏坡、赵州桥、苍岩山",
+    "tips": "石家庄周边古迹众多，适合自驾游。"
+  },
+  {
+    "name": "呼和浩特",
+    "avgIncome": 3700,
+    "specialties": "手把肉、奶茶、烤全羊",
+    "attractions": "大召寺、昭君墓、塞上老街、哈素海",
+    "tips": "草原风光壮美，建议体验蒙古族风情。"
+  },
+  {
+    "name": "兰州",
+    "avgIncome": 3800,
+    "specialties": "牛肉面、灰豆子、百合",
+    "attractions": "黄河铁桥、五泉山、白塔山、甘肃省博物馆",
+    "tips": "兰州牛肉面全国闻名，黄河风情线值得一游。"
+  },
+  {
+    "name": "银川",
+    "avgIncome": 3700,
+    "specialties": "手抓羊肉、枸杞、滩羊肉",
+    "attractions": "沙湖、西夏王陵、镇北堡影视城、贺兰山岩画",
+    "tips": "银川沙漠与湖泊共存，西夏文化独特。"
+  },
+  {
+    "name": "西宁",
+    "avgIncome": 3600,
+    "specialties": "酸奶、羊肠面、青稞酒",
+    "attractions": "塔尔寺、青海湖、日月山、莫家街",
+    "tips": "青海湖风光壮美，建议夏季前往。"
+  },
+  {
+    "name": "海口",
+    "avgIncome": 4200,
+    "specialties": "椰子饭、清补凉、海南粉",
+    "attractions": "假日海滩、骑楼老街、五公祠、火山口公园",
+    "tips": "海口气候宜人，适合冬季避寒。"
+  }
+]

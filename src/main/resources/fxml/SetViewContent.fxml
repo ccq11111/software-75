@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.chart.PieChart?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.software.view.SetViewController"
+      styleClass="content-area" spacing="20">
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <!-- Header Section with Title and Add Plan Button -->
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Set" styleClass="header-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="addPlanButton" text="Add plan" styleClass="add-csv-button"/>
+    </HBox>
+
+    <!-- Plan Section -->
+    <VBox styleClass="savings-card" spacing="15">
+        <!-- Plan Title -->
+        <HBox alignment="CENTER_LEFT" spacing="5">
+            <Rectangle width="5" height="20" fill="#ffe100"/>
+            <Label text="Plan" styleClass="section-title"/>
+        </HBox>
+
+        <!-- Plan Table -->
+        <TableView fx:id="planTable" styleClass="billing-table">
+            <columns>
+                <TableColumn fx:id="nameColumn" text="Name" prefWidth="120"/>
+                <TableColumn fx:id="startDateColumn" text="Start date" prefWidth="130"/>
+                <TableColumn fx:id="savedColumn" text="Saved" prefWidth="100"/>
+                <TableColumn fx:id="cycleTimeColumn" text="Cycle time" prefWidth="120"/>
+                <TableColumn fx:id="aimMoneyColumn" text="Aim money" prefWidth="120"/>
+                <TableColumn fx:id="actionColumn" text="Actions" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <!-- Total Assets Section -->
+    <VBox styleClass="savings-card" spacing="15">
+        <!-- Total Assets Title -->
+        <HBox alignment="CENTER_LEFT" spacing="5">
+            <Rectangle width="5" height="20" fill="#ffe100"/>
+            <Label text="Total Assets" styleClass="section-title"/>
+        </HBox>
+
+        <!-- Assets Display -->
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <VBox alignment="CENTER_LEFT">
+                <Label fx:id="totalAssetsLabel" text="¥8,000.00" styleClass="total-assets-label"/>
+                <Label text="¥8,000" styleClass="assets-detail-label"/>
+            </VBox>
+
+            <!-- Donut Chart -->
+            <PieChart fx:id="assetsChart" styleClass="assets-chart"
+                      legendVisible="false" labelsVisible="false"
+                      prefHeight="200" prefWidth="200"/>
+        </HBox>
+    </VBox>
+
+    <!-- Spacer to push buttons to bottom -->
+    <Region VBox.vgrow="ALWAYS" />
+
+    <!-- Action Buttons -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Button fx:id="backupButton" text="Backup" styleClass="inquire-button"/>
+        <Button fx:id="logoutButton" text="Log out" styleClass="inquire-button"/>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@/styles/billing.css"/>
+        <URL value="@/styles/saving.css"/>
+        <URL value="@/styles/set.css"/>
+    </stylesheets>
+</VBox>

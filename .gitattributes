@@ -1,2 +1,2 @@
-*.cs  linguist-language=Java
-*.ico linguist-language=Java
+/mvnw text eol=lf
+*.cmd text eol=crlf

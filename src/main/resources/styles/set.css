@@ -1,0 +1,81 @@
+/* Set View Styles */
+
+/* Total assets label */
+.total-assets-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00c853;
+    -fx-padding: 5 0;
+}
+
+.assets-detail-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+/* Assets chart (donut chart) */
+.assets-chart {
+    -fx-padding: 10;
+    -fx-background-color: transparent;
+}
+
+.assets-chart .chart-pie {
+    -fx-border-color: transparent;
+    -fx-pie-color: #ff6b6b;
+}
+
+/* Plan table specific styles */
+.plan-table-row-cell {
+    -fx-padding: 10 5;
+}
+
+/* Cycle time column with colored text */
+.cycle-time-column {
+    -fx-text-fill: #ff6b6b;
+    -fx-font-weight: bold;
+}
+
+/* Progress bar in the table */
+.progress-bar {
+    -fx-accent: #ffe100;
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.progress-bar .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #ffe100;
+    -fx-background-radius: 5;
+}
+
+/* 编辑和删除按钮样式 */
+.edit-button {
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-background-radius: 3;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 5 10;
+}
+
+.edit-button:hover {
+    -fx-background-color: #2e7d32;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-background-radius: 3;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 5 10;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c62828;
+}

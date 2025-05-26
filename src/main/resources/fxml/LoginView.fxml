@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Separator?>
+<?import java.net.URL?>
+
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.software.view.LoginRegisterController">
+    <HBox styleClass="login-container" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" >
+        <!-- Left side with money image -->
+        <VBox styleClass="image-container" HBox.hgrow="ALWAYS" prefWidth="500.0" minWidth="300.0">
+            <ImageView fitHeight="400.0" fitWidth="400.0" preserveRatio="true">
+                <Image url="@../images/money.png"/>
+            </ImageView>
+        </VBox>
+
+        <!-- Right side with login form -->
+        <VBox styleClass="form-container" HBox.hgrow="ALWAYS" prefWidth="500.0" minWidth="300.0">
+            <Label text="Welcome to PurseAI" styleClass="welcome-text"/>
+            <VBox styleClass="login-form-container" alignment="CENTER" spacing="5">
+                <TextField fx:id="emailPhone" promptText="E-mail/Phone Number" styleClass="text-field">
+                    <VBox.margin>
+                        <Insets bottom="8.0" top="8.0" />
+                    </VBox.margin>
+                </TextField>
+                <PasswordField fx:id="password" promptText="Password" styleClass="password-field">
+                    <VBox.margin>
+                        <Insets bottom="8.0" top="8.0" />
+                    </VBox.margin>
+                </PasswordField>
+
+                <Button fx:id="loginButton" text="log in" onAction="#handleLogin" styleClass="login-button" style="-fx-pref-width: 300px; -fx-pref-height: 40px;">
+                    <VBox.margin>
+                        <Insets bottom="8.0" top="8.0" />
+                    </VBox.margin>
+                </Button>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <Hyperlink fx:id="verificationLink" text="Use Verification Code" styleClass="verification-link" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <HBox alignment="CENTER_RIGHT" styleClass="sign-up-container">
+                        <Label text="No account? " styleClass="sign-up-text"/>
+                        <Hyperlink fx:id="signUpLink" text="Sign in" onAction="#switchToRegister" styleClass="sign-up-link"/>
+                    </HBox>
+                    <VBox.margin>
+                        <Insets bottom="8.0" top="8.0" />
+                    </VBox.margin>
+                </HBox>
+            </VBox>
+
+            <!-- Social Login Options -->
+            <HBox alignment="CENTER" styleClass="social-login-divider">
+                <Separator HBox.hgrow="ALWAYS" />
+                <Label text="Other Registration Ways" styleClass="social-login-text" />
+                <Separator HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <HBox alignment="CENTER" styleClass="social-login-container">
+                <Button styleClass="social-button">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/google.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button styleClass="social-button">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/wechat.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button styleClass="social-button">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/apple.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@../styles/login.css"/>
+        <URL value="@../styles/notification.css"/>
+        <URL value="@../styles/responsive.css"/>
+    </stylesheets>
+</StackPane>
