@@ -20,7 +20,6 @@
 │       ├── billingEntries.csv          # Billing details (CSV format)
 │       ├── billingEntries.txt          # Billing details (text format)
 │       └── test.txt                    # Test file
-└── Test/                               # Test cases and backups
 ```
 
 ## Installation and Running
