@@ -1,1 +1,2 @@
-/input/jdk/lib/modules filter=lfs diff=lfs merge=lfs -text
+*.cs linguist-language=java#
+*.ico linguist-language=java#
